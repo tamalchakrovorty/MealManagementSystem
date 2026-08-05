@@ -52,6 +52,26 @@ export default async function HomepagePage() {
   const userExpense = userMeals * mealRate;
   const balance = totalDeposit - userExpense;
 
+  const negativeBalanceResult = await queryOne(
+    `SELECT COUNT(*)::int as count FROM (
+      SELECT m.user_id,
+        COALESCE(d.total_deposit, 0) - COALESCE(me.total_meals, 0) * $2 as balance
+      FROM memberships m
+      LEFT JOIN (
+        SELECT user_id, SUM(amount) as total_deposit
+        FROM deposits WHERE mess_id = $1 GROUP BY user_id
+      ) d ON d.user_id = m.user_id
+      LEFT JOIN (
+        SELECT user_id, SUM(quantity) as total_meals
+        FROM meal_entries WHERE mess_id = $1 AND is_guest = false
+        GROUP BY user_id
+      ) me ON me.user_id = m.user_id
+      WHERE m.mess_id = $1 AND m.status = 'active'
+    ) sub WHERE sub.balance < 0`,
+    [messId, mealRate]
+  );
+  const negativeCount = (negativeBalanceResult as any)?.count || 0;
+
   return (
     <div className="space-y-4 max-w-lg md:max-w-2xl mx-auto px-5">
       {/* Notice Card - Purple Gradient */}
@@ -122,27 +142,30 @@ export default async function HomepagePage() {
           <p className={`text-[22px] font-extrabold ${balance < 0 ? "text-[#ef4444]" : ""}`}>৳{balance.toFixed(0)}</p>
         </div>
 
-        {/* My Meals - Desktop only */}
+        {/* Estimated Deposit - Desktop only */}
         <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#f59e0b] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-              <rect x="3" y="8" width="14" height="12" rx="2" stroke="#fff" strokeWidth="1.8" />
+              <rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" strokeWidth="1.8" />
+              <path d="M2 9H22" stroke="#fff" strokeWidth="1.8" />
+              <path d="M6 14H10" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </div>
-          <p className="text-[12px] font-semibold text-[#777] mb-1">My Meals</p>
-          <p className="text-[22px] font-extrabold">{userMeals.toFixed(1)}</p>
+          <p className="text-[12px] font-semibold text-[#777] mb-1">Est. Deposit</p>
+          <p className="text-[22px] font-extrabold">৳{userExpense.toFixed(0)}</p>
         </div>
 
-        {/* Total Meals - Desktop only */}
+        {/* Negative Balance - Desktop only */}
         <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#8b5cf6] flex items-center justify-center mb-2">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#ef4444] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M3 20L8 14L12 16L16 10L21 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="12" r="10" stroke="#fff" strokeWidth="1.8" />
+              <path d="M12 8V13" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="16.5" r="1" fill="#fff" />
             </svg>
           </div>
-          <p className="text-[12px] font-semibold text-[#777] mb-1">Total Meals</p>
-          <p className="text-[22px] font-extrabold">{totalMeals.toFixed(1)}</p>
+          <p className="text-[12px] font-semibold text-[#777] mb-1">Negative Balance</p>
+          <p className={`text-[22px] font-extrabold ${negativeCount > 0 ? "text-[#ef4444]" : ""}`}>{negativeCount}</p>
         </div>
       </div>
 
