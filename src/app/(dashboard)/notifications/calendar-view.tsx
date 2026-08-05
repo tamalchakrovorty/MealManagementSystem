@@ -52,13 +52,13 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
       assigned_date: d,
     });
   }
-  for (const log of activityLogs) {
+  for (const [idx, log] of activityLogs.entries()) {
     const rawDate = log.created_at;
     const d = typeof rawDate === "string" ? rawDate.split("T")[0] : format(rawDate, "yyyy-MM-dd");
     if (!itemsByDate.has(d)) itemsByDate.set(d, []);
     const label = log.type === "join_accepted" ? "Joined" : log.type === "leave" ? "Left" : "Removed";
     itemsByDate.get(d)!.push({
-      id: `activity-${d}-${log.type}`,
+      id: `activity-${d}-${log.type}-${idx}`,
       _kind: "activity",
       message: log.message,
       label,

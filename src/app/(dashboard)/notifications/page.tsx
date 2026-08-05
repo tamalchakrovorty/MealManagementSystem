@@ -68,10 +68,11 @@ export default async function NotificationsPage() {
 
   const activityLogs = messId
     ? await query(
-        `SELECT type, message, created_at FROM notifications
+        `SELECT DISTINCT ON (type, message) type, message, created_at FROM notifications
          WHERE mess_id = $1 AND user_id = $2
          AND type IN ('join_accepted', 'leave', 'removed')
-         AND message NOT LIKE 'Your%'`,
+         AND message NOT LIKE 'Your%'
+         ORDER BY type, message, created_at DESC`,
         [messId, user.id]
       )
     : [];
