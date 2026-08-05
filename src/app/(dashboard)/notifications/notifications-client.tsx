@@ -255,7 +255,7 @@ export function NotificationsClient({
 
           {/* Filter Toggle */}
           <div className="flex gap-2 px-1">
-            {(["all", "unseen"] as const).map((f) => (
+            {(["unseen", "all"] as const).map((f) => (
               <button
                 key={f}
                 type="button"
@@ -337,7 +337,7 @@ export function NotificationsClient({
         <>
           {/* Filter Toggle */}
           <div className="flex gap-2 px-1">
-            {(["all", "unseen"] as const).map((f) => (
+            {(["unseen", "all"] as const).map((f) => (
               <button
                 key={f}
                 type="button"
