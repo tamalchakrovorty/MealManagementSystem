@@ -16,7 +16,18 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
 
   const handleCopy = async (phone: string, id: string) => {
     try {
-      await navigator.clipboard.writeText(phone);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(phone);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = phone;
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
       setCopiedId(id);
       popup.success("Number copied!");
       setTimeout(() => setCopiedId(null), 2000);
