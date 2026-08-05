@@ -225,13 +225,13 @@ export function NotificationsClient({
                   <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
                     {u.status !== "active" && (
                       <div
-                        className="absolute text-white text-[6px] font-bold leading-none z-10"
+                        className="absolute text-white text-[8px] font-bold leading-none z-10"
                         style={{
-                          "--f": "0.22em",
-                          "--r": "0.45em",
-                          right: "6px",
+                          "--f": "0.35em",
+                          "--r": "0.7em",
+                          right: "4px",
                           top: "calc(-1 * var(--f))",
-                          padding: "0.15em 0.3em",
+                          padding: "0.2em 0.4em",
                           border: "solid transparent",
                           borderWidth: "0 calc(2 * var(--f)) var(--r) 0",
                           background: "radial-gradient(50% 100% at bottom, #0005 98%, transparent 101%) 100% 0/calc(2 * var(--f)) var(--f) no-repeat border-box",
