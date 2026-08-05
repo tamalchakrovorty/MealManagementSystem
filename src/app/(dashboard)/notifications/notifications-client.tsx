@@ -134,7 +134,7 @@ export function NotificationsClient({
   events: any[];
   bazarDuties: any[];
   activityLogs: any[];
-  negativeUsers: { id: string; name: string; balance: number; avatar_url: string | null }[];
+  negativeUsers: { id: string; name: string; balance: number; avatar_url: string | null; status: string }[];
   currentUserId: string;
 }) {
   const router = useRouter();
@@ -232,9 +232,16 @@ export function NotificationsClient({
                     )}
                     <div className="min-w-0">
                       <p className="text-[12px] font-semibold text-[#333] truncate">{u.name}</p>
-                      <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
-                        Negative Balance
-                      </span>
+                      <div className="flex items-center gap-1 justify-center">
+                        {u.status !== "active" && (
+                          <span className="text-[7px] font-bold px-1 py-0.5 rounded-full bg-[#e3faf0] text-[#1fae70]">
+                            {u.status === "left" ? "Left" : "Removed"}
+                          </span>
+                        )}
+                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
+                          Negative Balance
+                        </span>
+                      </div>
                     </div>
                     <p className="text-[13px] font-bold text-[#e5484d]">৳ {Number(u.balance).toFixed(0)}</p>
                   </div>

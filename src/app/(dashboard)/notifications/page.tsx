@@ -11,6 +11,7 @@ interface NegativeUser {
   name: string;
   balance: number;
   avatar_url: string | null;
+  status: string;
 }
 
 export default async function NotificationsPage() {
@@ -84,9 +85,9 @@ export default async function NotificationsPage() {
       query("SELECT user_id, amount FROM deposits WHERE mess_id = $1", [messId]),
       query("SELECT amount FROM bazar_expenses WHERE mess_id = $1", [messId]),
       query(
-        `SELECT m.user_id, p.name, p.avatar_url FROM memberships m
+        `SELECT m.user_id, m.status, p.name, p.avatar_url FROM memberships m
          LEFT JOIN profiles p ON p.id = m.user_id
-         WHERE m.mess_id = $1 AND m.status = 'active'`,
+         WHERE m.mess_id = $1`,
         [messId]
       ),
     ]);
@@ -105,9 +106,9 @@ export default async function NotificationsPage() {
       depositMap.set(d.user_id, (depositMap.get(d.user_id) || 0) + Number(d.amount));
     }
 
-    const profileMap = new Map<string, { name: string; avatar_url: string | null }>();
+    const profileMap = new Map<string, { name: string; avatar_url: string | null; status: string }>();
     for (const p of profilesData) {
-      profileMap.set(p.user_id, { name: p.name || "Unknown", avatar_url: p.avatar_url || null });
+      profileMap.set(p.user_id, { name: p.name || "Unknown", avatar_url: p.avatar_url || null, status: p.status });
     }
 
     for (const [uid, meals] of userMap) {
@@ -115,12 +116,13 @@ export default async function NotificationsPage() {
       const expense = meals * mealRate;
       const balance = deposit - expense;
       if (balance < 0) {
-        const profile = profileMap.get(uid) || { name: "Unknown", avatar_url: null };
+        const profile = profileMap.get(uid) || { name: "Unknown", avatar_url: null, status: "active" };
         negativeUsers.push({
           id: uid,
           name: profile.name,
           balance,
           avatar_url: profile.avatar_url,
+          status: profile.status,
         });
       }
     }
