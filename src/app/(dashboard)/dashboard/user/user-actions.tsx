@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { popup } from "@/lib/popup";
 import { MealOffToggle } from "./meal-off-toggle";
 import { MonthPickerField } from "./month-picker-field";
+import { Settings, User, Lock, Download, LogOut } from "lucide-react";
 
 export function UserActions({ profile, messId }: { profile: any; messId: string }) {
   const router = useRouter();
@@ -15,6 +16,7 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
   const [editOpen, setEditOpen] = useState(false);
   const [changeOpen, setChangeOpen] = useState(false);
   const [mealOffOpen, setMealOffOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [name, setName] = useState(profile?.name || "");
   const [phone, setPhone] = useState(profile?.phone || "");
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || "");
@@ -182,21 +184,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
 
   return (
     <div className="space-y-3">
-      {/* Update Profile */}
+      {/* Update Profile Dialog (opened from Settings) */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogTrigger
-          render={
-            <button className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-              <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M4 20C4 16.5 7.5 14 12 14C16.5 14 20 16.5 20 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
-              </div>
-              <span className="text-[14.5px] font-semibold">Update Profile</span>
-            </button>
-          }
-        />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Update Profile</DialogTitle>
@@ -253,21 +242,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
         </DialogContent>
       </Dialog>
 
-      {/* Change Password */}
+      {/* Change Password Dialog (opened from Settings) */}
       <Dialog open={changeOpen} onOpenChange={setChangeOpen}>
-        <DialogTrigger
-          render={
-            <button className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-              <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M8 11V8C8 5.79 9.79 4 12 4C14.21 4 16 5.79 16 8V11" stroke="currentColor" strokeWidth="1.8" />
-                </svg>
-              </div>
-              <span className="text-[14.5px] font-semibold">Change Password</span>
-            </button>
-          }
-        />
         <DialogContent className="max-w-sm p-0 overflow-hidden">
           {/* Illustration */}
           <div className="flex justify-center pt-5 pb-1">
@@ -520,36 +496,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
         </DialogContent>
       </Dialog>
 
-      {/* Leave Mess */}
-      <button
-        onClick={handleLeaveMess}
-        disabled={loading}
-        className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
-      >
-        <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M12 8V12L14.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        </div>
-        <span className="text-[14.5px] font-semibold">Leave Mess</span>
-      </button>
-
-      {/* Download Log */}
+      {/* Download Log Dialog (opened from Settings) */}
       <Dialog open={downloadOpen} onOpenChange={setDownloadOpen}>
-        <DialogTrigger
-          render={
-            <button className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-              <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 3V15M12 15L8 11M12 15L16 11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M4 16V18C4 19.6569 5.34315 21 7 21H17C18.6569 21 20 19.6569 20 18V16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
-              </div>
-              <span className="text-[14.5px] font-semibold">Download Log</span>
-            </button>
-          }
-        />
         <DialogContent className="max-w-sm max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Download Log</DialogTitle>
@@ -655,24 +603,105 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
         </DialogContent>
       </Dialog>
 
-      {/* Log Out */}
+      {/* Settings */}
       <button
-        onClick={async () => {
-          await fetch("/api/auth/logout", { method: "POST" });
-          router.push("/login");
-        }}
-        disabled={loading}
+        onClick={() => setSettingsOpen(true)}
         className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
       >
-        <div className="w-[22px] h-[22px] flex items-center justify-center text-[#e5484d]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M21 12H9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+        <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+          <Settings size={20} />
         </div>
-        <span className="text-[14.5px] font-semibold text-[#e5484d]">Log Out</span>
+        <span className="text-[14.5px] font-semibold">Settings</span>
       </button>
+
+      {/* Settings Dialog */}
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Settings</DialogTitle>
+            <DialogDescription>Manage your account and preferences.</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 mt-2">
+            {/* Update Profile */}
+            <button
+              onClick={() => { setSettingsOpen(false); setEditOpen(true); }}
+              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+                <User size={18} />
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-[#1B1B23]">Update Profile</p>
+                <p className="text-[12px] text-[#8A8A9E]">Change your avatar, name, and phone</p>
+              </div>
+            </button>
+
+            {/* Change Password */}
+            <button
+              onClick={() => { setSettingsOpen(false); setChangeOpen(true); }}
+              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+                <Lock size={18} />
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-[#1B1B23]">Change Password</p>
+                <p className="text-[12px] text-[#8A8A9E]">Update your account password</p>
+              </div>
+            </button>
+
+            {/* Download Log */}
+            <button
+              onClick={() => { setSettingsOpen(false); setDownloadOpen(true); }}
+              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+                <Download size={18} />
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-[#1B1B23]">Download Log</p>
+                <p className="text-[12px] text-[#8A8A9E]">Export mess data as Excel</p>
+              </div>
+            </button>
+
+            {/* Leave Mess */}
+            <button
+              onClick={() => { setSettingsOpen(false); handleLeaveMess(); }}
+              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+                  <path d="M12 8V12L14.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-[#1B1B23]">Leave Mess</p>
+                <p className="text-[12px] text-[#8A8A9E]">Exit the current mess</p>
+              </div>
+            </button>
+
+            {/* Log Out */}
+            <button
+              onClick={async () => {
+                setSettingsOpen(false);
+                await fetch("/api/auth/logout", { method: "POST" });
+                router.push("/login");
+              }}
+              className="w-full bg-[#FFF0F0] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#FFE5E5] transition-colors"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#FFD4D4] flex items-center justify-center shrink-0 text-[#E5484D]">
+                <LogOut size={18} />
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-[#E5484D]">Log Out</p>
+                <p className="text-[12px] text-[#E5484D]/70">Sign out of your account</p>
+              </div>
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
