@@ -35,7 +35,8 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
       >
         <div className="w-[38px] h-[38px] rounded-full bg-[#fff2df] flex items-center justify-center mb-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#f2a03d" strokeWidth="1.8" strokeLinejoin="round" />
+            <path d="M3 20L8 14L12 16L16 10L21 4" stroke="#f2a03d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M15 4H21V10" stroke="#f2a03d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Meal Rate</p>

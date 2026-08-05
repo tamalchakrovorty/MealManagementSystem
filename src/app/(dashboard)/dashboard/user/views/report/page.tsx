@@ -203,8 +203,9 @@ export default async function ReportViewPage({
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] rounded-full bg-[#ffe9ee] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M3 17L9 11L13 15L21 7" stroke="#f0396b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M17 7H21V11" stroke="#f0396b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2 8.5C2 7.12 3.12 6 4.5 6H19.5C20.88 6 22 7.12 22 8.5V15.5C22 16.88 20.88 18 19.5 18H4.5C3.12 18 2 16.88 2 15.5V8.5Z" stroke="#f0396b" strokeWidth="1.8" />
+                <path d="M2 10H22" stroke="#f0396b" strokeWidth="1.8" />
+                <path d="M6 14H10" stroke="#f0396b" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Expense</p>
