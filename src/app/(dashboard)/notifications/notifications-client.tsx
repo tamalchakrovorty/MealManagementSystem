@@ -220,7 +220,7 @@ export function NotificationsClient({
                 <span className="text-[15px] font-bold">Negative Balance Users</span>
                 <span className="text-[13px] font-semibold text-[#e5484d]">{negativeUsers.length}</span>
               </div>
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-2 gap-2.5">
                 {negativeUsers.map((u) => (
                   <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
                     {u.avatar_url ? (
