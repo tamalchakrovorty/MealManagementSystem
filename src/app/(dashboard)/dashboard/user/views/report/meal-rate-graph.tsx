@@ -9,10 +9,22 @@ interface DayData {
 
 export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[]; monthLabel: string; mealRate: number }) {
   const [open, setOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const chartWidth = 600;
+  const chartHeight = 160;
+  const padding = { top: 20, right: 10, bottom: 30, left: 10 };
+  const plotWidth = chartWidth - padding.left - padding.right;
+  const plotHeight = chartHeight - padding.top - padding.bottom;
 
   const maxRate = Math.max(...data.map((d) => d.rate), 1);
   const avgRate = data.reduce((s, d) => s + d.rate, 0) / data.length;
-  const chartHeight = 130;
+
+  const getX = (i: number) => padding.left + (i / Math.max(data.length - 1, 1)) * plotWidth;
+  const getY = (rate: number) => padding.top + plotHeight - (rate / maxRate) * plotHeight;
+
+  const linePoints = data.map((d, i) => `${getX(i)},${getY(d.rate)}`).join(" ");
+  const areaPoints = `${getX(0)},${padding.top + plotHeight} ${linePoints} ${getX(data.length - 1)},${padding.top + plotHeight}`;
 
   return (
     <>
@@ -41,16 +53,13 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
       {open && (
         <div className="fixed inset-0 z-[100] flex items-end justify-center" onClick={() => setOpen(false)}>
           <style>{`@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
-          {/* Backdrop */}
           <div className="absolute inset-0 bg-black/40" />
 
-          {/* Sheet */}
           <div
             className="relative bg-white w-full max-w-lg rounded-t-[24px] p-5 pb-8"
             style={{ animation: "slideUp 0.3s ease-out" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Handle */}
             <div className="w-10 h-1 bg-[#ddd] rounded-full mx-auto mb-4" />
 
             <div className="flex items-center justify-between mb-4">
@@ -68,47 +77,130 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
               </button>
             </div>
 
-                {/* Chart */}
-                {data.length > 0 ? (
-                  <div className="bg-[#fafafe] rounded-[16px] p-4 pt-5 pb-3">
-                    {/* Bars */}
-                    <div className="flex gap-1.5 items-end h-[160px]">
-                      {data.map((d, i) => {
-                        const barHeight = d.rate > 0 ? Math.max((d.rate / maxRate) * chartHeight, 3) : 0;
-                        const dayNum = new Date(d.date).getDate();
-                        return (
-                          <div key={i} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
-                            {/* Tooltip on hover */}
-                            <div className="group relative w-full flex flex-col items-center">
-                              <div className="absolute -top-8 bg-[#1e2130] text-white text-[9px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                                ৳{d.rate.toFixed(2)}
-                              </div>
-                              <div
-                                className="w-full rounded-t-[4px] transition-all duration-300"
-                                style={{
-                                  height: `${barHeight}px`,
-                                  background: d.rate > 0 ? "linear-gradient(180deg, #f2a03d, #e8940a)" : "#e8e6f0",
-                                  opacity: d.rate > 0 ? 1 : 0.4,
-                                }}
-                              />
-                            </div>
-                            <span className="text-[8px] text-[#8b8fa3] font-medium">{dayNum}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
+            {data.length > 0 ? (
+              <div className="bg-[#fafafe] rounded-[16px] p-4 pt-5 pb-3">
+                <div className="relative">
+                  <svg
+                    viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+                    className="w-full h-auto"
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <defs>
+                      <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#f2a03d" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#f2a03d" stopOpacity="0.02" />
+                      </linearGradient>
+                      <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#f2a03d" />
+                        <stop offset="100%" stopColor="#e8940a" />
+                      </linearGradient>
+                    </defs>
 
-                    {/* Avg rows */}
-                    <div className="mt-3 pt-3 border-t border-[#eef0f4] flex items-center justify-between">
-                      <span className="text-[11px] text-[#8b8fa3] font-semibold">Avg Daily Rate</span>
-                      <span className="text-[13px] font-bold text-[#f2a03d]">৳{avgRate.toFixed(2)}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] text-[#8b8fa3] font-semibold">Month Meal Rate</span>
-                      <span className="text-[13px] font-bold text-[#1e2130]">৳{mealRate.toFixed(2)}</span>
-                    </div>
-                  </div>
-                ) : (
+                    {/* Area fill */}
+                    <polygon points={areaPoints} fill="url(#areaGradient)" />
+
+                    {/* Line */}
+                    <polyline
+                      points={linePoints}
+                      fill="none"
+                      stroke="url(#lineGradient)"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+
+                    {/* Data points + hover zones */}
+                    {data.map((d, i) => {
+                      const x = getX(i);
+                      const y = getY(d.rate);
+                      const isHovered = hoveredIndex === i;
+                      return (
+                        <g key={i}>
+                          {/* Hover zone */}
+                          <rect
+                            x={x - plotWidth / data.length / 2}
+                            y={padding.top}
+                            width={plotWidth / data.length}
+                            height={plotHeight}
+                            fill="transparent"
+                            onMouseEnter={() => setHoveredIndex(i)}
+                          />
+                          {/* Dot */}
+                          {d.rate > 0 && (
+                            <circle
+                              cx={x}
+                              cy={y}
+                              r={isHovered ? 5 : 3}
+                              fill="#f2a03d"
+                              stroke="white"
+                              strokeWidth="2"
+                              style={{ transition: "r 0.15s ease" }}
+                            />
+                          )}
+                        </g>
+                      );
+                    })}
+
+                    {/* Tooltip */}
+                    {hoveredIndex !== null && (
+                      <g>
+                        <rect
+                          x={getX(hoveredIndex) - 40}
+                          y={getY(data[hoveredIndex].rate) - 32}
+                          width="80"
+                          height="22"
+                          rx="6"
+                          fill="#1e2130"
+                        />
+                        <text
+                          x={getX(hoveredIndex)}
+                          y={getY(data[hoveredIndex].rate) - 17}
+                          textAnchor="middle"
+                          fill="white"
+                          fontSize="10"
+                          fontWeight="bold"
+                        >
+                          ৳{data[hoveredIndex].rate.toFixed(2)}
+                        </text>
+                        {/* Vertical guide line */}
+                        <line
+                          x1={getX(hoveredIndex)}
+                          y1={padding.top}
+                          x2={getX(hoveredIndex)}
+                          y2={padding.top + plotHeight}
+                          stroke="#1e2130"
+                          strokeWidth="1"
+                          strokeDasharray="4,3"
+                          opacity="0.3"
+                        />
+                      </g>
+                    )}
+                  </svg>
+                </div>
+
+                {/* X-axis labels: show every 5th day + last day */}
+                <div className="flex justify-between px-1 mt-1">
+                  {data.map((d, i) => {
+                    const dayNum = new Date(d.date).getDate();
+                    const show = dayNum === 1 || dayNum % 5 === 0 || i === data.length - 1;
+                    if (!show) return <span key={i} className="text-[8px] text-transparent">{dayNum}</span>;
+                    return (
+                      <span key={i} className="text-[8px] text-[#8b8fa3] font-medium">{dayNum}</span>
+                    );
+                  })}
+                </div>
+
+                {/* Summary */}
+                <div className="mt-3 pt-3 border-t border-[#eef0f4] flex items-center justify-between">
+                  <span className="text-[11px] text-[#8b8fa3] font-semibold">Avg Daily Rate</span>
+                  <span className="text-[13px] font-bold text-[#f2a03d]">৳{avgRate.toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] text-[#8b8fa3] font-semibold">Month Meal Rate</span>
+                  <span className="text-[13px] font-bold text-[#1e2130]">৳{mealRate.toFixed(2)}</span>
+                </div>
+              </div>
+            ) : (
               <p className="text-sm text-[#8b8fa3] text-center py-10">No data for this month</p>
             )}
           </div>

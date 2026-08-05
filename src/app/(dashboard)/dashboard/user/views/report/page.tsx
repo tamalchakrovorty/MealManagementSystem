@@ -103,11 +103,13 @@ export default async function ReportViewPage({
   for (const m of dailyMeals) mealsByDate.set(m.date_str, Number(m.total));
 
   const allDays = eachDayOfInterval({ start: new Date(monthStart), end: new Date(monthEnd) });
+  let cumExpenses = 0;
+  let cumMeals = 0;
   const dailyMealRateData = allDays.map((day) => {
     const key = format(day, "yyyy-MM-dd");
-    const exp = expenseByDate.get(key) || 0;
-    const mea = mealsByDate.get(key) || 0;
-    return { date: key, rate: mea > 0 ? exp / mea : 0 };
+    cumExpenses += expenseByDate.get(key) || 0;
+    cumMeals += mealsByDate.get(key) || 0;
+    return { date: key, rate: cumMeals > 0 ? cumExpenses / cumMeals : 0 };
   });
 
   const userTotals = new Map<string, { meals: number; guestMeals: number; deposit: number }>();
