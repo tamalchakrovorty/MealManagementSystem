@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { queryOne, pool } from "@/lib/db";
+import { query, queryOne, pool } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
 
 export async function PUT(request: Request) {
@@ -110,6 +110,20 @@ export async function DELETE(request: Request) {
     `INSERT INTO notifications (user_id, mess_id, type, message) VALUES ($1, $2, 'removed', $3)`,
     [userId, mess_id, "You have been removed from the mess by the manager."]
   );
+
+  const profile = await queryOne("SELECT name FROM profiles WHERE id = $1", [userId]);
+  const userName = (profile as any)?.name || "A member";
+
+  const otherMembers = await query(
+    `SELECT user_id FROM memberships WHERE mess_id = $1 AND status = 'active' AND user_id != $2`,
+    [mess_id, userId]
+  );
+  for (const m of otherMembers as any[]) {
+    await queryOne(
+      `INSERT INTO notifications (user_id, mess_id, type, message) VALUES ($1, $2, 'removed', $3)`,
+      [m.user_id, mess_id, `${userName} has been removed from the mess by the manager.`]
+    );
+  }
 
   return NextResponse.json({ success: true });
 }
