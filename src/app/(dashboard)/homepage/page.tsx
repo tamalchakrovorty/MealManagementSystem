@@ -53,7 +53,7 @@ export default async function HomepagePage() {
   const balance = totalDeposit - userExpense;
 
   return (
-    <div className="space-y-5 max-w-lg mx-auto">
+    <div className="space-y-5 max-w-lg mx-auto px-5">
       {/* Notice Card - Purple Gradient */}
       <div className="rounded-[22px] p-5 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 15px 35px rgba(108,99,255,.35)" }}>
         <div className="inline-flex items-center gap-2 bg-white/18 px-3.5 py-1.5 rounded-full text-[13px] mb-4">
