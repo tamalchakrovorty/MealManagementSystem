@@ -35,7 +35,7 @@ export default async function DashboardLayout({
   const unreadCount = (unreadResult as any)?.count || 0;
 
   return (
-    <div className="flex min-h-screen flex-col bg-muted/30">
+    <div className="flex min-h-screen flex-col" style={{ background: "#eef0fb" }}>
       <DashboardNav
         profile={profile}
         membership={membership}
