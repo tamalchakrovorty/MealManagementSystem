@@ -18,14 +18,9 @@ const OPTIONS: { value: MealOption; label: string; color: string; bg: string; ic
 
 export function MealOffToggle({ messId }: { messId: string }) {
   const [duration, setDuration] = useState<DurationType>("one_time");
-  const [date, setDate] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  useEffect(() => {
-    setDate(format(new Date(), "yyyy-MM-dd"));
-    setStartDate(format(new Date(), "yyyy-MM-dd"));
-    setEndDate(format(addDays(new Date(), 6), "yyyy-MM-dd"));
-  }, []);
+  const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [startDate, setStartDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [endDate, setEndDate] = useState(() => format(addDays(new Date(), 6), "yyyy-MM-dd"));
 
   const [lunch, setLunch] = useState<MealOption>("on");
   const [dinner, setDinner] = useState<MealOption>("on");

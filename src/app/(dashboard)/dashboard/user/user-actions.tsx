@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -23,20 +23,12 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
   const [loading, setLoading] = useState(false);
 
   // Download Log state
-  const [currentMonth, setCurrentMonth] = useState("");
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [dlScope, setDlScope] = useState<"my" | "full">("my");
   const [dlPeriod, setDlPeriod] = useState<"single" | "range">("single");
-  const [dlMonth, setDlMonth] = useState("");
-  const [dlStart, setDlStart] = useState("");
-  const [dlEnd, setDlEnd] = useState("");
-  useEffect(() => {
-    const m = format(new Date(), "yyyy-MM");
-    setCurrentMonth(m);
-    setDlMonth(m);
-    setDlStart(m);
-    setDlEnd(m);
-  }, []);
+  const [dlMonth, setDlMonth] = useState(() => format(new Date(), "yyyy-MM"));
+  const [dlStart, setDlStart] = useState(() => format(new Date(), "yyyy-MM"));
+  const [dlEnd, setDlEnd] = useState(() => format(new Date(), "yyyy-MM"));
 
   // Change Password state
   const [currentPassword, setCurrentPassword] = useState("");
