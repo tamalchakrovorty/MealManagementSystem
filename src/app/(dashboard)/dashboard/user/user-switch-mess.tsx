@@ -64,7 +64,7 @@ export function UserSwitchMess({
           render={
             <button className="w-full flex items-center justify-between gap-2 text-left">
               <div className="min-w-0">
-                <div className="text-[13px] text-[#555] font-semibold mb-1">Current Mess</div>
+                <div className="text-[13px] text-[#555] font-semibold mb-1">Select my mess</div>
                 <div className="flex items-center gap-2">
                   <span className="text-base font-bold truncate">{currentMessName}</span>
                   <span className={cn(
