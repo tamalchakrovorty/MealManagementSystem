@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { popup } from "@/lib/popup";
 import {
@@ -18,6 +19,8 @@ interface Mess {
   mess_code: string;
   role: string;
   isCreator: boolean;
+  status?: string;
+  joined_at?: string | null;
 }
 
 const ROLE_BADGE: Record<string, string> = {
@@ -90,6 +93,11 @@ export function UserSwitchMess({
                 <span className="flex items-center gap-2 min-w-0">
                   <span className="flex flex-col min-w-0">
                     <span className="truncate text-sm">{mess.name}</span>
+                    {mess.joined_at && (
+                      <span className="text-[11px] text-muted-foreground">
+                        Joined {format(new Date(mess.joined_at), "MMM yyyy")}
+                      </span>
+                    )}
                     {mess.isCreator && (
                       <span className="text-[11px] text-muted-foreground">Created by you</span>
                     )}

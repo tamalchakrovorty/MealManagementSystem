@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { Check, ChevronsUpDown, Building2 } from "lucide-react";
 import { popup } from "@/lib/popup";
 import {
@@ -91,6 +92,11 @@ export function MessSwitcher({
                 <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
                 <span className="flex flex-col min-w-0">
                   <span className="truncate">{mess.name}</span>
+                  {mess.joined_at && (
+                    <span className="text-[11px] text-muted-foreground">
+                      Joined {format(new Date(mess.joined_at), "MMM yyyy")}
+                    </span>
+                  )}
                   {mess.isCreator && (
                     <span className="text-[11px] text-muted-foreground">Created by you</span>
                   )}
