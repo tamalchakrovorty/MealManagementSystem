@@ -86,6 +86,7 @@ export async function DELETE(request: Request) {
 
   const auth = await requireMessMembership(mess_id, ["manager"]);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
+  if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   if (userId === auth.user.id) {
     return NextResponse.json({ error: "You cannot remove yourself" }, { status: 400 });
