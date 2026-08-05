@@ -31,7 +31,7 @@ export default async function HomepagePage() {
     await Promise.all([
       queryOne("SELECT id, name FROM messes WHERE id = $1", [messId]),
       queryOne(
-        `SELECT n.*, p.name as author_name FROM notices n
+        `SELECT n.*, p.name as author_name, p.avatar_url as author_avatar FROM notices n
          LEFT JOIN profiles p ON p.id = n.author_id
          WHERE n.mess_id = $1 AND n.target_type = 'all'
          ORDER BY COALESCE(n.edited_at, n.created_at) DESC LIMIT 1`,
@@ -53,73 +53,94 @@ export default async function HomepagePage() {
   const balance = totalDeposit - userExpense;
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
+    <div className="space-y-5 max-w-lg mx-auto bg-[#f8f9ff] rounded-[38px] p-[22px] min-h-screen shadow-[0_25px_60px_rgba(20,20,60,.18)]">
       {/* Notice Card - Purple Gradient */}
-      <div className="rounded-2xl p-5 pb-4 text-white" style={{ background: "linear-gradient(135deg, #7c6ee8 0%, #6a4fd8 100%)", boxShadow: "0 8px 32px rgba(80,50,180,0.45), 0 2px 8px rgba(80,50,180,0.3), 0 0 0 1px rgba(255,255,255,0.15), inset 0 1px 2px rgba(255,255,255,0.2)" }}>
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-base font-bold">Recent Notice</span>
+      <div className="rounded-[22px] p-5 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 15px 35px rgba(108,99,255,.35)" }}>
+        <div className="inline-flex items-center gap-2 bg-white/18 px-3.5 py-1.5 rounded-full text-[13px] mb-4">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M3 11L18 5V19L3 13V11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+            <path d="M18 9C19.5 9.5 21 10.5 21 12C21 13.5 19.5 14.5 18 15" stroke="currentColor" strokeWidth="2" />
+          </svg>
+          Announcement
         </div>
         {latestNotice ? (
           <>
-            <p className="text-[14.5px] leading-relaxed mb-4 text-white/95">
+            <p className="text-[15px] leading-relaxed mb-5 text-white/92">
               {(latestNotice as any).message}
             </p>
             <div className="flex justify-between items-end">
-              <span className="text-[13.5px] text-white/90">- {(latestNotice as any).author_name || "Manager"}</span>
+              <div className="flex items-center gap-2.5">
+                {(latestNotice as any).author_avatar ? (
+                  <img src={(latestNotice as any).author_avatar} alt="" className="w-[34px] h-[34px] rounded-full object-cover" />
+                ) : (
+                  <div className="w-[34px] h-[34px] rounded-full bg-white/25 flex items-center justify-center text-[13px] font-bold">
+                    {((latestNotice as any).author_name || "M").charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-[13px]">{(latestNotice as any).author_name || "Manager"}</span>
+              </div>
               <div className="flex items-center gap-2">
                 {(latestNotice as any).edited_at && (
                   <span className="text-[10px] text-white/90 font-semibold bg-white/20 px-1.5 py-0.5 rounded-full">
                     edited
                   </span>
                 )}
-                <span className="text-xs text-white/85">
+                <span className="text-[13px] opacity-85">
                   {format(new Date((latestNotice as any).created_at), "d MMM, yyyy")}
                 </span>
               </div>
             </div>
           </>
         ) : (
-          <p className="text-sm text-white/80">No recent notices</p>
+          <p className="text-[14px] text-white/80">No recent notices</p>
         )}
       </div>
 
-      {/* Meal Rate Card */}
-      <div className="bg-white rounded-2xl p-4 flex items-center gap-3.5" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-        <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0" style={{ background: "#2f6fed" }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M4 20L20 4M20 4H12M20 4V12" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#fff" strokeWidth="1.8" />
-          </svg>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Meal Rate Card */}
+        <div className="bg-white rounded-[20px] p-[18px] shadow-[0_12px_30px_rgba(0,0,0,.05)] transition-transform duration-300 hover:-translate-y-1">
+          <div className="w-[46px] h-[46px] rounded-[14px] bg-[#4f8cff] flex items-center justify-center mb-3.5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M4 20L20 4M20 4H12M20 4V12" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#fff" strokeWidth="1.8" />
+            </svg>
+          </div>
+          <p className="text-[13px] font-semibold text-[#777] mb-2">Meal Rate</p>
+          <p className="text-[28px] font-extrabold">৳{mealRate.toFixed(0)}</p>
+          <p className="text-[12px] text-[#999] mt-1.5">per meal</p>
         </div>
-        <div>
-          <div className="text-[13.5px] text-[#444] font-semibold mb-1">Current Meal Rate</div>
-          <div className="text-xl font-bold">৳ {mealRate.toFixed(0)} / meal</div>
+
+        {/* Balance Card */}
+        <div className="bg-white rounded-[20px] p-[18px] shadow-[0_12px_30px_rgba(0,0,0,.05)] transition-transform duration-300 hover:-translate-y-1">
+          <div className="w-[46px] h-[46px] rounded-[14px] bg-[#22c55e] flex items-center justify-center mb-3.5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="3" width="16" height="18" rx="2" stroke="#fff" strokeWidth="1.8" />
+              <path d="M8 8H16M8 12H16M8 16H12" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+          </div>
+          <p className="text-[13px] font-semibold text-[#777] mb-2">Balance</p>
+          <p className={`text-[28px] font-extrabold ${balance < 0 ? "text-[#ef4444]" : ""}`}>৳{balance.toFixed(0)}</p>
+          <p className="text-[12px] text-[#999] mt-1.5">your balance</p>
         </div>
       </div>
 
-      {/* Balance Card */}
-      <div className="bg-white rounded-2xl p-4 flex items-center gap-3.5" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-        <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0" style={{ background: "#1fae70" }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <rect x="4" y="3" width="16" height="18" rx="2" stroke="#fff" strokeWidth="1.8" />
-            <path d="M8 8H16M8 12H16M8 16H12" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div>
-          <div className="text-[13.5px] text-[#444] font-semibold mb-1">Current Balance</div>
-          <div className={`text-xl font-bold ${balance < 0 ? "text-[#e5484d]" : ""}`}>৳ {balance.toFixed(0)}</div>
-        </div>
+      {/* Section Title */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-[21px] font-bold">Today&apos;s Menu</h2>
+        <span className="text-[13px] text-[#888]">{format(new Date(), "d MMM")}</span>
       </div>
 
       {/* Today's Lunch */}
-      <div className="bg-white rounded-2xl p-4 flex items-center justify-between" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+      <div className="bg-white rounded-[20px] p-4 flex items-center justify-between shadow-[0_12px_30px_rgba(0,0,0,.05)] transition-transform duration-300 hover:-translate-y-1">
         <div className="min-w-0">
-          <div className="text-[15px] font-bold mb-1.5">Today&apos;s Lunch</div>
-          <div className="text-[13px] text-[#666] leading-snug max-w-[190px]">
+          <h3 className="text-[18px] font-bold mb-2">Lunch</h3>
+          <p className="text-[15px] text-[#444] leading-snug mb-1.5 max-w-[200px]">
             {(todayMenu as any)?.lunch || "Not set"}
-          </div>
+          </p>
+          <small className="text-[#999] text-[12px]">{format(new Date(), "EEEE")}</small>
         </div>
-        <div className="w-[68px] h-[68px] rounded-full bg-[#ddd] shrink-0 overflow-hidden">
+        <div className="w-[92px] h-[92px] rounded-[18px] bg-[#ddd] shrink-0 overflow-hidden">
           <img
             src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
             alt="lunch"
@@ -129,14 +150,15 @@ export default async function HomepagePage() {
       </div>
 
       {/* Today's Dinner */}
-      <div className="bg-white rounded-2xl p-4 flex items-center justify-between" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+      <div className="bg-white rounded-[20px] p-4 flex items-center justify-between shadow-[0_12px_30px_rgba(0,0,0,.05)] transition-transform duration-300 hover:-translate-y-1">
         <div className="min-w-0">
-          <div className="text-[15px] font-bold mb-1.5">Today&apos;s Dinner</div>
-          <div className="text-[13px] text-[#666] leading-snug max-w-[190px]">
+          <h3 className="text-[18px] font-bold mb-2">Dinner</h3>
+          <p className="text-[15px] text-[#444] leading-snug mb-1.5 max-w-[200px]">
             {(todayMenu as any)?.dinner || "Not set"}
-          </div>
+          </p>
+          <small className="text-[#999] text-[12px]">{format(new Date(), "EEEE")}</small>
         </div>
-        <div className="w-[68px] h-[68px] rounded-full bg-[#ddd] shrink-0 overflow-hidden">
+        <div className="w-[92px] h-[92px] rounded-[18px] bg-[#ddd] shrink-0 overflow-hidden">
           <img
             src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
             alt="dinner"
