@@ -192,11 +192,11 @@ export default async function ReportViewPage({
 
           {/* Total Deposit */}
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] rounded-full bg-[#e4f1ff] flex items-center justify-center mb-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="4" width="20" height="16" rx="3" stroke="#2f80ed" strokeWidth="1.8" />
-                <circle cx="12" cy="12" r="3" stroke="#2f80ed" strokeWidth="1.8" />
-                <path d="M12 9V10M12 14V15M9 12H10M14 12H15" stroke="#2f80ed" strokeWidth="1.8" strokeLinecap="round" />
+            <div className="w-[38px] h-[38px] rounded-full bg-[#fff8e6] flex items-center justify-center mb-3">
+              <svg width="22" height="22" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="512" cy="512" r="420" fill="#FFF0C2" />
+                <circle cx="512" cy="512" r="180" fill="#FFCA2E" />
+                <path d="M512 384v256M448 512h128" stroke="white" strokeWidth="48" strokeLinecap="round" />
               </svg>
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Deposit</p>
