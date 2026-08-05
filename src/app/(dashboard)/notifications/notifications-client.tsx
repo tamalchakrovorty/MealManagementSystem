@@ -143,9 +143,11 @@ export function NotificationsClient({
     ? (searchParams.get("tab") as TabType)
     : "all";
   const [tab, setTab] = useState<TabType>(initialTab);
+  const [filter, setFilter] = useState<"all" | "unseen">("all");
 
   const handleTabChange = (t: TabType) => {
     setTab(t);
+    setFilter("all");
     router.replace(`?tab=${t}`, { scroll: false });
   };
 
@@ -183,6 +185,14 @@ export function NotificationsClient({
     )
   );
 
+  const filteredAllGroups = filter === "unseen"
+    ? allGroups.map(g => ({ ...g, items: g.items.filter((n: any) => !n.read_at) })).filter(g => g.items.length > 0)
+    : allGroups;
+
+  const filteredPersonalGroups = filter === "unseen"
+    ? personalGroups.map(g => ({ ...g, items: g.items.filter((n: any) => !n.read_at) })).filter(g => g.items.length > 0)
+    : personalGroups;
+
   return (
     <div className="space-y-4">
       {/* Tabs */}
@@ -200,6 +210,23 @@ export function NotificationsClient({
           </button>
         ))}
       </div>
+
+      {(tab === "all" || tab === "personal") && (
+        <div className="flex gap-2 px-1">
+          {(["all", "unseen"] as const).map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all capitalize ${
+                filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
+              }`}
+            >
+              {f === "unseen" ? "Unseen" : "All"}
+            </button>
+          ))}
+        </div>
+      )}
 
       {tab === "all" && (
         <>
@@ -244,9 +271,9 @@ export function NotificationsClient({
           )}
 
           {/* All Notifications */}
-          {allGroups.length > 0 ? (
+          {filteredAllGroups.length > 0 ? (
             <div className="space-y-3">
-              {allGroups.map((group) => (
+              {filteredAllGroups.map((group) => (
                 <div key={group.label}>
                   <p className="text-[11px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
                   <div className="space-y-2">
@@ -308,9 +335,9 @@ export function NotificationsClient({
       )}
 
       {tab === "personal" && (
-        personalGroups.length > 0 ? (
+        filteredPersonalGroups.length > 0 ? (
           <div className="space-y-3">
-            {personalGroups.map((group) => (
+            {filteredPersonalGroups.map((group) => (
               <div key={group.label}>
                 <p className="text-[11px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
                 <div className="space-y-2">
