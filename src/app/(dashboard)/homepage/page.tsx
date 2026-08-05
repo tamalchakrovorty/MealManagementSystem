@@ -152,7 +152,7 @@ export default async function HomepagePage() {
             </svg>
           </div>
           <p className="text-[12px] font-semibold text-[#777] mb-1">Est. Deposit</p>
-          <p className="text-[22px] font-extrabold">৳{userExpense.toFixed(0)}</p>
+          <p className="text-[22px] font-extrabold text-[#ef4444]">৳{userExpense.toFixed(0)}</p>
         </div>
 
         {/* Negative Balance - Desktop only */}
