@@ -7,7 +7,7 @@ export default async function MembersPage() {
   const { user, messId, membership } = await getAdminContext();
   const isManager = (membership as any).role === "manager";
 
-  const [activeMembers, leaveRequests, mealsData, depositsData, expenseData, leftMembersRaw, removedUserIds] = await Promise.all([
+  const [activeMembers, leaveRequests, rejectedLeaveRequests, mealsData, depositsData, expenseData, leftMembersRaw, removedUserIds] = await Promise.all([
     query(
       `SELECT m.*, p.name, p.phone, p.avatar_url FROM memberships m
        LEFT JOIN profiles p ON p.id = m.user_id
@@ -19,6 +19,13 @@ export default async function MembersPage() {
        LEFT JOIN profiles p ON p.id = r.user_id
        WHERE r.mess_id = $1 AND r.type = 'leave' AND r.status = 'pending'
        ORDER BY r.created_at DESC`,
+      [messId]
+    ),
+    query(
+      `SELECT r.*, p.name, p.phone, p.avatar_url FROM requests r
+       LEFT JOIN profiles p ON p.id = r.user_id
+       WHERE r.mess_id = $1 AND r.type = 'leave' AND r.status = 'rejected'
+       ORDER BY r.updated_at DESC`,
       [messId]
     ),
     query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1 AND is_guest = false", [messId]),
@@ -77,6 +84,7 @@ export default async function MembersPage() {
         leftMembers={leftMembers || []}
         removedMembers={removedMembers || []}
         leaveRequests={leaveRequests || []}
+        rejectedLeaveRequests={rejectedLeaveRequests || []}
         mealRate={mealRate}
         memberStats={Object.fromEntries(memberStats)}
         currentUserId={user.id}

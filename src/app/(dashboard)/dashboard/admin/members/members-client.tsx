@@ -30,6 +30,7 @@ interface LeaveRequest {
   phone: string | null;
   avatar_url: string | null;
   created_at: string;
+  updated_at: string;
   details: any;
 }
 
@@ -38,6 +39,7 @@ export function MembersListClient({
   leftMembers,
   removedMembers,
   leaveRequests,
+  rejectedLeaveRequests,
   mealRate,
   memberStats,
   currentUserId,
@@ -47,13 +49,14 @@ export function MembersListClient({
   leftMembers: Member[];
   removedMembers: Member[];
   leaveRequests: LeaveRequest[];
+  rejectedLeaveRequests: LeaveRequest[];
   mealRate: number;
   memberStats: Record<string, MemberStats>;
   currentUserId: string;
   isManager: boolean;
 }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"current" | "left" | "removed">("current");
+  const [activeTab, setActiveTab] = useState<"current" | "left" | "removed" | "rejected">("current");
   const [pendingAction, setPendingAction] = useState<{ type: "approve" | "reject"; req: LeaveRequest } | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [memberToRemove, setMemberToRemove] = useState<Member | null>(null);
@@ -138,17 +141,18 @@ export function MembersListClient({
   return (
     <>
       {/* Tabs */}
-      <div className="flex rounded-full bg-[#f2f1fb] p-1">
+      <div className="flex rounded-2xl bg-[#f2f1fb] p-1 gap-1">
         {([
           { key: "current", label: "Current", count: members.length },
           { key: "left", label: "Left", count: leftMembers.length },
           { key: "removed", label: "Removed", count: removedMembers.length },
+          { key: "rejected", label: "Rejected", count: rejectedLeaveRequests.length },
         ] as const).map((tab) => (
           <button
             key={tab.key}
             type="button"
             onClick={() => setActiveTab(tab.key)}
-            className={`flex-1 py-2.5 rounded-full text-[13px] font-semibold transition-colors ${
+            className={`flex-1 py-2.5 rounded-xl text-[12px] font-semibold transition-colors ${
               activeTab === tab.key ? "bg-[#6a4fd8] text-white" : "text-[#6a4fd8]"
             }`}
           >
@@ -285,6 +289,35 @@ export function MembersListClient({
                     <span className="text-xs text-[#bbb]">Removed {m.joined_at ? format(new Date(m.joined_at), "d MMM yyyy") : "—"}</span>
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">Removed</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Rejected Leave Requests */}
+      {activeTab === "rejected" && (
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+          <p className="text-sm text-[#999] mb-3">{rejectedLeaveRequests.length} rejected leave requests</p>
+          {rejectedLeaveRequests.length === 0 ? (
+            <p className="text-sm text-[#bbb] text-center py-6">No rejected leave requests.</p>
+          ) : (
+            <div className="space-y-3">
+              {rejectedLeaveRequests.map((r) => (
+                <div key={r.id} className="flex items-center gap-3 border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                  <div className="w-10 h-10 rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white shrink-0 overflow-hidden">
+                    {r.avatar_url ? (
+                      <img src={r.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                    ) : (
+                      r.name?.charAt(0)?.toUpperCase() || "?"
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-semibold text-[#333] truncate block">{r.name || "Unknown"}</span>
+                    <span className="text-xs text-[#bbb]">{r.updated_at ? format(new Date(r.updated_at), "d MMM yyyy") : "—"}</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">Rejected</span>
                 </div>
               ))}
             </div>
