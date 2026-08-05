@@ -58,19 +58,8 @@ export default async function UserDashboardPage({
   return (
     <div className="space-y-4 max-w-lg mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between px-1">
-        <div className="p-2 -ml-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M3 6H21M3 12H21M3 18H21" stroke="#222" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </div>
+      <div className="flex justify-center px-1">
         <span className="text-lg font-bold">Dashboard</span>
-        <div className="p-2 -mr-2">
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="3" stroke="#222" strokeWidth="1.8" />
-            <path d="M19.4 15A1.65 1.65 0 0021 13.4V10.6A1.65 1.65 0 0019.4 9A1.65 1.65 0 0118 7.5A1.65 1.65 0 0016.5 6A1.65 1.65 0 0115 4.6A1.65 1.65 0 0013.4 3H10.6A1.65 1.65 0 019 4.6A1.65 1.65 0 017.5 6A1.65 1.65 0 016 7.5A1.65 1.65 0 014.6 9A1.65 1.65 0 013 10.6V13.4A1.65 1.65 0 014.6 15A1.65 1.65 0 016 16.5A1.65 1.65 0 017.5 18A1.65 1.65 0 019 19.4V19.4A1.65 1.65 0 0110.6 21H13.4A1.65 1.65 0 0015 19.4A1.65 1.65 0 0116.5 18A1.65 1.65 0 0118 16.5A1.65 1.65 0 0119.4 15Z" stroke="#222" strokeWidth="1.4" strokeLinejoin="round" />
-          </svg>
-        </div>
       </div>
 
       {/* Tabs */}
