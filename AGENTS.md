@@ -90,7 +90,7 @@ Or copy-paste the SQL into `psql` directly.
 
 ---
 
-### Migration 1: Restore Tamal as Manager of Libya House
+### Migration 1: Restore Tamal as Manager of Libya House ✅ COMPLETED
 
 **When**: After pulling code that includes the transfer-manager fix. The host DB may have zero managers if a transfer was attempted before the fix.
 
