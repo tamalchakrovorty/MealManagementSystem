@@ -222,21 +222,21 @@ export function NotificationsClient({
               </div>
               <div className="grid grid-cols-2 gap-2.5">
                 {negativeUsers.map((u) => (
-                  <div key={u.id} className="bg-white rounded-2xl p-3 flex flex-col items-center gap-2 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+                  <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
                     {u.avatar_url ? (
-                      <img src={u.avatar_url} alt={u.name} className="w-11 h-11 rounded-full object-cover bg-[#ddd]" />
+                      <img src={u.avatar_url} alt={u.name} className="w-9 h-9 rounded-full object-cover bg-[#ddd]" />
                     ) : (
-                      <div className="w-11 h-11 rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white">
+                      <div className="w-9 h-9 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white">
                         {u.name.charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-[13px] font-semibold text-[#333] truncate">{u.name}</p>
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
+                      <p className="text-[12px] font-semibold text-[#333] truncate">{u.name}</p>
+                      <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
                         Negative Balance
                       </span>
                     </div>
-                    <p className="text-[15px] font-bold text-[#e5484d]">৳ {Number(u.balance).toFixed(0)}</p>
+                    <p className="text-[13px] font-bold text-[#e5484d]">৳ {Number(u.balance).toFixed(0)}</p>
                   </div>
                 ))}
               </div>
