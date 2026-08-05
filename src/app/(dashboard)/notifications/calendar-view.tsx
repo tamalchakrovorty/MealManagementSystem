@@ -19,8 +19,10 @@ const BAZAR_COLOR = "#c8790b";
 const BAZAR_BG = "#fdeccb";
 const EVENT_COLOR = "#d98a1c";
 const EVENT_BG = "#fff2df";
+const ACTIVITY_COLOR = "#6a4fd8";
+const ACTIVITY_BG = "#ede9fe";
 
-export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuties: any[] }) {
+export function CalendarView({ events, bazarDuties, activityLogs }: { events: any[]; bazarDuties: any[]; activityLogs: any[] }) {
   const [month, setMonth] = useState<Date | null>(() => startOfMonth(new Date()));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
@@ -48,6 +50,18 @@ export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuti
       _kind: "bazar",
       user_name: bd.user_name || "Member",
       assigned_date: d,
+    });
+  }
+  for (const log of activityLogs) {
+    const rawDate = log.created_at;
+    const d = typeof rawDate === "string" ? rawDate.split("T")[0] : format(rawDate, "yyyy-MM-dd");
+    if (!itemsByDate.has(d)) itemsByDate.set(d, []);
+    const label = log.type === "join_accepted" ? "Joined" : log.type === "leave" ? "Left" : "Removed";
+    itemsByDate.get(d)!.push({
+      id: `activity-${d}-${log.type}`,
+      _kind: "activity",
+      message: log.message,
+      label,
     });
   }
 
@@ -83,6 +97,7 @@ export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuti
             const hasItems = dayItems.length > 0;
             const hasEv = dayItems.some((i) => i._kind === "event");
             const hasBz = dayItems.some((i) => i._kind === "bazar");
+            const hasAc = dayItems.some((i) => i._kind === "activity");
             const selected = selectedDay && isSameDay(day, selectedDay);
 
             let cellBg = "";
@@ -93,6 +108,9 @@ export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuti
             } else if (today && !hasItems) {
               cellBg = "bg-[#ece9fe]";
               cellText = "text-[#6a4fd8] font-bold";
+            } else if (hasAc) {
+              cellBg = "bg-[#ede9fe] border border-[#6a4fd844]";
+              cellText = "text-[#6a4fd8]";
             } else if (hasEv && hasBz) {
               cellBg = "bg-gradient-to-br from-[#fff2df] to-[#fdeccb] border border-[#c8790b44]";
               cellText = "text-[#c8790b]";
@@ -118,6 +136,7 @@ export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuti
                   <span className="text-[8px] leading-none mt-0.5 flex gap-0.5">
                     {hasEv && <span style={{ color: selected ? "#fff" : EVENT_COLOR }}>📅</span>}
                     {hasBz && <span style={{ color: selected ? "#fff" : BAZAR_COLOR }}>🛒</span>}
+                    {hasAc && <span style={{ color: selected ? "#fff" : ACTIVITY_COLOR }}>👤</span>}
                   </span>
                 )}
               </button>
@@ -138,6 +157,10 @@ export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuti
             <span className="w-3 h-3 rounded-md bg-[#fdeccb] border border-[#c8790b44]" />
             <span className="text-[10px] font-semibold text-[#666]">🛒 Bazar Duty</span>
           </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-md bg-[#ede9fe] border border-[#6a4fd844]" />
+            <span className="text-[10px] font-semibold text-[#666]">👤 Activity</span>
+          </div>
         </div>
       </div>
 
@@ -157,6 +180,14 @@ export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuti
                     <div className="flex-1 min-w-0">
                       <span className="text-[10px] font-bold" style={{ color: BAZAR_COLOR }}>Bazar Duty</span>
                       <p className="text-[13px] font-semibold text-[#333] mt-0.5 leading-snug">{item.user_name}</p>
+                    </div>
+                  </div>
+                ) : item._kind === "activity" ? (
+                  <div key={item.id} className="flex items-start gap-3 rounded-xl p-3" style={{ background: ACTIVITY_BG }}>
+                    <span className="text-[16px] leading-none mt-0.5">👤</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] font-bold" style={{ color: ACTIVITY_COLOR }}>{item.label}</span>
+                      <p className="text-[13px] font-semibold text-[#333] mt-0.5 leading-snug">{item.message}</p>
                     </div>
                   </div>
                 ) : (

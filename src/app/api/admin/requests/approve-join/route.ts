@@ -48,6 +48,21 @@ export async function POST(request: Request) {
     );
 
     await client.query("COMMIT");
+
+    const profile = await client.query("SELECT name FROM profiles WHERE id = $1", [userId]);
+    const userName = profile.rows[0]?.name || "A member";
+
+    const members = await client.query(
+      `SELECT user_id FROM memberships WHERE mess_id = $1 AND status = 'active' AND user_id != $2`,
+      [mess_id, userId]
+    );
+    for (const m of members.rows) {
+      await client.query(
+        `INSERT INTO notifications (user_id, mess_id, type, message) VALUES ($1, $2, 'join_accepted', $3)`,
+        [m.user_id, mess_id, `${userName} has joined the mess.`]
+      );
+    }
+
     return NextResponse.json({ success: true });
   } catch (err: any) {
     await client.query("ROLLBACK");

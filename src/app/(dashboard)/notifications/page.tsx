@@ -66,6 +66,16 @@ export default async function NotificationsPage() {
       )
     : [];
 
+  const activityLogs = messId
+    ? await query(
+        `SELECT type, message, created_at FROM notifications
+         WHERE mess_id = $1 AND user_id = $2
+         AND type IN ('join_accepted', 'leave', 'removed')
+         AND message NOT LIKE 'Your%'`,
+        [messId, user.id]
+      )
+    : [];
+
   const negativeUsers: NegativeUser[] = [];
   if (messId) {
     const [mealData, depositData, expenseData, profilesData] = await Promise.all([
@@ -134,6 +144,7 @@ export default async function NotificationsPage() {
           notifications={notifications || []}
           events={events || []}
           bazarDuties={bazarDuties || []}
+          activityLogs={activityLogs || []}
           negativeUsers={negativeUsers}
           currentUserId={user.id}
         />

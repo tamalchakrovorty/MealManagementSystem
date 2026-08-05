@@ -128,11 +128,12 @@ function groupByDate(items: any[]): Array<{ label: string; items: any[] }> {
 }
 
 export function NotificationsClient({
-  notifications, events, bazarDuties, negativeUsers, currentUserId,
+  notifications, events, bazarDuties, activityLogs, negativeUsers, currentUserId,
 }: {
   notifications: any[];
   events: any[];
   bazarDuties: any[];
+  activityLogs: any[];
   negativeUsers: { id: string; name: string; balance: number; avatar_url: string | null }[];
   currentUserId: string;
 }) {
@@ -367,7 +368,7 @@ export function NotificationsClient({
       )}
 
       {tab === "calendar" && (
-        <CalendarView events={events} bazarDuties={bazarDuties} />
+        <CalendarView events={events} bazarDuties={bazarDuties} activityLogs={activityLogs} />
       )}
     </div>
   );
