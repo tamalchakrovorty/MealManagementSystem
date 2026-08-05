@@ -177,7 +177,7 @@ export function MembersListClient({
                     </button>
                   </div>
                 )}
-                {leaveReq && (
+                {leaveReq && isManager && (
                   <div className="flex items-center gap-2 mt-2.5 pl-14">
                     <span className="text-xs text-[#999]">
                       Requested {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
