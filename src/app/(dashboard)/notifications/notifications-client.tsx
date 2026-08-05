@@ -143,7 +143,7 @@ export function NotificationsClient({
     ? (searchParams.get("tab") as TabType)
     : "all";
   const [tab, setTab] = useState<TabType>(initialTab);
-  const [filter, setFilter] = useState<"all" | "unseen">("all");
+  const [filter, setFilter] = useState<"all" | "unseen">("unseen");
 
   const handleTabChange = (t: TabType) => {
     setTab(t);
