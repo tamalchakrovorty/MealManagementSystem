@@ -73,7 +73,7 @@ export default async function HomepagePage() {
   const negativeCount = (negativeBalanceResult as any)?.count || 0;
 
   return (
-    <div className="space-y-4 max-w-lg md:max-w-2xl mx-auto px-5">
+    <div className="space-y-4 max-w-lg md:max-w-2xl mx-auto">
       {/* Notice Card - Purple Gradient */}
       <div className="rounded-[18px] p-5 md:p-6 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 10px 25px rgba(108,99,255,.3)" }}>
         <div className="inline-flex items-center gap-1.5 bg-white/18 px-2.5 py-1 rounded-full text-[11px] mb-3">

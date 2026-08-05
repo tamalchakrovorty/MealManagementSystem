@@ -45,7 +45,7 @@ export default async function DashboardLayout({
         unreadCount={unreadCount}
         accessibleMesses={accessibleMesses}
       />
-      <main className="flex-1 pb-20 md:pb-0">{children}</main>
+      <main className="flex-1 pb-20 md:pb-0 px-5">{children}</main>
       <BottomNav isManagerOrModerator={isManagerOrModerator} unreadCount={unreadCount} />
     </div>
   );
