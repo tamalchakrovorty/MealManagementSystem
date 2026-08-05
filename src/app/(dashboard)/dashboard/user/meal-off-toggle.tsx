@@ -162,7 +162,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
             </span>
           )}
         </div>
-        <div className="grid grid-cols-4 gap-1.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
           {OPTIONS.map((opt) => (
             <button
               key={opt.value}
@@ -216,7 +216,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
           <DatePickerField value={date} onChange={setDate} className="w-full" />
         </div>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="flex-1">
             <label className="block text-[11px] font-semibold text-[#666] mb-1">From</label>
             <DatePickerField value={startDate} onChange={setStartDate} className="w-full" />

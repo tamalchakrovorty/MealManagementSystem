@@ -256,7 +256,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           </div>
 
           {/* Column Header */}
-          <div className="grid grid-cols-[1fr_140px] items-center text-[11px] font-bold tracking-wider text-[#8b8fa3] pb-2 border-b border-[#eef0f4]">
+          <div className="grid grid-cols-[1fr_120px] items-center text-[11px] font-bold tracking-wider text-[#8b8fa3] pb-2 border-b border-[#eef0f4]">
             <span>{isGuest ? "BROUGHT BY" : "MEMBER"}</span>
             <span className="text-center rounded-lg py-1" style={{ color: activeColor, background: activeBg }}>
               {isGuest ? "GUEST " : ""}{slot.toUpperCase()}
@@ -276,7 +276,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
               const locked = isSlotLocked(member.user_id, slot);
               const badge = getSlotBadge(member.user_id, slot);
               return (
-                <div key={member.user_id} className="grid grid-cols-[1fr_140px] items-center py-2.5 border-b border-[#f0f0f5] last:border-0">
+                <div key={member.user_id} className="grid grid-cols-[1fr_120px] items-center py-2.5 border-b border-[#f0f0f5] last:border-0">
                   <span className="text-sm font-medium text-[#333] truncate pr-2">{member.name || "Unknown"}</span>
                   <div className="flex items-center justify-center gap-1">
                     {locked && badge ? (

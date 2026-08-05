@@ -39,7 +39,7 @@ export function DepositsTab({ messId, members }: { messId: string; members: any[
             {members.map((m: any) => <option key={m.user_id} value={m.user_id}>{m.name || "Unknown"}</option>)}
           </select>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1">
             <label className="block text-xs font-semibold text-[#666] mb-1.5">Amount (৳)</label>
             <input type="number" step="0.01" min="0" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)}

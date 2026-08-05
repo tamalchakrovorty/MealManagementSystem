@@ -264,7 +264,7 @@ export function AdminDashboardClient({
 
       {/* Tile Grid */}
       <div className="bg-white rounded-2xl p-4 px-5" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {tiles.map((tile) => (
             <Link
               key={tile.id}

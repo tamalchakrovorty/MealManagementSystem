@@ -106,36 +106,40 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                   <p className="text-[12px] font-bold text-[#8b8fa3] tracking-wider mb-3">
                     {format(new Date(dateKey), "EEE, d MMM yyyy")}
                   </p>
-                  <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] text-[10px] font-bold tracking-wider pb-2.5 border-b border-[#eef0f4]">
-                    <span className="text-[#8b8fa3]">NAME</span>
-                    <span className="text-center text-[#1bbf7e] bg-[#e3faf0] rounded-lg py-1 border-r border-[#eef0f4]">LUNCH</span>
-                    <span className="text-center text-[#d98a1c] bg-[#fff2df] rounded-lg py-1 border-r border-[#eef0f4]">DINNER</span>
-                    <span className="text-center text-[#7c6cf6] bg-[#ece9fe] rounded-lg py-1 border-r border-[#eef0f4]">GUEST</span>
-                    <span className="text-center text-[#1e2130] bg-[#f4f4fb] rounded-lg py-1">TOTAL</span>
-                  </div>
-                  {dayData.map((row, i) => {
-                    const color = badgeColors[i % badgeColors.length];
-                    return (
-                      <div key={row.name} className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] items-center py-2.5 border-b border-[#eef0f4] last:border-0">
-                        <div className="flex items-center gap-2 min-w-0 pr-2">
-                          <div className={`w-[28px] h-[28px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0 ${color.bg} ${color.text}`}>
-                            {row.name.charAt(0).toUpperCase()}
-                          </div>
-                          <span className="text-[12px] font-semibold text-[#1e2130] truncate">{row.name}</span>
-                        </div>
-                        <span className="text-center text-[12px] font-bold text-[#1bbf7e] bg-[#e3faf0]/60 rounded-md py-1.5 border-r border-[#eef0f4]">{row.lunch.toFixed(1)}</span>
-                        <span className="text-center text-[12px] font-bold text-[#d98a1c] bg-[#fff2df]/60 rounded-md py-1.5 border-r border-[#eef0f4]">{row.dinner.toFixed(1)}</span>
-                        <span className="text-center text-[12px] font-bold text-[#7c6cf6] bg-[#ece9fe]/60 rounded-md py-1.5 border-r border-[#eef0f4]">{row.guest.toFixed(1)}</span>
-                        <span className="text-center text-[12px] font-extrabold text-[#1e2130] bg-[#f4f4fb]/60 rounded-md py-1.5">{row.total.toFixed(1)}</span>
+                  <div className="overflow-x-auto -mx-4 px-4">
+                    <div className="min-w-[420px]">
+                      <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] text-[10px] font-bold tracking-wider pb-2.5 border-b border-[#eef0f4]">
+                        <span className="text-[#8b8fa3]">NAME</span>
+                        <span className="text-center text-[#1bbf7e] bg-[#e3faf0] rounded-lg py-1 border-r border-[#eef0f4]">LUNCH</span>
+                        <span className="text-center text-[#d98a1c] bg-[#fff2df] rounded-lg py-1 border-r border-[#eef0f4]">DINNER</span>
+                        <span className="text-center text-[#7c6cf6] bg-[#ece9fe] rounded-lg py-1 border-r border-[#eef0f4]">GUEST</span>
+                        <span className="text-center text-[#1e2130] bg-[#f4f4fb] rounded-lg py-1">TOTAL</span>
                       </div>
-                    );
-                  })}
-                  <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] items-center pt-2.5 mt-1 border-t border-[#ddd]">
-                    <span className="text-[11px] font-extrabold text-[#1e2130] pl-1">TOTAL</span>
-                    <span className="text-center text-[12px] font-extrabold text-[#1bbf7e]">{dayLunch.toFixed(1)}</span>
-                    <span className="text-center text-[12px] font-extrabold text-[#d98a1c]">{dayDinner.toFixed(1)}</span>
-                    <span className="text-center text-[12px] font-extrabold text-[#7c6cf6]">{dayGuest.toFixed(1)}</span>
-                    <span className="text-center text-[12px] font-extrabold text-[#1e2130]">{(dayLunch + dayDinner + dayGuest).toFixed(1)}</span>
+                      {dayData.map((row, i) => {
+                        const color = badgeColors[i % badgeColors.length];
+                        return (
+                          <div key={row.name} className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] items-center py-2.5 border-b border-[#eef0f4] last:border-0">
+                            <div className="flex items-center gap-2 min-w-0 pr-2">
+                              <div className={`w-[28px] h-[28px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0 ${color.bg} ${color.text}`}>
+                                {row.name.charAt(0).toUpperCase()}
+                              </div>
+                              <span className="text-[12px] font-semibold text-[#1e2130] truncate">{row.name}</span>
+                            </div>
+                            <span className="text-center text-[12px] font-bold text-[#1bbf7e] bg-[#e3faf0]/60 rounded-md py-1.5 border-r border-[#eef0f4]">{row.lunch.toFixed(1)}</span>
+                            <span className="text-center text-[12px] font-bold text-[#d98a1c] bg-[#fff2df]/60 rounded-md py-1.5 border-r border-[#eef0f4]">{row.dinner.toFixed(1)}</span>
+                            <span className="text-center text-[12px] font-bold text-[#7c6cf6] bg-[#ece9fe]/60 rounded-md py-1.5 border-r border-[#eef0f4]">{row.guest.toFixed(1)}</span>
+                            <span className="text-center text-[12px] font-extrabold text-[#1e2130] bg-[#f4f4fb]/60 rounded-md py-1.5">{row.total.toFixed(1)}</span>
+                          </div>
+                        );
+                      })}
+                      <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] items-center pt-2.5 mt-1 border-t border-[#ddd]">
+                        <span className="text-[11px] font-extrabold text-[#1e2130] pl-1">TOTAL</span>
+                        <span className="text-center text-[12px] font-extrabold text-[#1bbf7e]">{dayLunch.toFixed(1)}</span>
+                        <span className="text-center text-[12px] font-extrabold text-[#d98a1c]">{dayDinner.toFixed(1)}</span>
+                        <span className="text-center text-[12px] font-extrabold text-[#7c6cf6]">{dayGuest.toFixed(1)}</span>
+                        <span className="text-center text-[12px] font-extrabold text-[#1e2130]">{(dayLunch + dayDinner + dayGuest).toFixed(1)}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );

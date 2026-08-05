@@ -51,11 +51,11 @@ export function DatePickerField({ value, onChange, min, max, className }: DatePi
 
   useEffect(() => {
     if (!open) return;
-    const handler = (e: MouseEvent) => {
+    const handler = (e: PointerEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    document.addEventListener("pointerdown", handler);
+    return () => document.removeEventListener("pointerdown", handler);
   }, [open]);
 
   const minDate = min ? parseDate(min) : null;
@@ -133,7 +133,7 @@ export function DatePickerField({ value, onChange, min, max, className }: DatePi
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-1 bg-white rounded-xl border border-[#e3e0f5] shadow-lg p-3 w-[280px]">
+        <div className="absolute z-50 mt-1 bg-white rounded-xl border border-[#e3e0f5] shadow-lg p-3 w-[min(280px,calc(100vw-2rem))]">
           {/* Header */}
           <div className="flex items-center justify-between mb-2">
             <button type="button" onClick={prevMonth}

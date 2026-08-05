@@ -227,6 +227,7 @@ export default async function ReportViewPage({
 
         {/* Table Card */}
         <div className="bg-white mx-5 mt-2 rounded-[20px] p-5 pb-1 shadow-[0_2px_10px_rgba(30,30,60,0.05)]">
+          <div className="overflow-x-auto -mx-5 px-5">
           {/* Table Header */}
           <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr_1fr] text-[10px] font-bold tracking-wider pb-3 border-b border-[#eef0f4]">
             <span className="text-[#8b8fa3]">NAME</span>
@@ -265,6 +266,7 @@ export default async function ReportViewPage({
           ) : (
             <p className="text-sm text-[#8b8fa3] text-center py-10">No data available for this month</p>
           )}
+          </div>
         </div>
       </div>
     </div>

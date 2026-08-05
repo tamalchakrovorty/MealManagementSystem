@@ -55,7 +55,7 @@ export default async function HomepagePage() {
   return (
     <div className="space-y-4 max-w-lg mx-auto">
       {/* Notice Card - Purple Gradient */}
-      <div className="rounded-2xl p-5 pb-20 text-white" style={{ background: "linear-gradient(135deg, #7c6ee8 0%, #6a4fd8 100%)", boxShadow: "0 8px 32px rgba(80,50,180,0.45), 0 2px 8px rgba(80,50,180,0.3), 0 0 0 1px rgba(255,255,255,0.15), inset 0 1px 2px rgba(255,255,255,0.2)" }}>
+      <div className="rounded-2xl p-5 pb-4 text-white" style={{ background: "linear-gradient(135deg, #7c6ee8 0%, #6a4fd8 100%)", boxShadow: "0 8px 32px rgba(80,50,180,0.45), 0 2px 8px rgba(80,50,180,0.3), 0 0 0 1px rgba(255,255,255,0.15), inset 0 1px 2px rgba(255,255,255,0.2)" }}>
         <div className="flex justify-between items-center mb-3">
           <span className="text-base font-bold">Recent Notice</span>
         </div>

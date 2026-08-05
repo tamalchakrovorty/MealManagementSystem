@@ -85,6 +85,7 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
                     viewBox={`0 0 ${chartWidth} ${chartHeight}`}
                     className="w-full h-auto"
                     onMouseLeave={() => setHoveredIndex(null)}
+                    onClick={() => setHoveredIndex(null)}
                   >
                     <defs>
                       <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
@@ -118,13 +119,14 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
                       return (
                         <g key={i}>
                           {/* Hover zone */}
-                          <rect
+                           <rect
                             x={x - plotWidth / data.length / 2}
                             y={padding.top}
                             width={plotWidth / data.length}
                             height={plotHeight}
                             fill="transparent"
                             onMouseEnter={() => setHoveredIndex(i)}
+                            onTouchEnd={(e) => { e.preventDefault(); setHoveredIndex(i); }}
                           />
                           {/* Dot */}
                           {d.rate > 0 && (

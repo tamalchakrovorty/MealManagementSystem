@@ -229,7 +229,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
               <DatePickerField value={date} onChange={setDate} min={today} max={maxDate} className="w-full font-semibold" />
             </div>
           ) : (
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <label className="block text-[12.5px] font-semibold text-[#666] mb-2">From</label>
                 <DatePickerField value={startDate} onChange={setStartDate} min={today} max={maxDate} className="w-full font-semibold" />
