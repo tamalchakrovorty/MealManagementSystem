@@ -211,23 +211,6 @@ export function NotificationsClient({
         ))}
       </div>
 
-      {(tab === "all" || tab === "personal") && (
-        <div className="flex gap-2 px-1">
-          {(["all", "unseen"] as const).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all capitalize ${
-                filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
-              }`}
-            >
-              {f === "unseen" ? "Unseen" : "All"}
-            </button>
-          ))}
-        </div>
-      )}
-
       {tab === "all" && (
         <>
           {/* Negative Balance Users */}
@@ -269,6 +252,22 @@ export function NotificationsClient({
               <p className="text-xs text-[#999] mt-1">No member has a negative balance right now.</p>
             </div>
           )}
+
+          {/* Filter Toggle */}
+          <div className="flex gap-2 px-1">
+            {(["all", "unseen"] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFilter(f)}
+                className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all capitalize ${
+                  filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
+                }`}
+              >
+                {f === "unseen" ? "Unseen" : "All"}
+              </button>
+            ))}
+          </div>
 
           {/* All Notifications */}
           {filteredAllGroups.length > 0 ? (
@@ -335,7 +334,24 @@ export function NotificationsClient({
       )}
 
       {tab === "personal" && (
-        filteredPersonalGroups.length > 0 ? (
+        <>
+          {/* Filter Toggle */}
+          <div className="flex gap-2 px-1">
+            {(["all", "unseen"] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFilter(f)}
+                className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all capitalize ${
+                  filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
+                }`}
+              >
+                {f === "unseen" ? "Unseen" : "All"}
+              </button>
+            ))}
+          </div>
+
+          {filteredPersonalGroups.length > 0 ? (
           <div className="space-y-3">
             {filteredPersonalGroups.map((group) => (
               <div key={group.label}>
@@ -391,7 +407,8 @@ export function NotificationsClient({
             <p className="text-sm font-semibold text-[#333]">No personal notifications</p>
             <p className="text-xs text-[#999] mt-1">Bazar duties and admin notices for you will appear here.</p>
           </div>
-        )
+        )}
+        </>
       )}
 
       {tab === "calendar" && (
