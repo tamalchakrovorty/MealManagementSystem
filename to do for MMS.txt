@@ -1,11 +1,11 @@
-1. toast will come in the center only for the mobile view otherwise on the desktop it will comes on the top
+#1. toast will come in the center only for the mobile view otherwise on the desktop it will comes on the top
 
 
-2. fix the download log for both user dash board and the admin dashboard
-3. change the dropdown to fild for the add contacts (admin dashboard)
+#2. fix the download log for both user dash board and the admin dashboard
+#3. change the dropdown to fild for the add contacts (admin dashboard)
 
 
-4.enable edit and modify option for all in the announcement page (admin dashboard )
+#4.enable edit and modify option for all in the announcement page (admin dashboard )
 
 
 6. add remove user option in the members page (admin dashboard)

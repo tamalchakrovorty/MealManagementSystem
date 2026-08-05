@@ -178,13 +178,8 @@ export default async function ReportViewPage({
 
           {/* Total Meals */}
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] rounded-full bg-[#e3faf0] flex items-center justify-center mb-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M3 12C3 8.5 5 6 8 5C9 4.7 10 4.6 11 4.7V3.5C11 2.67 11.67 2 12.5 2C13.33 2 14 2.67 14 3.5V4.7C16 4.5 18 5.5 19 8C20 10.5 20 14 18 17H6C4 14 3 11 3 12Z" stroke="#1bbf7e" strokeWidth="1.8" strokeLinejoin="round" />
-                <path d="M8 21H16" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M10 21V18" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M14 21V18" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
-              </svg>
+            <div className="w-[42px] h-[42px] rounded-full bg-[#e3faf0] flex items-center justify-center mb-3">
+              <img src="/icons/meal-utensils.svg" alt="" className="w-[36px] h-[36px]" />
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Meals</p>
             <p className="text-[20px] font-extrabold text-[#1e2130]">{totalMeals.toFixed(1)}</p>
@@ -193,14 +188,7 @@ export default async function ReportViewPage({
           {/* Total Deposit */}
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[42px] h-[42px] rounded-full bg-[#fff8e6] flex items-center justify-center mb-3">
-              <svg width="32" height="32" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path d="M537.6 352m-102.4 0a102.4 102.4 0 1 0 204.8 0 102.4 102.4 0 1 0-204.8 0Z" fill="#FFE085" />
-                  <path d="M697.6 793.6h-12.8c-12.8 0-25.6-32-38.4-57.6-12.8 6.4-44.8 12.8-83.2 12.8h-25.6c-38.4-6.4-64-6.4-76.8-6.4 0 12.8-6.4 32-25.6 44.8-6.4 6.4-19.2 6.4-32 6.4s-32-6.4-38.4-6.4c-6.4 0-6.4-6.4-6.4-12.8v-64c0-25.6-12.8-32-12.8-32-89.6-38.4-128-96-134.4-140.8-6.4-25.6-6.4-38.4 0-44.8 6.4-6.4 12.8-6.4 19.2-6.4h6.4c12.8 0 38.4-6.4 44.8-25.6 6.4-19.2 19.2-25.6 25.6-32h6.4v-12.8c0-25.6-6.4-44.8-12.8-51.2v-12.8c0-6.4 12.8-6.4 19.2-6.4 44.8 6.4 76.8 32 89.6 38.4 44.8-25.6 89.6-38.4 140.8-38.4 32 0 70.4 0 121.6 19.2 147.2 51.2 134.4 179.2 134.4 185.6 0 44.8-25.6 83.2-44.8 108.8-12.8 19.2-19.2 57.6-25.6 83.2 0 6.4 0 19.2-6.4 25.6 6.4 19.2-6.4 25.6-32 25.6zM345.6 499.2c-6.4 0-12.8 6.4-12.8 12.8s6.4 19.2 19.2 19.2 12.8-6.4 12.8-19.2-6.4-12.8-19.2-12.8z" fill="#9ee09a" />
-                </g>
-              </svg>
+              <img src="/icons/coin.svg" alt="" className="w-[32px] h-[32px]" />
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Deposit</p>
             <p className="text-[20px] font-extrabold text-[#1e2130]">৳{totalDeposits.toFixed(0)}</p>

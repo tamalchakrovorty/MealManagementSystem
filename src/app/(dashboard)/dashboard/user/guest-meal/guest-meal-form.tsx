@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { DatePickerField } from "@/components/ui/date-picker-field";
 import { popup } from "@/lib/popup";
-import { format, addDays } from "date-fns";
+import { format, addDays, eachDayOfInterval } from "date-fns";
 
 type MealType = "full" | "rice_only" | "curry_only";
+type DurationType = "one_day" | "multi_day";
 
 interface GuestEntry {
   name: string;
@@ -31,7 +32,10 @@ const mealOptions: { value: MealType; label: string; qty: number; color: string;
 
 export function GuestMealForm({ messId, members }: { messId: string; members: Member[] }) {
   const router = useRouter();
+  const [duration, setDuration] = useState<DurationType>("one_day");
   const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [startDate, setStartDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [endDate, setEndDate] = useState(() => format(addDays(new Date(), 6), "yyyy-MM-dd"));
   const [todayStr] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [maxDateStr] = useState(() => format(addDays(new Date(), 7), "yyyy-MM-dd"));
 
@@ -83,9 +87,13 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
     setLoading(true);
 
     try {
+      const allDates = duration === "one_day"
+        ? [date]
+        : eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) }).map((d) => format(d, "yyyy-MM-dd"));
+
       const payload = {
         messId,
-        date,
+        dates: allDates,
         guests: guests.map((g) => ({
           name: g.name.trim(),
           lunch: g.lunch,
@@ -193,11 +201,58 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="w-full space-y-4">
-          {/* Date */}
+          {/* Duration Toggle */}
           <div>
-            <label className="block text-[12.5px] font-semibold text-[#666] mb-2">Date</label>
-            <DatePickerField value={date} onChange={setDate} min={today} max={maxDate} className="w-full font-semibold" />
+            <label className="block text-[12.5px] font-semibold text-[#666] mb-2">Duration</label>
+            <div className="flex gap-2">
+              {(["one_day", "multi_day"] as const).map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => setDuration(d)}
+                  className={`flex-1 py-2.5 rounded-xl text-[13px] font-bold transition-all border ${
+                    duration === d
+                      ? "bg-[#6a4fd8] text-white border-[#6a4fd8]"
+                      : "bg-white text-[#888] border-[#e3e0f5]"
+                  }`}
+                >
+                  {d === "one_day" ? "One Day" : "Multiple Days"}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Date(s) */}
+          {duration === "one_day" ? (
+            <div>
+              <label className="block text-[12.5px] font-semibold text-[#666] mb-2">Date</label>
+              <DatePickerField value={date} onChange={setDate} min={today} max={maxDate} className="w-full font-semibold" />
+            </div>
+          ) : (
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="block text-[12.5px] font-semibold text-[#666] mb-2">From</label>
+                <DatePickerField value={startDate} onChange={setStartDate} min={today} max={maxDate} className="w-full font-semibold" />
+              </div>
+              <div className="flex-1">
+                <label className="block text-[12.5px] font-semibold text-[#666] mb-2">To</label>
+                <DatePickerField value={endDate} onChange={setEndDate} min={startDate} max={maxDate} className="w-full font-semibold" />
+              </div>
+            </div>
+          )}
+
+          {/* Multi-day preview */}
+          {duration === "multi_day" && (
+            <div className="bg-[#f8f6ff] rounded-xl px-3.5 py-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="18" rx="2" stroke="#6a4fd8" strokeWidth="1.8" />
+                <path d="M16 2V6M8 2V6M3 10H21" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+              <span className="text-[12px] font-semibold text-[#6a4fd8]">
+                {eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) }).length} day{eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) }).length > 1 ? "s" : ""} selected
+              </span>
+            </div>
+          )}
 
           {/* Guest Entries */}
           <div className="space-y-3">

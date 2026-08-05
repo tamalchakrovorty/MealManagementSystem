@@ -97,47 +97,51 @@ export async function PUT(request: Request) {
   if (status === "approved" && req.type === "guest_meal" && req.details) {
     const details = typeof req.details === "string" ? JSON.parse(req.details) : req.details;
     const guests: any[] = details.guests || [];
-    for (const guest of guests) {
-      const lunch = Number(guest.lunch || 0);
-      const dinner = Number(guest.dinner || 0);
-      const sharedWith: string[] = guest.shared_with || [];
-      const totalPeople = 1 + sharedWith.length;
+    const allDates: string[] = details.dates || (details.date ? [details.date] : []);
 
-      if (lunch > 0 || dinner > 0) {
-        const dividedLunch = lunch > 0 ? Number((lunch / totalPeople).toFixed(2)) : 0;
-        const dividedDinner = dinner > 0 ? Number((dinner / totalPeople).toFixed(2)) : 0;
+    for (const d of allDates) {
+      for (const guest of guests) {
+        const lunch = Number(guest.lunch || 0);
+        const dinner = Number(guest.dinner || 0);
+        const sharedWith: string[] = guest.shared_with || [];
+        const totalPeople = 1 + sharedWith.length;
 
-        // Meal entry for the requester
-        if (dividedLunch > 0) {
-          await query(
-            `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
-             VALUES ($1, $2, $3, 'lunch', $4, true)`,
-            [req.mess_id, req.user_id, details.date, dividedLunch]
-          );
-        }
-        if (dividedDinner > 0) {
-          await query(
-            `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
-             VALUES ($1, $2, $3, 'dinner', $4, true)`,
-            [req.mess_id, req.user_id, details.date, dividedDinner]
-          );
-        }
+        if (lunch > 0 || dinner > 0) {
+          const dividedLunch = lunch > 0 ? Number((lunch / totalPeople).toFixed(2)) : 0;
+          const dividedDinner = dinner > 0 ? Number((dinner / totalPeople).toFixed(2)) : 0;
 
-        // Meal entries for each shared member
-        for (const memberId of sharedWith) {
+          // Meal entry for the requester
           if (dividedLunch > 0) {
             await query(
               `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
                VALUES ($1, $2, $3, 'lunch', $4, true)`,
-              [req.mess_id, memberId, details.date, dividedLunch]
+              [req.mess_id, req.user_id, d, dividedLunch]
             );
           }
           if (dividedDinner > 0) {
             await query(
               `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
                VALUES ($1, $2, $3, 'dinner', $4, true)`,
-              [req.mess_id, memberId, details.date, dividedDinner]
+              [req.mess_id, req.user_id, d, dividedDinner]
             );
+          }
+
+          // Meal entries for each shared member
+          for (const memberId of sharedWith) {
+            if (dividedLunch > 0) {
+              await query(
+                `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
+                 VALUES ($1, $2, $3, 'lunch', $4, true)`,
+                [req.mess_id, memberId, d, dividedLunch]
+              );
+            }
+            if (dividedDinner > 0) {
+              await query(
+                `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
+                 VALUES ($1, $2, $3, 'dinner', $4, true)`,
+                [req.mess_id, memberId, d, dividedDinner]
+              );
+            }
           }
         }
       }

@@ -104,7 +104,12 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
           {filtered.map((req: any) => {
             const details = typeof req.details === "string" ? JSON.parse(req.details) : req.details;
             const guests = details?.guests || [];
-            const dateStr = details?.date ? format(parseISO(details.date), "d MMM, yyyy") : null;
+            const allDates: string[] = details?.dates || (details?.date ? [details.date] : []);
+            const dateStr = allDates.length === 1
+              ? format(parseISO(allDates[0]), "d MMM, yyyy")
+              : allDates.length > 1
+                ? `${format(parseISO(allDates[0]), "d MMM")} - ${format(parseISO(allDates[allDates.length - 1]), "d MMM, yyyy")} (${allDates.length} days)`
+                : null;
             const statusStyle = STATUS_CONFIG[req.status] || STATUS_CONFIG.pending;
             const sharedWith = [...new Set<string>(guests.flatMap((g: any) => g.shared_with || []))];
 

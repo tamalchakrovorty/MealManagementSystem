@@ -8,10 +8,15 @@ export async function POST(request: Request) {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
-  const { messId, date, guests } = await request.json();
+  const { messId, date, dates, guests } = await request.json();
 
-  if (!messId || !date || !Array.isArray(guests) || guests.length === 0) {
+  const allDates = Array.isArray(dates) && dates.length > 0 ? dates : date ? [date] : [];
+  if (!messId || allDates.length === 0 || !Array.isArray(guests) || guests.length === 0) {
     return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+  }
+
+  if (allDates.length > 7) {
+    return NextResponse.json({ error: "Maximum 7 days allowed" }, { status: 400 });
   }
 
   const membership = await queryOne(
@@ -62,7 +67,7 @@ export async function POST(request: Request) {
   }
 
   const details = {
-    date,
+    dates: allDates,
     guests: guests.map((g: any) => ({
       name: g.name.trim(),
       lunch: g.lunch,
