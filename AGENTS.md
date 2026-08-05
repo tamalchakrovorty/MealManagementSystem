@@ -75,3 +75,61 @@ if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 40
 ```
 
 **Never** access `auth.user.id` or `auth.user.*` without the `if (!auth.user)` guard first. This is enforced by TypeScript strict mode.
+
+---
+
+## Host PC Database Migrations
+
+After pulling the latest code on the host PC, check this section for pending database migrations. Each migration must be run **once** on the host database.
+
+### How to run a migration
+```bash
+psql -U mmsuser -h localhost -d mms -f <migration_file>
+```
+Or copy-paste the SQL into `psql` directly.
+
+---
+
+### Migration 1: Restore Tamal as Manager of Libya House
+
+**When**: After pulling code that includes the transfer-manager fix. The host DB may have zero managers if a transfer was attempted before the fix.
+
+**Why**: The old transfer code made two sequential API calls. The first demoted the manager, the second failed — leaving no manager in the mess.
+
+**User IDs (host DB)**:
+- Tamal chakroborty: `5b032632-dc3d-4353-acd5-21b75b9650e3`
+- Libya House mess: `a4d863e3-6dbd-468d-bea1-be3b7df5aedd`
+
+```sql
+DO $$
+DECLARE
+  v_user_id UUID := '5b032632-dc3d-4353-acd5-21b75b9650e3';
+  v_mess_id UUID := 'a4d863e3-6dbd-468d-bea1-be3b7df5aedd';
+  v_current_role TEXT;
+  v_current_status TEXT;
+BEGIN
+  SELECT role, status INTO v_current_role, v_current_status
+  FROM memberships WHERE user_id = v_user_id AND mess_id = v_mess_id;
+
+  RAISE NOTICE 'Before: role=%, status=%', v_current_role, v_current_status;
+
+  IF v_current_role IS DISTINCT FROM 'manager' OR v_current_status IS DISTINCT FROM 'active' THEN
+    UPDATE memberships
+    SET role = 'manager', status = 'active',
+        moderator_from = NULL, moderator_until = NULL
+    WHERE user_id = v_user_id AND mess_id = v_mess_id;
+    RAISE NOTICE 'Updated: Tamal is now manager (active)';
+  ELSE
+    RAISE NOTICE 'Already correct — no change needed';
+  END IF;
+END $$;
+
+-- Verify result
+SELECT p.name, m.role, m.status, ms.name AS mess_name
+FROM memberships m
+LEFT JOIN profiles p ON p.id = m.user_id
+LEFT JOIN messes ms ON ms.id = m.mess_id
+WHERE p.name ILIKE '%tamal%';
+```
+
+**Expected output**: Tamal should show `role = manager, status = active` for Libya House.
