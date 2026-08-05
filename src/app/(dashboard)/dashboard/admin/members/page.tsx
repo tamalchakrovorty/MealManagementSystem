@@ -4,7 +4,8 @@ import { query } from "@/lib/db";
 import { MembersListClient } from "./members-client";
 
 export default async function MembersPage() {
-  const { messId } = await getAdminContext();
+  const { user, messId, membership } = await getAdminContext();
+  const isManager = (membership as any).role === "manager";
   const [members, leaveRequests, mealsData, depositsData, expenseData] = await Promise.all([
     getMembers(messId),
     query(
@@ -49,6 +50,8 @@ export default async function MembersPage() {
         leaveRequests={leaveRequests || []}
         mealRate={mealRate}
         memberStats={Object.fromEntries(memberStats)}
+        currentUserId={user.id}
+        isManager={isManager}
       />
     </div>
   );

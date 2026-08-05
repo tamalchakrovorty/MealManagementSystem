@@ -41,3 +41,34 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(request: Request) {
+  const { mess_id, userId } = await request.json();
+
+  const auth = await requireMessMembership(mess_id, ["manager"]);
+  if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  if (userId === auth.user.id) {
+    return NextResponse.json({ error: "You cannot remove yourself" }, { status: 400 });
+  }
+
+  const member = await queryOne(
+    `SELECT user_id FROM memberships WHERE mess_id = $1 AND user_id = $2 AND status = 'active'`,
+    [mess_id, userId]
+  );
+  if (!member) {
+    return NextResponse.json({ error: "Member not found" }, { status: 404 });
+  }
+
+  await queryOne(
+    `UPDATE memberships SET status = 'left' WHERE mess_id = $1 AND user_id = $2`,
+    [mess_id, userId]
+  );
+
+  await queryOne(
+    `INSERT INTO notifications (user_id, mess_id, type, message) VALUES ($1, $2, 'removed', $3)`,
+    [userId, mess_id, "You have been removed from the mess by the manager."]
+  );
+
+  return NextResponse.json({ success: true });
+}

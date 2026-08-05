@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 interface Member {
   user_id: string;
+  mess_id: string;
   name: string;
   phone: string | null;
   avatar_url: string | null;
@@ -37,15 +38,20 @@ export function MembersListClient({
   leaveRequests,
   mealRate,
   memberStats,
+  currentUserId,
+  isManager,
 }: {
   members: Member[];
   leaveRequests: LeaveRequest[];
   mealRate: number;
   memberStats: Record<string, MemberStats>;
+  currentUserId: string;
+  isManager: boolean;
 }) {
   const router = useRouter();
   const [pendingAction, setPendingAction] = useState<{ type: "approve" | "reject"; req: LeaveRequest } | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [memberToRemove, setMemberToRemove] = useState<Member | null>(null);
   const [loading, setLoading] = useState(false);
 
   const leaveMap = new Map<string, LeaveRequest>();
@@ -85,6 +91,29 @@ export function MembersListClient({
       } else {
         popup.success(pendingAction.type === "approve" ? "Leave request approved" : "Leave request rejected");
         setPendingAction(null);
+        setSelectedMember(null);
+        router.refresh();
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemove = async () => {
+    if (!memberToRemove) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/members", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mess_id: memberToRemove.mess_id, userId: memberToRemove.user_id }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        popup.error(d.error || "Something went wrong");
+      } else {
+        popup.success(`${memberToRemove.name || "Member"} has been removed`);
+        setMemberToRemove(null);
         setSelectedMember(null);
         router.refresh();
       }
@@ -135,6 +164,19 @@ export function MembersListClient({
                     <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
+                {isManager && m.user_id !== currentUserId && (
+                  <div className="flex items-center gap-2 mt-2.5 pl-14">
+                    <div className="flex-1" />
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setMemberToRemove(m); }}
+                      disabled={loading}
+                      className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
                 {leaveReq && (
                   <div className="flex items-center gap-2 mt-2.5 pl-14">
                     <span className="text-xs text-[#999]">
@@ -267,6 +309,30 @@ export function MembersListClient({
               className={pendingAction?.type === "approve" ? "bg-[#1fae70] hover:bg-[#1fae70]" : "bg-[#e5484d] hover:bg-[#e5484d]"}
             >
               {loading ? "Processing..." : pendingAction?.type === "approve" ? "Accept" : "Reject"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Remove Member Confirmation Dialog */}
+      <Dialog open={!!memberToRemove} onOpenChange={(open) => { if (!open && !loading) setMemberToRemove(null); }}>
+        <DialogContent className="max-w-sm rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-[15px] font-bold text-[#333]">Remove Member?</DialogTitle>
+            <DialogDescription className="text-[13px] text-[#666]">
+              Are you sure you want to remove <strong>{memberToRemove?.name || "this member"}</strong> from the mess? They will lose access immediately. All their data will be preserved.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" disabled={loading} onClick={() => setMemberToRemove(null)}>
+              Cancel
+            </Button>
+            <Button
+              disabled={loading}
+              onClick={handleRemove}
+              className="bg-[#e5484d] hover:bg-[#e5484d]"
+            >
+              {loading ? "Removing..." : "Remove"}
             </Button>
           </DialogFooter>
         </DialogContent>
