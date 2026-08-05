@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -9,8 +9,7 @@ import { popup } from "@/lib/popup";
 export function BazarTab({ messId, members }: { messId: string; members: any[] }) {
   const router = useRouter();
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
-  useEffect(() => { setDate(format(new Date(), "yyyy-MM-dd")); }, []);
+  const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [userId, setUserId] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);

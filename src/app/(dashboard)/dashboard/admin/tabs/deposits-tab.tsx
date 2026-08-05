@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -10,8 +10,7 @@ export function DepositsTab({ messId, members }: { messId: string; members: any[
   const router = useRouter();
   const [userId, setUserId] = useState("");
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
-  useEffect(() => { setDate(format(new Date(), "yyyy-MM-dd")); }, []);
+  const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

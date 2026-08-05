@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -31,14 +31,9 @@ const mealOptions: { value: MealType; label: string; qty: number; color: string;
 
 export function GuestMealForm({ messId, members }: { messId: string; members: Member[] }) {
   const router = useRouter();
-  const [date, setDate] = useState("");
-  const [todayStr, setTodayStr] = useState("");
-  const [maxDateStr, setMaxDateStr] = useState("");
-  useEffect(() => {
-    setDate(format(new Date(), "yyyy-MM-dd"));
-    setTodayStr(format(new Date(), "yyyy-MM-dd"));
-    setMaxDateStr(format(addDays(new Date(), 7), "yyyy-MM-dd"));
-  }, []);
+  const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [todayStr] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [maxDateStr] = useState(() => format(addDays(new Date(), 7), "yyyy-MM-dd"));
 
   const [guests, setGuests] = useState<GuestEntry[]>([
     { name: "", lunch: 0, lunchType: "full", dinner: 0, dinnerType: "full", sharedWith: [] },

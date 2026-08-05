@@ -14,17 +14,13 @@ export function RoleManagementClient({
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [moderatorMember, setModeratorMember] = useState("");
-  const [moderatorFrom, setModeratorFrom] = useState("");
-  const [moderatorUntil, setModeratorUntil] = useState("");
+  const [moderatorFrom, setModeratorFrom] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [moderatorUntil, setModeratorUntil] = useState(() => format(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), "yyyy-MM-dd"));
   const [transferMember, setTransferMember] = useState("");
   const [loadingModerator, setLoadingModerator] = useState(false);
   const [loadingTransfer, setLoadingTransfer] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    setModeratorFrom(format(new Date(), "yyyy-MM-dd"));
-    setModeratorUntil(format(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), "yyyy-MM-dd"));
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   const memberOptions = members.filter((m: any) => m.role !== "manager");
 

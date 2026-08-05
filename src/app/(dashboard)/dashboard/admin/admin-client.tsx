@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -42,16 +42,9 @@ export function AdminDashboardClient({
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [dlScope, setDlScope] = useState<"full">("full");
   const [dlPeriod, setDlPeriod] = useState<"single" | "range">("single");
-  const [dlMonth, setDlMonth] = useState("");
-  const [dlStart, setDlStart] = useState("");
-  const [dlEnd, setDlEnd] = useState("");
-
-  useEffect(() => {
-    const m = format(new Date(), "yyyy-MM");
-    setDlMonth(m);
-    setDlStart(m);
-    setDlEnd(m);
-  }, []);
+  const [dlMonth, setDlMonth] = useState(() => format(new Date(), "yyyy-MM"));
+  const [dlStart, setDlStart] = useState(() => format(new Date(), "yyyy-MM"));
+  const [dlEnd, setDlEnd] = useState(() => format(new Date(), "yyyy-MM"));
 
   const handleDownloadLog = async () => {
     const start = dlPeriod === "single" ? dlMonth : dlStart;

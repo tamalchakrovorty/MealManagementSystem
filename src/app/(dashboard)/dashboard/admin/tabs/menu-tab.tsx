@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -8,8 +8,7 @@ import { popup } from "@/lib/popup";
 
 export function MenuTab({ messId, menus }: { messId: string; menus: any[] }) {
   const router = useRouter();
-  const [date, setDate] = useState("");
-  useEffect(() => { setDate(format(new Date(), "yyyy-MM-dd")); }, []);
+  const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [lunch, setLunch] = useState("");
   const [dinner, setDinner] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);

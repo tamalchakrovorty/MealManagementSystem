@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { format, startOfMonth, endOfMonth, addMonths, subMonths, eachDayOfInterval } from "date-fns";
 import { getFoodImage } from "@/lib/food-images";
@@ -13,8 +13,7 @@ interface Menu {
 }
 
 export function MenuViewClient({ menus }: { menus: Menu[] }) {
-  const [currentMonth, setCurrentMonth] = useState<Date | null>(null);
-  useEffect(() => { setCurrentMonth(new Date()); }, []);
+  const [currentMonth, setCurrentMonth] = useState<Date | null>(() => new Date());
   const [activeTab, setActiveTab] = useState<"lunch" | "dinner">("lunch");
 
   if (!currentMonth) return null;

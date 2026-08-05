@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   format,
   startOfMonth,
@@ -21,8 +21,7 @@ const EVENT_COLOR = "#d98a1c";
 const EVENT_BG = "#fff2df";
 
 export function CalendarView({ events, bazarDuties }: { events: any[]; bazarDuties: any[] }) {
-  const [month, setMonth] = useState<Date | null>(null);
-  useEffect(() => { setMonth(startOfMonth(new Date())); }, []);
+  const [month, setMonth] = useState<Date | null>(() => startOfMonth(new Date()));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
   if (!month) return null;

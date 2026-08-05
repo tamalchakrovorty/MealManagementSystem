@@ -17,8 +17,7 @@ const MEAL_OFF_OPTIONS: Record<string, { label: string; color: string; bg: strin
 
 export function MealsTab({ messId, members }: { messId: string; members: any[] }) {
   const router = useRouter();
-  const [date, setDate] = useState("");
-  useEffect(() => { setDate(format(new Date(), "yyyy-MM-dd")); }, []);
+  const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [mealType, setMealType] = useState<"regular" | "guest">("regular");
   const [slot, setSlot] = useState<"lunch" | "dinner">("lunch");
   const [lunchMenu, setLunchMenu] = useState("");
