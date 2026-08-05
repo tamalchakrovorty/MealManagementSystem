@@ -166,9 +166,10 @@ export default async function ReportViewPage({
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] rounded-full bg-[#ece9fe] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <circle cx="9" cy="8" r="3" stroke="#7c6cf6" strokeWidth="1.8" />
-                <path d="M3 20C3 16.7 5.7 14 9 14C10.5 14 11.9 14.6 12.9 15.5" stroke="#7c6cf6" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M16 6V12M13 9H19" stroke="#7c6cf6" strokeWidth="1.8" strokeLinecap="round" />
+                <circle cx="9" cy="7" r="3.5" stroke="#7c6cf6" strokeWidth="1.8" />
+                <path d="M2 21C2 17.13 5.13 14 9 14C10.2 14 11.3 14.3 12.3 14.8" stroke="#7c6cf6" strokeWidth="1.8" strokeLinecap="round" />
+                <circle cx="17" cy="8" r="2.5" stroke="#7c6cf6" strokeWidth="1.8" />
+                <path d="M17.5 14C19.99 14 22 16.01 22 18.5" stroke="#7c6cf6" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Members</p>
@@ -179,8 +180,10 @@ export default async function ReportViewPage({
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] rounded-full bg-[#e3faf0] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M3 6H21M3 12H21M3 18H21" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="2" stroke="#1bbf7e" strokeWidth="1.8" />
+                <path d="M3 12C3 8.5 5 6 8 5C9 4.7 10 4.6 11 4.7V3.5C11 2.67 11.67 2 12.5 2C13.33 2 14 2.67 14 3.5V4.7C16 4.5 18 5.5 19 8C20 10.5 20 14 18 17H6C4 14 3 11 3 12Z" stroke="#1bbf7e" strokeWidth="1.8" strokeLinejoin="round" />
+                <path d="M8 21H16" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M10 21V18" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M14 21V18" stroke="#1bbf7e" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Meals</p>
@@ -191,8 +194,9 @@ export default async function ReportViewPage({
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] rounded-full bg-[#e4f1ff] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M4 4V20L12 17L20 20V4H4Z" stroke="#2f80ed" strokeWidth="1.8" strokeLinejoin="round" />
-                <path d="M12 4V17" stroke="#2f80ed" strokeWidth="1.8" />
+                <rect x="2" y="4" width="20" height="16" rx="3" stroke="#2f80ed" strokeWidth="1.8" />
+                <circle cx="12" cy="12" r="3" stroke="#2f80ed" strokeWidth="1.8" />
+                <path d="M12 9V10M12 14V15M9 12H10M14 12H15" stroke="#2f80ed" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Total Deposit</p>
@@ -216,9 +220,8 @@ export default async function ReportViewPage({
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] rounded-full bg-[#e0f7e9] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="6" width="20" height="12" rx="2" stroke="#12b76a" strokeWidth="1.8" />
-                <path d="M12 12V12.01" stroke="#12b76a" strokeWidth="2.2" strokeLinecap="round" />
-                <path d="M6 12H8M16 12H18" stroke="#12b76a" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="#12b76a" strokeWidth="1.8" />
+                <path d="M12 6V12L16 14" stroke="#12b76a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Available Balance</p>
