@@ -229,7 +229,7 @@ export function NotificationsClient({
                         style={{
                           "--f": "0.35em",
                           "--r": "0.7em",
-                          right: "4px",
+                          right: "0px",
                           top: "calc(-1 * var(--f))",
                           padding: "0.2em 0.4em",
                           border: "solid transparent",
