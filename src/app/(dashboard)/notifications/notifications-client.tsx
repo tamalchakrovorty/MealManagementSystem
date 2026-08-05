@@ -224,9 +224,24 @@ export function NotificationsClient({
                 {negativeUsers.map((u) => (
                   <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
                     {u.status !== "active" && (
-                      <span className="absolute top-1.5 right-1.5 text-[7px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d] z-10">
+                      <div
+                        className="absolute text-white text-[6px] font-bold leading-none z-10"
+                        style={{
+                          "--f": "0.22em",
+                          "--r": "0.45em",
+                          right: "6px",
+                          top: "calc(-1 * var(--f))",
+                          padding: "0.15em 0.3em",
+                          border: "solid transparent",
+                          borderWidth: "0 calc(2 * var(--f)) var(--r) 0",
+                          background: "radial-gradient(50% 100% at bottom, #0005 98%, transparent 101%) 100% 0/calc(2 * var(--f)) var(--f) no-repeat border-box",
+                          backgroundColor: "#e5484d",
+                          borderRadius: "var(--f) var(--f) 0 0",
+                          clipPath: "polygon(100% 0, 0 0, 0 calc(100% - var(--r)), calc(50% - var(--f)) 100%, calc(100% - 2*var(--f)) calc(100% - var(--r)), calc(100% - 2*var(--f)) var(--f), 100% var(--f))",
+                        } as React.CSSProperties}
+                      >
                         {u.status === "left" ? "Left" : "Removed"}
-                      </span>
+                      </div>
                     )}
                     {u.avatar_url ? (
                       <img src={u.avatar_url} alt={u.name} className="w-9 h-9 rounded-full object-cover bg-[#ddd]" />
