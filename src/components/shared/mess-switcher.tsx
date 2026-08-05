@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ChevronsUpDown, Building2 } from "lucide-react";
 import { popup } from "@/lib/popup";
@@ -30,6 +31,8 @@ export function MessSwitcher({
 }) {
   const router = useRouter();
   const current = messes.find((m) => m.id === currentMessId) || messes[0];
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const handleSwitch = async (messId: string) => {
     if (messId === currentMessId) return;
@@ -48,6 +51,14 @@ export function MessSwitcher({
   };
 
   if (!current) return null;
+
+  if (!mounted) {
+    return (
+      <button className="flex items-center gap-1.5 rounded-lg px-2 py-1 hover:bg-muted transition-colors max-w-[200px] text-left">
+        <span className="font-bold text-lg truncate">{current.name}</span>
+      </button>
+    );
+  }
 
   return (
     <DropdownMenu>
