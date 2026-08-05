@@ -138,9 +138,9 @@
 .bottom-nav-glass {
   width: calc(100% - 20px);
   max-width: 520px;
-  backdrop-filter: blur(12px) saturate(180%) contrast(200%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%) contrast(200%);
-  background: rgba(0, 122, 255, 0.404);
+  backdrop-filter: blur(20px) saturate(180%) contrast(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%) contrast(200%);
+  background: rgba(255, 255, 255, 0.75);
   border: 1px solid var(--glass-border);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   border-radius: 99rem;
