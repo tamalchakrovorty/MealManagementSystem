@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -56,6 +57,8 @@ export function DashboardNav({
 }: NavProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const handleSignOut = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -84,11 +87,12 @@ export function DashboardNav({
   return (
     <header className="sticky top-0 z-50 border-b bg-background" suppressHydrationWarning>
       <div className="flex h-14 items-center px-4 gap-4">
-        <Sheet>
-          <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
-            <Menu className="h-5 w-5" />
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-0">
+        {mounted && (
+          <Sheet>
+            <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
+              <Menu className="h-5 w-5" />
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 p-0">
             <div className="p-4 border-b">
               {showSwitcher ? (
                 <MessSwitcher messes={accessibleMesses} currentMessId={mess?.id || null} />
@@ -135,6 +139,7 @@ export function DashboardNav({
             </nav>
           </SheetContent>
         </Sheet>
+        )}
 
         {showSwitcher ? (
           <MessSwitcher messes={accessibleMesses} currentMessId={mess?.id || null} />
@@ -173,44 +178,46 @@ export function DashboardNav({
               {membership.role}
             </span>
           )}
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button variant="ghost" size="icon" className="rounded-full" />
-              }
-            >
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt={profile?.name || "User"} className="h-8 w-8 rounded-full object-cover bg-[#ddd]" />
-              ) : (
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>
-                    {profile?.name?.charAt(0)?.toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-              )}
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>
-                  {profile?.name || "User"}
-                  <p className="text-xs text-muted-foreground font-normal">
-                    {userEmail || ""}
-                  </p>
-                </DropdownMenuLabel>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => router.push("/dashboard/user")}>
-                  <LayoutDashboard className="h-4 w-4 mr-2" />
-                  Dashboard
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {mounted && (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <Button variant="ghost" size="icon" className="rounded-full" />
+                }
+              >
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt={profile?.name || "User"} className="h-8 w-8 rounded-full object-cover bg-[#ddd]" />
+                ) : (
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>
+                      {profile?.name?.charAt(0)?.toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>
+                    {profile?.name || "User"}
+                    <p className="text-xs text-muted-foreground font-normal">
+                      {userEmail || ""}
+                    </p>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => router.push("/dashboard/user")}>
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </header>
