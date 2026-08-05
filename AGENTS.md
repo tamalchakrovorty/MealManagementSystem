@@ -60,3 +60,18 @@ npm run dev
 - `npm run build` — production build
 - `npm run start` — start production server
 - `npm run lint` — run ESLint
+
+## Code Rules (MUST follow)
+
+### Auth null check pattern
+When using `requireMessMembership` from `@/lib/auth`, you **must** add a null guard for `auth.user` after checking `auth.error`. TypeScript's discriminated union narrowing requires this. Always use this pattern:
+
+```ts
+const auth = await requireMessMembership(mess_id, ["manager"]);
+if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
+if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+// Now safe to use auth.user.id
+```
+
+**Never** access `auth.user.id` or `auth.user.*` without the `if (!auth.user)` guard first. This is enforced by TypeScript strict mode.
