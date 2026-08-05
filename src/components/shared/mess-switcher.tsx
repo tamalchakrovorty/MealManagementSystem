@@ -71,12 +71,14 @@ export function MessSwitcher({
         }
       />
       <DropdownMenuContent align="start" className="w-64">
-        <DropdownMenuLabel>
-          Switch Mess
-          <p className="text-xs text-muted-foreground font-normal">
-            Messes you have access to
-          </p>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>
+            Switch Mess
+            <p className="text-xs text-muted-foreground font-normal">
+              Messes you have access to
+            </p>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {messes.map((mess) => (
