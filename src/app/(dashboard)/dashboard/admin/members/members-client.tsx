@@ -182,7 +182,7 @@ export function MembersListClient({
                         <span className="text-sm font-semibold text-[#333] truncate">{m.name || "Unknown"}</span>
                         {roleBadge(m.role)}
                 {leaveReq && isManager && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fbe9c9] text-[#c8790b]">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ede9fe] text-[#6a4fd8]">
                           Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
                         </span>
                       )}
@@ -210,12 +210,12 @@ export function MembersListClient({
                     </div>
                   )}
                   {leaveReq && isManager && (
-                    <div className="mt-2.5 pl-14 rounded-xl bg-[#fbe9c9] p-3">
+                    <div className="mt-2.5 pl-14 rounded-xl p-3" style={{ background: "rgba(106, 79, 216, 0.08)" }}>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[12px] font-bold text-[#c8790b]">
+                        <span className="text-[12px] font-bold text-[#6a4fd8]">
                           Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
                         </span>
-                        <span className="text-[11px] text-[#c8790b]/70">
+                        <span className="text-[11px] text-[#6a4fd8]/60">
                           {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
                         </span>
                       </div>
