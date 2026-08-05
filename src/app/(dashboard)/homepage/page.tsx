@@ -53,9 +53,9 @@ export default async function HomepagePage() {
   const balance = totalDeposit - userExpense;
 
   return (
-    <div className="space-y-3 max-w-lg mx-auto px-5">
+    <div className="space-y-4 max-w-lg md:max-w-2xl mx-auto px-5">
       {/* Notice Card - Purple Gradient */}
-      <div className="rounded-[18px] p-4 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 10px 25px rgba(108,99,255,.3)" }}>
+      <div className="rounded-[18px] p-5 md:p-6 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 10px 25px rgba(108,99,255,.3)" }}>
         <div className="inline-flex items-center gap-1.5 bg-white/18 px-2.5 py-1 rounded-full text-[11px] mb-3">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
             <path d="M3 11L18 5V19L3 13V11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -65,7 +65,7 @@ export default async function HomepagePage() {
         </div>
         {latestNotice ? (
           <>
-            <p className="text-[14px] leading-relaxed mb-3 text-white/92 line-clamp-2">
+            <p className="text-[14px] md:text-[15px] leading-relaxed mb-4 text-white/92 line-clamp-3 md:line-clamp-none">
               {(latestNotice as any).message}
             </p>
             <div className="flex justify-between items-end">
@@ -97,9 +97,9 @@ export default async function HomepagePage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* Meal Rate Card */}
-        <div className="bg-white rounded-[16px] p-3.5 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#4f8cff] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M4 20L20 4M20 4H12M20 4V12" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -111,7 +111,7 @@ export default async function HomepagePage() {
         </div>
 
         {/* Balance Card */}
-        <div className="bg-white rounded-[16px] p-3.5 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#22c55e] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="3" width="16" height="18" rx="2" stroke="#fff" strokeWidth="1.8" />
@@ -121,6 +121,29 @@ export default async function HomepagePage() {
           <p className="text-[12px] font-semibold text-[#777] mb-1">Balance</p>
           <p className={`text-[22px] font-extrabold ${balance < 0 ? "text-[#ef4444]" : ""}`}>৳{balance.toFixed(0)}</p>
         </div>
+
+        {/* My Meals - Desktop only */}
+        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#f59e0b] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+              <rect x="3" y="8" width="14" height="12" rx="2" stroke="#fff" strokeWidth="1.8" />
+            </svg>
+          </div>
+          <p className="text-[12px] font-semibold text-[#777] mb-1">My Meals</p>
+          <p className="text-[22px] font-extrabold">{userMeals.toFixed(1)}</p>
+        </div>
+
+        {/* Total Meals - Desktop only */}
+        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#8b5cf6] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M3 20L8 14L12 16L16 10L21 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <p className="text-[12px] font-semibold text-[#777] mb-1">Total Meals</p>
+          <p className="text-[22px] font-extrabold">{totalMeals.toFixed(1)}</p>
+        </div>
       </div>
 
       {/* Section Title */}
@@ -129,39 +152,42 @@ export default async function HomepagePage() {
         <span className="text-[12px] text-[#888]">{format(new Date(), "d MMM")}</span>
       </div>
 
-      {/* Today's Lunch */}
-      <div className="bg-white rounded-[16px] p-3.5 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-        <div className="min-w-0">
-          <h3 className="text-[15px] font-bold mb-1">Lunch</h3>
-          <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
-            {(todayMenu as any)?.lunch || "Not set"}
-          </p>
-          <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
+      {/* Menu Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {/* Today's Lunch */}
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+          <div className="min-w-0">
+            <h3 className="text-[15px] font-bold mb-1">Lunch</h3>
+            <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
+              {(todayMenu as any)?.lunch || "Not set"}
+            </p>
+            <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
+          </div>
+          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
+            <img
+              src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
+              alt="lunch"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
-        <div className="w-[72px] h-[72px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
-          <img
-            src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
-            alt="lunch"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
 
-      {/* Today's Dinner */}
-      <div className="bg-white rounded-[16px] p-3.5 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-        <div className="min-w-0">
-          <h3 className="text-[15px] font-bold mb-1">Dinner</h3>
-          <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
-            {(todayMenu as any)?.dinner || "Not set"}
-          </p>
-          <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
-        </div>
-        <div className="w-[72px] h-[72px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
-          <img
-            src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
-            alt="dinner"
-            className="w-full h-full object-cover"
-          />
+        {/* Today's Dinner */}
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+          <div className="min-w-0">
+            <h3 className="text-[15px] font-bold mb-1">Dinner</h3>
+            <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
+              {(todayMenu as any)?.dinner || "Not set"}
+            </p>
+            <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
+          </div>
+          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
+            <img
+              src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
+              alt="dinner"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </div>
