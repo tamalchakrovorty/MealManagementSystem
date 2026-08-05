@@ -56,17 +56,24 @@ export default async function HomepagePage() {
     <div className="space-y-3 max-w-lg mx-auto px-5">
       {/* Notice Card - Purple Gradient */}
       <div className="rounded-[18px] p-4 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 10px 25px rgba(108,99,255,.3)" }}>
+        <div className="inline-flex items-center gap-1.5 bg-white/18 px-2.5 py-1 rounded-full text-[11px] mb-3">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M3 11L18 5V19L3 13V11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+            <path d="M18 9C19.5 9.5 21 10.5 21 12C21 13.5 19.5 14.5 18 15" stroke="currentColor" strokeWidth="2" />
+          </svg>
+          Announcement
+        </div>
         {latestNotice ? (
           <>
-            <p className="text-[13px] leading-relaxed mb-3 text-white/92 line-clamp-2">
+            <p className="text-[14px] leading-relaxed mb-3 text-white/92 line-clamp-2">
               {(latestNotice as any).message}
             </p>
             <div className="flex justify-between items-end">
               <div className="flex items-center gap-2">
                 {(latestNotice as any).author_avatar ? (
-                  <img src={(latestNotice as any).author_avatar} alt="" className="w-[24px] h-[24px] rounded-full object-cover" />
+                  <img src={(latestNotice as any).author_avatar} alt="" className="w-[28px] h-[28px] rounded-full object-cover" />
                 ) : (
-                  <div className="w-[24px] h-[24px] rounded-full bg-white/25 flex items-center justify-center text-[11px] font-bold">
+                  <div className="w-[28px] h-[28px] rounded-full bg-white/25 flex items-center justify-center text-[11px] font-bold">
                     {((latestNotice as any).author_name || "M").charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -93,28 +100,26 @@ export default async function HomepagePage() {
       <div className="grid grid-cols-2 gap-3">
         {/* Meal Rate Card */}
         <div className="bg-white rounded-[16px] p-3.5 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-          <div className="w-[36px] h-[36px] rounded-[10px] bg-[#4f8cff] flex items-center justify-center mb-2">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#4f8cff] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M4 20L20 4M20 4H12M20 4V12" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#fff" strokeWidth="1.8" />
             </svg>
           </div>
-          <p className="text-[11px] font-semibold text-[#777] mb-1">Meal Rate</p>
-          <p className="text-[20px] font-extrabold">৳{mealRate.toFixed(0)}</p>
-          <p className="text-[10px] text-[#999] mt-0.5">per meal</p>
+          <p className="text-[12px] font-semibold text-[#777] mb-1">Meal Rate</p>
+          <p className="text-[22px] font-extrabold">৳{mealRate.toFixed(0)}</p>
         </div>
 
         {/* Balance Card */}
         <div className="bg-white rounded-[16px] p-3.5 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-          <div className="w-[36px] h-[36px] rounded-[10px] bg-[#22c55e] flex items-center justify-center mb-2">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-[#22c55e] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="3" width="16" height="18" rx="2" stroke="#fff" strokeWidth="1.8" />
               <path d="M8 8H16M8 12H16M8 16H12" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </div>
-          <p className="text-[11px] font-semibold text-[#777] mb-1">Balance</p>
-          <p className={`text-[20px] font-extrabold ${balance < 0 ? "text-[#ef4444]" : ""}`}>৳{balance.toFixed(0)}</p>
-          <p className="text-[10px] text-[#999] mt-0.5">your balance</p>
+          <p className="text-[12px] font-semibold text-[#777] mb-1">Balance</p>
+          <p className={`text-[22px] font-extrabold ${balance < 0 ? "text-[#ef4444]" : ""}`}>৳{balance.toFixed(0)}</p>
         </div>
       </div>
 
@@ -125,7 +130,7 @@ export default async function HomepagePage() {
       </div>
 
       {/* Today's Lunch */}
-      <div className="bg-white rounded-[16px] p-3 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+      <div className="bg-white rounded-[16px] p-3.5 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
         <div className="min-w-0">
           <h3 className="text-[15px] font-bold mb-1">Lunch</h3>
           <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
@@ -133,7 +138,7 @@ export default async function HomepagePage() {
           </p>
           <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
         </div>
-        <div className="w-[68px] h-[68px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
+        <div className="w-[72px] h-[72px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
           <img
             src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
             alt="lunch"
@@ -143,7 +148,7 @@ export default async function HomepagePage() {
       </div>
 
       {/* Today's Dinner */}
-      <div className="bg-white rounded-[16px] p-3 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+      <div className="bg-white rounded-[16px] p-3.5 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
         <div className="min-w-0">
           <h3 className="text-[15px] font-bold mb-1">Dinner</h3>
           <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
@@ -151,7 +156,7 @@ export default async function HomepagePage() {
           </p>
           <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
         </div>
-        <div className="w-[68px] h-[68px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
+        <div className="w-[72px] h-[72px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
           <img
             src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
             alt="dinner"
