@@ -158,7 +158,7 @@ export function MembersListClient({
           >
             {tab.label}
             {tab.count > 0 && (
-              <span className={`ml-1.5 text-[11px] ${activeTab === tab.key ? "text-white/70" : "text-[#6a4fd8]/50"}`}>
+              <span className={`ml-1.5 text-[13px] font-bold ${activeTab === tab.key ? "text-white/80" : "text-[#6a4fd8]/60"}`}>
                 {tab.count}
               </span>
             )}

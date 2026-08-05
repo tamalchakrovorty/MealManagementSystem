@@ -80,6 +80,27 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
       </svg>
     ),
   },
+  leave: {
+    bg: "bg-[#ede9fe]",
+    color: "text-[#6a4fd8]",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M21 12H9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  removed: {
+    bg: "bg-[#fadada]",
+    color: "text-[#e5484d]",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M15 9L9 15M9 9L15 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    ),
+  },
 };
 
 function getTypeStyle(type: string) {
@@ -142,7 +163,9 @@ export function NotificationsClient({
         n.type === "group_notice" ||
         n.type === "personal_notice" ||
         n.type === "meal_request_accepted" ||
-        n.type === "guest_meal_accepted")
+        n.type === "guest_meal_accepted" ||
+        n.type === "leave" ||
+        n.type === "removed")
   );
 
   const personalGroups = groupByDate(personalNotifications);
@@ -153,6 +176,8 @@ export function NotificationsClient({
       n.type === "event" ||
       n.type === "meal_request_accepted" ||
       n.type === "guest_meal_accepted" ||
+      n.type === "leave" ||
+      n.type === "removed" ||
       ((n.type === "group_notice" || n.type === "personal_notice") && n.user_id === currentUserId)
     )
   );
