@@ -11,11 +11,11 @@ export async function PUT(request: Request) {
   );
   if (!req) return NextResponse.json({ error: "Request not found" }, { status: 404 });
 
-  // If leave request, verify the caller is an admin of the mess
+  // If leave request, only the manager can accept/reject
   if (req.type === "leave") {
-    const auth = await requireMessMembership((req as any).mess_id, ["manager", "moderator"]);
+    const auth = await requireMessMembership((req as any).mess_id, ["manager"]);
     if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
-    const user = auth.user;
+    if (!auth.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const client = await pool.connect();
     try {

@@ -149,7 +149,7 @@ export function MembersListClient({
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-semibold text-[#333] truncate">{m.name || "Unknown"}</span>
                       {roleBadge(m.role)}
-                      {leaveReq && (
+                {leaveReq && isManager && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fbe9c9] text-[#c8790b]">
                           Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
                         </span>
@@ -255,7 +255,7 @@ export function MembersListClient({
                   <span className="text-[#999]">Meal Rate</span>
                   <span className="font-semibold text-[#333]">৳ {mealRate.toFixed(0)} / meal</span>
                 </div>
-                {selectedLeaveReq && (
+                {selectedLeaveReq && isManager && (
                   <div className="mt-3 rounded-xl bg-[#fbe9c9] p-3">
                     <p className="text-[12px] font-bold text-[#c8790b] mb-1.5">
                       Pending Leave Request
