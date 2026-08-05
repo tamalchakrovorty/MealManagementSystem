@@ -210,27 +210,33 @@ export function MembersListClient({
                     </div>
                   )}
                   {leaveReq && isManager && (
-                    <div className="flex items-center gap-2 mt-2.5 pl-14">
-                      <span className="text-xs text-[#999]">
-                        Requested {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
-                      </span>
-                      <div className="flex-1" />
-                      <button
-                        type="button"
-                        onClick={() => setPendingAction({ type: "reject", req: leaveReq })}
-                        disabled={loading}
-                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
-                      >
-                        Reject
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setPendingAction({ type: "approve", req: leaveReq })}
-                        disabled={loading}
-                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#d6f3e4] text-[#1fae70] disabled:opacity-60"
-                      >
-                        Accept
-                      </button>
+                    <div className="mt-2.5 pl-14 rounded-xl bg-[#fbe9c9] p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[12px] font-bold text-[#c8790b]">
+                          Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
+                        </span>
+                        <span className="text-[11px] text-[#c8790b]/70">
+                          {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setPendingAction({ type: "reject", req: leaveReq })}
+                          disabled={loading}
+                          className="flex-1 text-xs font-bold px-3 py-2 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
+                        >
+                          Reject
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPendingAction({ type: "approve", req: leaveReq })}
+                          disabled={loading}
+                          className="flex-1 text-xs font-bold px-3 py-2 rounded-lg bg-[#d6f3e4] text-[#1fae70] disabled:opacity-60"
+                        >
+                          Accept
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
