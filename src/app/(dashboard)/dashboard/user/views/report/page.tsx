@@ -192,8 +192,8 @@ export default async function ReportViewPage({
 
           {/* Total Deposit */}
           <div className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] rounded-full bg-[#fff8e6] flex items-center justify-center mb-3">
-              <svg width="28" height="28" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+            <div className="w-[42px] h-[42px] rounded-full bg-[#fff8e6] flex items-center justify-center mb-3">
+              <svg width="32" height="32" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
