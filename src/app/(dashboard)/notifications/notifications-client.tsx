@@ -225,10 +225,10 @@ export function NotificationsClient({
                   <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
                     {u.status !== "active" && (
                       <div
-                        className="absolute text-white text-[9px] font-bold leading-none z-10"
+                        className="absolute text-white text-[10px] font-bold leading-none z-10"
                         style={{
-                          "--f": "0.4em",
-                          "--r": "0.8em",
+                          "--f": "0.45em",
+                          "--r": "0.9em",
                           right: "12px",
                           top: "calc(-1 * var(--f))",
                           padding: "0.2em 0.4em",
