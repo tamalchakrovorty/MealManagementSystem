@@ -35,6 +35,8 @@ interface LeaveRequest {
 
 export function MembersListClient({
   members,
+  leftMembers,
+  removedMembers,
   leaveRequests,
   mealRate,
   memberStats,
@@ -42,6 +44,8 @@ export function MembersListClient({
   isManager,
 }: {
   members: Member[];
+  leftMembers: Member[];
+  removedMembers: Member[];
   leaveRequests: LeaveRequest[];
   mealRate: number;
   memberStats: Record<string, MemberStats>;
@@ -49,6 +53,7 @@ export function MembersListClient({
   isManager: boolean;
 }) {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"current" | "left" | "removed">("current");
   const [pendingAction, setPendingAction] = useState<{ type: "approve" | "reject"; req: LeaveRequest } | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [memberToRemove, setMemberToRemove] = useState<Member | null>(null);
@@ -132,80 +137,154 @@ export function MembersListClient({
 
   return (
     <>
-      <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-        <p className="text-sm text-[#999] mb-3">{members.length} active members</p>
-        <div className="space-y-3">
-          {members.map((m) => {
-            const leaveReq = leaveMap.get(m.user_id);
-            return (
-              <div key={m.user_id} className="border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
-                <button
-                  type="button"
-                  onClick={() => setSelectedMember(m)}
-                  className="w-full flex items-center gap-3 text-left cursor-pointer hover:bg-[#fafaff] rounded-xl -m-1 p-1 transition-colors"
-                >
-                  <Avatar member={m} size="w-11 h-11" />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-semibold text-[#333] truncate">{m.name || "Unknown"}</span>
-                      {roleBadge(m.role)}
+      {/* Tabs */}
+      <div className="flex rounded-full bg-[#f2f1fb] p-1">
+        {([
+          { key: "current", label: "Current", count: members.length },
+          { key: "left", label: "Left", count: leftMembers.length },
+          { key: "removed", label: "Removed", count: removedMembers.length },
+        ] as const).map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => setActiveTab(tab.key)}
+            className={`flex-1 py-2.5 rounded-full text-[13px] font-semibold transition-colors ${
+              activeTab === tab.key ? "bg-[#6a4fd8] text-white" : "text-[#6a4fd8]"
+            }`}
+          >
+            {tab.label}
+            {tab.count > 0 && (
+              <span className={`ml-1.5 text-[11px] ${activeTab === tab.key ? "text-white/70" : "text-[#6a4fd8]/50"}`}>
+                {tab.count}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Current Members */}
+      {activeTab === "current" && (
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+          <p className="text-sm text-[#999] mb-3">{members.length} active members</p>
+          <div className="space-y-3">
+            {members.map((m) => {
+              const leaveReq = leaveMap.get(m.user_id);
+              return (
+                <div key={m.user_id} className="border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedMember(m)}
+                    className="w-full flex items-center gap-3 text-left cursor-pointer hover:bg-[#fafaff] rounded-xl -m-1 p-1 transition-colors"
+                  >
+                    <Avatar member={m} size="w-11 h-11" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-sm font-semibold text-[#333] truncate">{m.name || "Unknown"}</span>
+                        {roleBadge(m.role)}
                 {leaveReq && isManager && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fbe9c9] text-[#c8790b]">
                           Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
                         </span>
                       )}
+                      </div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        {m.phone && <span className="text-xs text-[#999]">{m.phone}</span>}
+                        <span className="text-xs text-[#bbb]">Joined {format(new Date(m.joined_at), "d MMM yyyy")}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      {m.phone && <span className="text-xs text-[#999]">{m.phone}</span>}
-                      <span className="text-xs text-[#bbb]">Joined {format(new Date(m.joined_at), "d MMM yyyy")}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-[#ccc]">
+                      <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  {isManager && m.user_id !== currentUserId && (
+                    <div className="flex items-center gap-2 mt-2.5 pl-14">
+                      <div className="flex-1" />
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setMemberToRemove(m); }}
+                        disabled={loading}
+                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
+                      >
+                        Remove
+                      </button>
                     </div>
-                  </div>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-[#ccc]">
-                    <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                {isManager && m.user_id !== currentUserId && (
-                  <div className="flex items-center gap-2 mt-2.5 pl-14">
-                    <div className="flex-1" />
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); setMemberToRemove(m); }}
-                      disabled={loading}
-                      className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                )}
-                {leaveReq && isManager && (
-                  <div className="flex items-center gap-2 mt-2.5 pl-14">
-                    <span className="text-xs text-[#999]">
-                      Requested {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
-                    </span>
-                    <div className="flex-1" />
-                    <button
-                      type="button"
-                      onClick={() => setPendingAction({ type: "reject", req: leaveReq })}
-                      disabled={loading}
-                      className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
-                    >
-                      Reject
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPendingAction({ type: "approve", req: leaveReq })}
-                      disabled={loading}
-                      className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#d6f3e4] text-[#1fae70] disabled:opacity-60"
-                    >
-                      Accept
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  )}
+                  {leaveReq && isManager && (
+                    <div className="flex items-center gap-2 mt-2.5 pl-14">
+                      <span className="text-xs text-[#999]">
+                        Requested {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
+                      </span>
+                      <div className="flex-1" />
+                      <button
+                        type="button"
+                        onClick={() => setPendingAction({ type: "reject", req: leaveReq })}
+                        disabled={loading}
+                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#fadada] text-[#e5484d] disabled:opacity-60"
+                      >
+                        Reject
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPendingAction({ type: "approve", req: leaveReq })}
+                        disabled={loading}
+                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-[#d6f3e4] text-[#1fae70] disabled:opacity-60"
+                      >
+                        Accept
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Left Members */}
+      {activeTab === "left" && (
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+          <p className="text-sm text-[#999] mb-3">{leftMembers.length} members who left</p>
+          {leftMembers.length === 0 ? (
+            <p className="text-sm text-[#bbb] text-center py-6">No members have left yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {leftMembers.map((m) => (
+                <div key={m.user_id} className="flex items-center gap-3 border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                  <Avatar member={m} size="w-10 h-10" />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-semibold text-[#333] truncate block">{m.name || "Unknown"}</span>
+                    <span className="text-xs text-[#bbb]">Left {m.joined_at ? format(new Date(m.joined_at), "d MMM yyyy") : "—"}</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f0f0f5] text-[#8b8fa3]">Left</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Removed Members */}
+      {activeTab === "removed" && (
+        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+          <p className="text-sm text-[#999] mb-3">{removedMembers.length} removed members</p>
+          {removedMembers.length === 0 ? (
+            <p className="text-sm text-[#bbb] text-center py-6">No members have been removed.</p>
+          ) : (
+            <div className="space-y-3">
+              {removedMembers.map((m) => (
+                <div key={m.user_id} className="flex items-center gap-3 border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                  <Avatar member={m} size="w-10 h-10" />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-semibold text-[#333] truncate block">{m.name || "Unknown"}</span>
+                    <span className="text-xs text-[#bbb]">Removed {m.joined_at ? format(new Date(m.joined_at), "d MMM yyyy") : "—"}</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">Removed</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Member Detail Dialog */}
       <Dialog open={!!selectedMember} onOpenChange={(open) => { if (!open && !loading) setSelectedMember(null); }}>

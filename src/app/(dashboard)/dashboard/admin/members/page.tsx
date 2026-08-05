@@ -1,13 +1,19 @@
 import Link from "next/link";
-import { getAdminContext, getMembers } from "../_lib/helpers";
+import { getAdminContext } from "../_lib/helpers";
 import { query } from "@/lib/db";
 import { MembersListClient } from "./members-client";
 
 export default async function MembersPage() {
   const { user, messId, membership } = await getAdminContext();
   const isManager = (membership as any).role === "manager";
-  const [members, leaveRequests, mealsData, depositsData, expenseData] = await Promise.all([
-    getMembers(messId),
+
+  const [activeMembers, leaveRequests, mealsData, depositsData, expenseData, leftMembersRaw, removedUserIds] = await Promise.all([
+    query(
+      `SELECT m.*, p.name, p.phone, p.avatar_url FROM memberships m
+       LEFT JOIN profiles p ON p.id = m.user_id
+       WHERE m.mess_id = $1 AND m.status = 'active'`,
+      [messId]
+    ),
     query(
       `SELECT r.*, p.name, p.phone, p.avatar_url FROM requests r
        LEFT JOIN profiles p ON p.id = r.user_id
@@ -18,7 +24,28 @@ export default async function MembersPage() {
     query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1 AND is_guest = false", [messId]),
     query("SELECT user_id, amount FROM deposits WHERE mess_id = $1", [messId]),
     query("SELECT amount FROM bazar_expenses WHERE mess_id = $1", [messId]),
+    query(
+      `SELECT m.*, p.name, p.phone, p.avatar_url FROM memberships m
+       LEFT JOIN profiles p ON p.id = m.user_id
+       WHERE m.mess_id = $1 AND m.status = 'left'`,
+      [messId]
+    ),
+    query(
+      `SELECT DISTINCT user_id FROM notifications WHERE mess_id = $1 AND type = 'removed'`,
+      [messId]
+    ),
   ]);
+
+  const removedIds = new Set((removedUserIds as any[]).map((r) => r.user_id));
+  const leftMembers: any[] = [];
+  const removedMembers: any[] = [];
+  for (const m of leftMembersRaw as any[]) {
+    if (removedIds.has(m.user_id)) {
+      removedMembers.push(m);
+    } else {
+      leftMembers.push(m);
+    }
+  }
 
   const totalExpenses = (expenseData as any[]).reduce((s, e) => s + Number(e.amount), 0);
   const totalMeals = (mealsData as any[]).reduce((s, m) => s + Number(m.quantity), 0);
@@ -31,7 +58,7 @@ export default async function MembersPage() {
   for (const d of depositsData as any[]) userDeposits.set(d.user_id, (userDeposits.get(d.user_id) || 0) + Number(d.amount));
 
   const memberStats = new Map<string, { meals: number; deposits: number; balance: number }>();
-  for (const m of members as any[]) {
+  for (const m of activeMembers as any[]) {
     const meals = userMeals.get(m.user_id) || 0;
     const deposits = userDeposits.get(m.user_id) || 0;
     memberStats.set(m.user_id, { meals, deposits, balance: deposits - meals * mealRate });
@@ -46,7 +73,9 @@ export default async function MembersPage() {
         <span className="text-lg font-bold">Members</span>
       </div>
       <MembersListClient
-        members={members || []}
+        members={activeMembers || []}
+        leftMembers={leftMembers || []}
+        removedMembers={removedMembers || []}
         leaveRequests={leaveRequests || []}
         mealRate={mealRate}
         memberStats={Object.fromEntries(memberStats)}
