@@ -82,7 +82,7 @@ export function DashboardNav({
   const showSwitcher = accessibleMesses.length > 1 || (accessibleMesses.length === 1 && !membership);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background">
+    <header className="sticky top-0 z-50 border-b bg-background" suppressHydrationWarning>
       <div className="flex h-14 items-center px-4 gap-4">
         <Sheet>
           <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
