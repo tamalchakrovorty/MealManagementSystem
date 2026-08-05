@@ -223,6 +223,11 @@ export function NotificationsClient({
               <div className="grid grid-cols-2 gap-2.5">
                 {negativeUsers.map((u) => (
                   <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+                    {u.status !== "active" && (
+                      <span className="absolute top-1.5 right-1.5 text-[7px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d] z-10">
+                        {u.status === "left" ? "Left" : "Removed"}
+                      </span>
+                    )}
                     {u.avatar_url ? (
                       <img src={u.avatar_url} alt={u.name} className="w-9 h-9 rounded-full object-cover bg-[#ddd]" />
                     ) : (
@@ -232,16 +237,9 @@ export function NotificationsClient({
                     )}
                     <div className="min-w-0">
                       <p className="text-[12px] font-semibold text-[#333] truncate">{u.name}</p>
-                      <div className="flex items-center gap-1 justify-center">
-                        {u.status !== "active" && (
-                          <span className="text-[7px] font-bold px-1 py-0.5 rounded-full bg-[#e3faf0] text-[#1fae70]">
-                            {u.status === "left" ? "Left" : "Removed"}
-                          </span>
-                        )}
-                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
-                          Negative Balance
-                        </span>
-                      </div>
+                      <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
+                        Negative Balance
+                      </span>
                     </div>
                     <p className="text-[13px] font-bold text-[#e5484d]">৳ {Number(u.balance).toFixed(0)}</p>
                   </div>
