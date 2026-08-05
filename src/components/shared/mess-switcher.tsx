@@ -22,10 +22,6 @@ const ROLE_BADGE: Record<string, string> = {
   member: "bg-gray-100 text-gray-600",
 };
 
-const STATUS_BADGE: Record<string, string> = {
-  left: "bg-red-100 text-red-600",
-};
-
 export function MessSwitcher({
   messes,
   currentMessId,
@@ -88,11 +84,8 @@ export function MessSwitcher({
           {messes.map((mess) => (
             <DropdownMenuItem
               key={mess.id}
-              onClick={() => mess.status !== "left" && handleSwitch(mess.id)}
-              className={cn(
-                "flex items-start justify-between gap-2",
-                mess.status === "left" && "opacity-50 cursor-not-allowed"
-              )}
+              onClick={() => handleSwitch(mess.id)}
+              className="flex items-start justify-between gap-2"
             >
               <span className="flex items-center gap-2 min-w-0">
                 <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -104,11 +97,6 @@ export function MessSwitcher({
                 </span>
               </span>
               <span className="flex items-center gap-2 shrink-0">
-                {mess.status === "left" && (
-                  <span className="text-[10px] font-semibold uppercase rounded-full px-2 py-0.5 bg-red-100 text-red-600">
-                    Left
-                  </span>
-                )}
                 <span
                   className={cn(
                     "text-[10px] font-semibold uppercase rounded-full px-2 py-0.5",
