@@ -74,15 +74,10 @@ export function RoleManagementClient({
   const handleTransferManager = async () => {
     if (!transferMember || !isManager) return;
     setLoadingTransfer(true);
-    await fetch("/api/admin/members", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mess_id: messId, userId: currentUserId, role: "member" }),
-    });
     const res = await fetch("/api/admin/members", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mess_id: messId, userId: transferMember, role: "manager" }),
+      body: JSON.stringify({ mess_id: messId, userId: transferMember, action: "transfer_manager" }),
     });
     if (!res.ok) {
       const d = await res.json();

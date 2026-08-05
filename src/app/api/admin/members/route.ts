@@ -1,12 +1,51 @@
 import { NextResponse } from "next/server";
-import { queryOne } from "@/lib/db";
+import { queryOne, pool } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
 
 export async function PUT(request: Request) {
-  const { mess_id, userId, role, moderatorFrom, moderatorUntil } = await request.json();
+  const { mess_id, userId, role, moderatorFrom, moderatorUntil, action } = await request.json();
 
   const auth = await requireMessMembership(mess_id, ["manager"]);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  if (action === "transfer_manager") {
+    if (!userId) {
+      return NextResponse.json({ error: "userId required" }, { status: 400 });
+    }
+
+    if (userId === auth.user.id) {
+      return NextResponse.json({ error: "Cannot transfer managership to yourself" }, { status: 400 });
+    }
+
+    const targetMember = await queryOne(
+      `SELECT user_id FROM memberships WHERE mess_id = $1 AND user_id = $2 AND status = 'active'`,
+      [mess_id, userId]
+    );
+    if (!targetMember) {
+      return NextResponse.json({ error: "Target user is not an active member of this mess" }, { status: 400 });
+    }
+
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      await client.query(
+        `UPDATE memberships SET role = 'member', moderator_from = NULL, moderator_until = NULL WHERE mess_id = $1 AND user_id = $2`,
+        [mess_id, auth.user.id]
+      );
+      await client.query(
+        `UPDATE memberships SET role = 'manager' WHERE mess_id = $1 AND user_id = $2`,
+        [mess_id, userId]
+      );
+      await client.query("COMMIT");
+    } catch (err: any) {
+      await client.query("ROLLBACK");
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    } finally {
+      client.release();
+    }
+
+    return NextResponse.json({ success: true });
+  }
 
   if (role === "moderator" && moderatorFrom && moderatorUntil) {
     await queryOne(

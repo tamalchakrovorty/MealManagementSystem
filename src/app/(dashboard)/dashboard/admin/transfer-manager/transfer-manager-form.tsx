@@ -18,15 +18,10 @@ export function TransferManagerForm({
   const handleTransfer = async () => {
     if (!selectedMember || !isManager) return;
     setLoading(true);
-    await fetch("/api/admin/members", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mess_id: messId, userId: currentUserId, role: "member" }),
-    });
     const res = await fetch("/api/admin/members", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mess_id: messId, userId: selectedMember, role: "manager" }),
+      body: JSON.stringify({ mess_id: messId, userId: selectedMember, action: "transfer_manager" }),
     });
     if (!res.ok) {
       const d = await res.json();
