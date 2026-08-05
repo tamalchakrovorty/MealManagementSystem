@@ -20,6 +20,7 @@ export interface AccessibleMess {
   role: Role;
   isCreator: boolean;
   joined_at: string | null;
+  status: 'active' | 'left';
 }
 
 export async function getAccessibleMesses(userId: string): Promise<AccessibleMess[]> {
@@ -27,7 +28,7 @@ export async function getAccessibleMesses(userId: string): Promise<AccessibleMes
     `SELECT m.id, m.name, m.mess_code, m.created_by, mem.role, mem.status, mem.joined_at
      FROM messes m
      LEFT JOIN memberships mem ON mem.mess_id = m.id AND mem.user_id = $1
-     WHERE mem.status = 'active' OR m.created_by = $1
+     WHERE mem.status = 'active' OR mem.status = 'left' OR m.created_by = $1
      ORDER BY (mem.status = 'active') DESC, mem.joined_at ASC NULLS LAST, m.created_at ASC`,
     [userId]
   );
@@ -41,6 +42,7 @@ export async function getAccessibleMesses(userId: string): Promise<AccessibleMes
       role: (role || "manager") as Role,
       isCreator,
       joined_at: r.joined_at ?? null,
+      status: (r.status || "active") as 'active' | 'left',
     };
   });
 }
