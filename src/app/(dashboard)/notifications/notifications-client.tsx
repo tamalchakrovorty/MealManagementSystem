@@ -164,7 +164,7 @@ export function NotificationsClient({
         n.type === "personal_notice" ||
         n.type === "meal_request_accepted" ||
         n.type === "guest_meal_accepted" ||
-        n.type === "leave" ||
+        (n.type === "leave" && n.message.startsWith("Your")) ||
         n.type === "removed")
   );
 
