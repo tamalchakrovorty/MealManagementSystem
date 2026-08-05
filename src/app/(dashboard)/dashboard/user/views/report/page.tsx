@@ -139,7 +139,7 @@ export default async function ReportViewPage({
   });
 
   return (
-    <div className="min-h-screen" style={{ background: "#eef0fb" }}>
+    <div className="min-h-screen">
       <div className="max-w-lg mx-auto">
         {/* Header Section */}
         <div className="flex items-start justify-between px-5 pt-5 pb-2 gap-3">
