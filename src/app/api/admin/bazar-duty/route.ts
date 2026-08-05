@@ -59,11 +59,17 @@ export async function POST(request: Request) {
   const dateObj = typeof rawDate === "string" ? new Date(rawDate + "T00:00:00") : rawDate;
   const dateFormatted = format(dateObj, "EEE, d MMM yyyy");
 
-  await queryOne(
-    `INSERT INTO notifications (user_id, mess_id, type, message)
-     VALUES ($1, $2, 'assigned_bazar', $3)`,
-    [userId, messId, `${assignerName} has assigned ${targetName} bazar duty on ${dateFormatted}.`]
+  const members = await query(
+    `SELECT user_id FROM memberships WHERE mess_id = $1 AND status = 'active'`,
+    [messId]
   );
+  for (const m of members as any[]) {
+    await queryOne(
+      `INSERT INTO notifications (user_id, mess_id, type, message)
+       VALUES ($1, $2, 'assigned_bazar', $3)`,
+      [m.user_id, messId, `${assignerName} has assigned ${targetName} bazar duty on ${dateFormatted}.`]
+    );
+  }
 
   return NextResponse.json(duty);
 }
