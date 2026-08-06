@@ -73,9 +73,9 @@ export default async function HomepagePage() {
   const negativeCount = (negativeBalanceResult as any)?.count || 0;
 
   return (
-    <div className="space-y-4 max-w-lg md:max-w-2xl mx-auto">
+    <div className="space-y-4 md:space-y-6 max-w-lg md:max-w-4xl mx-auto">
       {/* Notice Card - Purple Gradient */}
-      <div className="rounded-[18px] p-5 md:p-6 text-white" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)", boxShadow: "0 10px 25px rgba(108,99,255,.3)" }}>
+      <div className="rounded-[18px] p-5 md:p-6 text-white shadow-[0_10px_25px_rgba(108,99,255,.3)]" style={{ background: "linear-gradient(135deg, #6c63ff 0%, #8a7dff 100%)" }}>
         <div className="inline-flex items-center gap-1.5 bg-white/18 px-2.5 py-1 rounded-full text-[11px] mb-3">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
             <path d="M3 11L18 5V19L3 13V11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -117,9 +117,9 @@ export default async function HomepagePage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {/* Meal Rate Card */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#4f8cff] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M4 20L20 4M20 4H12M20 4V12" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -131,7 +131,7 @@ export default async function HomepagePage() {
         </div>
 
         {/* Balance Card */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#22c55e] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="3" width="16" height="18" rx="2" stroke="#fff" strokeWidth="1.8" />
@@ -143,7 +143,7 @@ export default async function HomepagePage() {
         </div>
 
         {/* Estimated Deposit - Desktop only */}
-        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#f59e0b] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" strokeWidth="1.8" />
@@ -156,7 +156,7 @@ export default async function HomepagePage() {
         </div>
 
         {/* Negative Balance - Desktop only */}
-        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#ef4444] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" stroke="#fff" strokeWidth="1.8" />
@@ -176,9 +176,9 @@ export default async function HomepagePage() {
       </div>
 
       {/* Menu Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         {/* Today's Lunch */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="min-w-0">
             <h3 className="text-[15px] font-bold mb-1">Lunch</h3>
             <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
@@ -196,7 +196,7 @@ export default async function HomepagePage() {
         </div>
 
         {/* Today's Dinner */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="min-w-0">
             <h3 className="text-[15px] font-bold mb-1">Dinner</h3>
             <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
@@ -219,13 +219,13 @@ export default async function HomepagePage() {
 
 async function NoMessView() {
   return (
-    <div className="space-y-0 max-w-lg mx-auto">
+    <div className="space-y-0 max-w-lg md:max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-4 px-1 pt-4 pb-2">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span className="text-lg font-bold">Create / Join Mess</span>
+      <div className="flex items-center gap-3 pt-5 pb-2">
+        <div>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Create / Join Mess</h1>
+          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Get started with your mess</p>
+        </div>
       </div>
 
       {/* Illustration */}

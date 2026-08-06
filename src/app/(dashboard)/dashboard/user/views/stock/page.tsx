@@ -144,50 +144,66 @@ export default async function StockViewPage() {
   );
 
   return (
-    <div className="space-y-0 max-w-lg mx-auto min-h-screen flex flex-col">
-      {/* Header */}
-      <div className="flex items-center gap-4 px-4 pt-4 pb-5">
-        <Link href="/dashboard/user/views" className="p-2 -ml-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
-        <span className="text-[18px] font-bold">Freezer Stock</span>
-      </div>
+    <div className="min-h-screen">
+      <div className="max-w-lg md:max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-3 pt-5 pb-2">
+          <Link
+            href="/dashboard/user/views"
+            className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1e2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+          <div>
+            <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Freezer Stock</h1>
+            <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Check available items</p>
+          </div>
+        </div>
 
-      {/* Items */}
-      <div className="flex-1 px-4 pb-24 space-y-3.5">
-        {stockItems.length > 0 ? (
-          stockItems.map((stock: any) => {
-            const { img, bg } = getStockImage(stock.item);
-            const status = getStatus(Number(stock.quantity), stock.unit);
-            return (
-              <div
-                key={stock.id}
-                className="bg-white rounded-[18px] p-3.5 px-4 flex items-center justify-between"
-                style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
-              >
-                <div className="flex items-center gap-3.5">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden"
-                    style={{ background: bg }}
-                  >
-                    <img src={img} alt={stock.item} className="w-full h-full object-cover" />
+        {/* Items Grid */}
+        <div className="pt-3 pb-8 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          {stockItems.length > 0 ? (
+            stockItems.map((stock: any) => {
+              const { img, bg } = getStockImage(stock.item);
+              const status = getStatus(Number(stock.quantity), stock.unit);
+              return (
+                <div
+                  key={stock.id}
+                  className="bg-white rounded-[18px] p-4 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div
+                      className="w-12 h-12 md:w-14 md:h-14 rounded-[14px] flex items-center justify-center shrink-0 overflow-hidden"
+                      style={{ background: bg }}
+                    >
+                      <img src={img} alt={stock.item} className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] md:text-[15px] font-bold text-[#1a1a1a] mb-1">{stock.item}</div>
+                      <div className="text-[12px] md:text-[13px] text-[#777]">{Number(stock.quantity).toFixed(2)} {stock.unit}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-[14.5px] font-bold text-[#1a1a1a] mb-1">{stock.item}</div>
-                    <div className="text-[13px] text-[#777]">{Number(stock.quantity).toFixed(2)} {stock.unit}</div>
-                  </div>
+                  <span className={`text-[11px] md:text-xs font-bold px-3.5 py-1.5 rounded-full ${status.cls}`}>
+                    {status.label}
+                  </span>
                 </div>
-                <span className={`text-xs font-bold px-3.5 py-1.5 rounded-full ${status.cls}`}>
-                  {status.label}
-                </span>
+              );
+            })
+          ) : (
+            <div className="col-span-full bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+                  <rect x="3" y="8" width="14" height="12" rx="2" stroke="#8b8fa3" strokeWidth="2" />
+                  <path d="M8 13H12M8 16H12" stroke="#8b8fa3" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
               </div>
-            );
-          })
-        ) : (
-          <p className="text-sm text-[#999] text-center py-12">No stock items</p>
-        )}
+              <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">No stock items</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

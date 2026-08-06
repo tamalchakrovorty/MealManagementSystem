@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { popup } from "@/lib/popup";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -27,8 +27,17 @@ export function NoticesTab({
   events: any[];
 }) {
   const router = useRouter();
-  const [mode, setMode] = useState<ModeType>("post");
-  const [tab, setTab] = useState<TabType>("post");
+  const searchParams = useSearchParams();
+
+  const initialMode = (["post", "view"] as ModeType[]).includes(searchParams.get("mode") as ModeType)
+    ? (searchParams.get("mode") as ModeType)
+    : "post";
+  const initialTab = (["post", "group", "individual", "event"] as TabType[]).includes(searchParams.get("tab") as TabType)
+    ? (searchParams.get("tab") as TabType)
+    : "post";
+
+  const [mode, setMode] = useState<ModeType>(initialMode);
+  const [tab, setTab] = useState<TabType>(initialTab);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -45,6 +54,23 @@ export function NoticesTab({
   const [editingMessage, setEditingMessage] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+
+  const updateUrl = (newMode: ModeType, newTab: TabType) => {
+    const params = new URLSearchParams();
+    params.set("mode", newMode);
+    params.set("tab", newTab);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
+  const handleModeChange = (newMode: ModeType) => {
+    setMode(newMode);
+    updateUrl(newMode, tab);
+  };
+
+  const handleTabChange = (newTab: TabType) => {
+    setTab(newTab);
+    updateUrl(mode, newTab);
+  };
 
   const filteredMembers = members.filter((m) =>
     m.name?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -184,8 +210,8 @@ export function NoticesTab({
       {/* Mode Toggle */}
       <button
         type="button"
-        onClick={() => setMode(mode === "post" ? "view" : "post")}
-        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-[#e3e0f5] hover:bg-[#f4f4fb] transition-colors"
+        onClick={() => handleModeChange(mode === "post" ? "view" : "post")}
+        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] md:text-sm font-semibold border border-[#ECEEF5] bg-white shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-[#f4f4fb] transition-colors"
       >
         {mode === "post" ? (
           <>
@@ -207,12 +233,12 @@ export function NoticesTab({
       </button>
 
       {/* Tabs */}
-      <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex overflow-x-auto gap-1 scrollbar-hide">
+      <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex overflow-x-auto gap-1 scrollbar-hide md:justify-center">
         {(["post", "group", "individual", "event"] as TabType[]).map((t) => (
           <button
             key={t}
             type="button"
-            onClick={() => setTab(t)}
+            onClick={() => handleTabChange(t)}
             className={`shrink-0 px-3 py-2.5 rounded-[10px] text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap ${
               tab === t ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
             }`}
@@ -227,7 +253,7 @@ export function NoticesTab({
 
       {/* POST MODE */}
       {mode === "post" && tab === "post" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Post an Announcement</h3>
           <form onSubmit={(e) => { e.preventDefault(); handleSubmit("all"); }} className="space-y-3">
             <textarea
@@ -250,7 +276,7 @@ export function NoticesTab({
       )}
 
       {mode === "post" && tab === "group" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Group Notice</h3>
           <textarea
             placeholder="Write your notice here..."
@@ -270,7 +296,7 @@ export function NoticesTab({
               />
               <span className="text-sm font-semibold text-[#333]">Select All ({members.length})</span>
             </label>
-            <div className="max-h-[240px] overflow-y-auto">
+            <div className="max-h-[240px] overflow-y-auto grid grid-cols-1 md:grid-cols-2">
               {members.map((m) => (
                 <label key={m.user_id} className="flex items-center gap-3 px-3 py-2.5 border-b border-[#f0f0f5] last:border-0 cursor-pointer">
                   <input
@@ -303,7 +329,7 @@ export function NoticesTab({
       )}
 
       {mode === "post" && tab === "individual" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Individual Notice</h3>
           <textarea
             placeholder="Write your notice here..."
@@ -340,7 +366,7 @@ export function NoticesTab({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full border border-[#e3e0f5] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6a4fd8] transition-colors mb-2"
               />
-              <div className="border border-[#e3e0f5] rounded-xl overflow-hidden max-h-[200px] overflow-y-auto">
+              <div className="border border-[#e3e0f5] rounded-xl overflow-hidden max-h-[200px] overflow-y-auto grid grid-cols-1 md:grid-cols-2">
                 {filteredMembers.length === 0 ? (
                   <p className="text-xs text-[#999] text-center py-3">No members found</p>
                 ) : (
@@ -377,7 +403,7 @@ export function NoticesTab({
       )}
 
       {mode === "post" && tab === "event" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Create Event</h3>
           <form onSubmit={handleEventSubmit} className="space-y-3">
             <div>
@@ -416,98 +442,132 @@ export function NoticesTab({
         </div>
       )}
 
-      {/* VIEW MODE */}
+      {/* VIEW MODE — Events */}
       {mode === "view" && tab === "event" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <h3 className="text-[15px] font-bold mb-3">Previous Events</h3>
+        <div className="space-y-3">
           {events.length > 0 ? (
-            <div className="space-y-3">
-              {events.map((event: any) => (
-                <div key={event.id} className="border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
-                  <p className="text-sm font-semibold text-[#333]">{event.title}</p>
-                  <p className="text-xs text-[#999] mt-0.5">
-                    {format(new Date(event.event_date), "EEE, d MMM yyyy")}
-                    {event.description && ` · ${event.description}`}
-                  </p>
+            events.map((event: any) => (
+              <div
+                key={event.id}
+                className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-[12px] bg-[#ece9fe] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <rect x="3" y="4" width="18" height="18" rx="2" stroke="#6a4fd8" strokeWidth="1.8" />
+                      <path d="M16 2v4M8 2v4M3 10h18" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] md:text-[15px] font-bold text-[#1e2130] mb-1">{event.title}</p>
+                    <p className="text-[12px] md:text-[13px] text-[#8b8fa3]">
+                      {format(new Date(event.event_date), "EEE, d MMM yyyy")}
+                    </p>
+                    {event.description && (
+                      <p className="text-[13px] md:text-[14px] text-[#555] mt-2 leading-relaxed">{event.description}</p>
+                    )}
+                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           ) : (
-            <p className="text-sm text-[#999] text-center py-4">No events yet</p>
+            <div className="bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="#8b8fa3" strokeWidth="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </div>
+              <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">No events yet</p>
+            </div>
           )}
         </div>
       )}
 
+      {/* VIEW MODE — Notices */}
       {mode === "view" && tab !== "event" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <h3 className="text-[15px] font-bold mb-3">
-            Previous {tab === "post" && "Announcements"}
-            {tab === "group" && "Group Notices"}
-            {tab === "individual" && "Individual Notices"}
-          </h3>
+        <div className="space-y-3">
           {viewNotices.length > 0 ? (
-            <div className="space-y-3">
-              {viewNotices.map((notice: any) => (
-                <div key={notice.id} className="border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
-                  {editingNoticeId === notice.id ? (
-                    <div className="space-y-2">
-                      <textarea
-                        value={editingMessage}
-                        onChange={(e) => setEditingMessage(e.target.value)}
-                        rows={3}
-                        className="w-full border border-[#6a4fd8] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#5b3fd6] transition-colors resize-none"
-                        autoFocus
-                      />
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleEditNotice(notice.id)}
-                          disabled={editLoading || !editingMessage.trim()}
-                          className="px-4 py-1.5 bg-[#5b3fd6] text-white rounded-lg text-xs font-bold disabled:opacity-60"
-                        >
-                          {editLoading ? "Saving..." : "Save"}
-                        </button>
-                        <button
-                          onClick={cancelEditing}
-                          disabled={editLoading}
-                          className="px-4 py-1.5 bg-[#f0f0f5] text-[#666] rounded-lg text-xs font-bold disabled:opacity-60"
-                        >
-                          Cancel
-                        </button>
-                      </div>
+            viewNotices.map((notice: any) => (
+              <div
+                key={notice.id}
+                className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+              >
+                {editingNoticeId === notice.id ? (
+                  <div className="space-y-3">
+                    <textarea
+                      value={editingMessage}
+                      onChange={(e) => setEditingMessage(e.target.value)}
+                      rows={3}
+                      className="w-full border border-[#6a4fd8] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#5b3fd6] transition-colors resize-none"
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEditNotice(notice.id)}
+                        disabled={editLoading || !editingMessage.trim()}
+                        className="px-4 py-2 bg-[#5b3fd6] text-white rounded-xl text-xs font-bold disabled:opacity-60"
+                      >
+                        {editLoading ? "Saving..." : "Save"}
+                      </button>
+                      <button
+                        onClick={cancelEditing}
+                        disabled={editLoading}
+                        className="px-4 py-2 bg-[#f4f4fb] text-[#666] rounded-xl text-xs font-bold disabled:opacity-60"
+                      >
+                        Cancel
+                      </button>
                     </div>
-                  ) : (
-                    <>
-                      <p className="text-sm text-[#333]">{notice.message}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs text-[#999]">
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-[14px] md:text-[15px] text-[#1e2130] leading-relaxed mb-3">{notice.message}</p>
+                    <div className="flex items-center justify-between gap-2 pt-3 border-t border-[#f0f0f5]">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-[11px] md:text-[12px] text-[#8b8fa3] truncate">
                           {notice.author_name} · {format(new Date(notice.created_at), "d MMM, yyyy")}
                         </span>
                         {notice.edited_at && (
-                          <span className="text-[10px] text-[#6a4fd8] font-semibold bg-[#ece9fe] px-1.5 py-0.5 rounded-full">
+                          <span className="text-[10px] text-[#6a4fd8] font-semibold bg-[#ece9fe] px-1.5 py-0.5 rounded-full shrink-0">
                             edited
                           </span>
                         )}
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
                         <button
                           onClick={() => startEditing(notice)}
-                          className="ml-auto text-xs text-[#6a4fd8] font-semibold hover:underline"
+                          className="px-3 py-1.5 text-[11px] md:text-[12px] font-semibold text-[#6a4fd8] bg-[#f4f4fb] rounded-lg hover:bg-[#ece9fe] transition-colors"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteNotice(notice.id)}
                           disabled={deleteLoading === notice.id}
-                          className="text-xs text-[#e5484d] font-semibold hover:underline disabled:opacity-60"
+                          className="px-3 py-1.5 text-[11px] md:text-[12px] font-semibold text-[#e5484d] bg-[#fef2f2] rounded-lg hover:bg-[#fde8e8] transition-colors disabled:opacity-60"
                         >
-                          {deleteLoading === notice.id ? "Deleting..." : "Delete"}
+                          {deleteLoading === notice.id ? "..." : "Delete"}
                         </button>
                       </div>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))
           ) : (
-            <p className="text-sm text-[#999] text-center py-4">No notices yet</p>
+            <div className="bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+                  <rect x="3" y="8" width="14" height="12" rx="2" stroke="#8b8fa3" strokeWidth="2" />
+                  <path d="M8 13H12M8 16H12" stroke="#8b8fa3" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </div>
+              <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">
+                {tab === "post" && "No announcements yet"}
+                {tab === "group" && "No group notices yet"}
+                {tab === "individual" && "No individual notices yet"}
+              </p>
+            </div>
           )}
         </div>
       )}

@@ -83,29 +83,35 @@ export default async function ViewsPage() {
   ];
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
+    <div className="space-y-4 md:space-y-6 max-w-lg md:max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-4 px-1">
-        <Link href="/dashboard/user" className="p-2 -ml-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <div className="flex items-center gap-3 pt-5 pb-2">
+        <Link
+          href="/dashboard/user"
+          className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1e2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
-        <span className="text-lg font-bold">Other Views</span>
+        <div>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Other Views</h1>
+          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Browse detailed reports</p>
+        </div>
       </div>
 
-      {/* View Rows */}
-      <div className="space-y-4 px-1">
+      {/* View Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         {views.map((view) => (
           <Link
             key={view.id}
             href={`/dashboard/user/views/${view.id}`}
-            className="bg-white rounded-2xl p-5 flex items-center gap-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
+            className="bg-white rounded-[18px] p-5 flex items-center gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
           >
-            <div className={`w-[42px] h-[42px] rounded-xl flex items-center justify-center shrink-0 ${view.bg}`}>
+            <div className={`w-[46px] h-[46px] rounded-[14px] flex items-center justify-center shrink-0 ${view.bg}`}>
               {view.icon}
             </div>
-            <span className="flex-1 text-[15px] font-semibold">{view.label}</span>
+            <span className="flex-1 text-[15px] md:text-[16px] font-semibold text-[#1e2130]">{view.label}</span>
             <svg className="text-[#bbb]" width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
