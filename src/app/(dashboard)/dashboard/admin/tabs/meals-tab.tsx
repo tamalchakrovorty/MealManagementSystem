@@ -278,12 +278,16 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
               return (
                 <div key={member.user_id} className="grid grid-cols-[1fr_120px] md:grid-cols-[1fr_160px] items-center py-2.5 md:py-3 border-b border-[#f0f0f5] last:border-0 md:hover:bg-[#f8f8fc] md:transition-colors">
                   <div className="flex items-center gap-2 min-w-0 pr-2">
-                    <div
-                      className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0"
-                      style={{ background: activeBg, color: activeColor }}
-                    >
-                      {(member.name || "?").charAt(0).toUpperCase()}
-                    </div>
+                    {member.avatar_url ? (
+                      <img src={member.avatar_url} alt="" className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full object-cover shrink-0 bg-[#ddd]" />
+                    ) : (
+                      <div
+                        className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0"
+                        style={{ background: activeBg, color: activeColor }}
+                      >
+                        {(member.name || "?").charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <span className="text-[13px] md:text-[14px] font-medium text-[#333] truncate">{member.name || "Unknown"}</span>
                   </div>
                   <div className="flex items-center justify-center gap-1">
