@@ -141,7 +141,7 @@ export function MembersListClient({
   return (
     <>
       {/* Tabs */}
-      <div className="flex rounded-2xl bg-[#f2f1fb] p-1 gap-1">
+      <div className="flex rounded-[14px] bg-[#f2f1fb] p-1 gap-1 md:justify-center">
         {([
           { key: "current", label: "Current", count: members.length },
           { key: "left", label: "Left", count: leftMembers.length },
@@ -168,7 +168,7 @@ export function MembersListClient({
 
       {/* Current Members */}
       {activeTab === "current" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <p className="text-sm text-[#999] mb-3">{members.length} active members</p>
           <div className="space-y-3">
             {members.map((m) => {
@@ -252,7 +252,7 @@ export function MembersListClient({
 
       {/* Left Members */}
       {activeTab === "left" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <p className="text-sm text-[#999] mb-3">{leftMembers.length} members who left</p>
           {leftMembers.length === 0 ? (
             <p className="text-sm text-[#bbb] text-center py-6">No members have left yet.</p>
@@ -275,7 +275,7 @@ export function MembersListClient({
 
       {/* Removed Members */}
       {activeTab === "removed" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <p className="text-sm text-[#999] mb-3">{removedMembers.length} removed members</p>
           {removedMembers.length === 0 ? (
             <p className="text-sm text-[#bbb] text-center py-6">No members have been removed.</p>
@@ -298,7 +298,7 @@ export function MembersListClient({
 
       {/* Rejected Leave Requests */}
       {activeTab === "rejected" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <p className="text-sm text-[#999] mb-3">{rejectedLeaveRequests.length} rejected leave requests</p>
           {rejectedLeaveRequests.length === 0 ? (
             <p className="text-sm text-[#bbb] text-center py-6">No rejected leave requests.</p>
