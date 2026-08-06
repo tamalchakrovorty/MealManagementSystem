@@ -137,7 +137,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
     if (isSlotLocked(userId, slot)) return;
     setMealData((prev) => {
       const cur = Number(prev[userId]?.[slot] || 0);
-      const next = cur - 0.25;
+      const next = Math.max(0, cur - 0.25);
       return { ...prev, [userId]: { ...prev[userId], [slot]: String(next) } };
     });
   };
