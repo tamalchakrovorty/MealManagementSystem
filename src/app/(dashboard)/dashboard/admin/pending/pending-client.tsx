@@ -196,7 +196,7 @@ export function PendingClient({
 
   if (visibleSections.length === 0) {
     return (
-      <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+      <div className="bg-white rounded-[18px] p-8 md:p-10 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
         <div className="w-12 h-12 rounded-full bg-[#d7f2e9] flex items-center justify-center mx-auto mb-2">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M12 3L14 9L20 9L15.5 13L17.5 19L12 15.5L6.5 19L8.5 13L4 9L10 9L12 3Z" stroke="#1fae70" strokeWidth="1.8" strokeLinejoin="round" />
@@ -209,17 +209,17 @@ export function PendingClient({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="md:grid md:grid-cols-2 md:gap-4 space-y-4 md:space-y-0">
       {visibleSections.map((section) => {
         const meta = SECTION_META[section.key];
         return (
-          <div key={section.key} className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+          <div key={section.key} className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: meta.bg, color: meta.color }}>
+                <div className="w-9 h-9 md:w-10 md:h-10 rounded-[10px] flex items-center justify-center" style={{ background: meta.bg, color: meta.color }}>
                   {meta.icon}
                 </div>
-                <span className="text-[14px] font-bold text-[#333]">{section.title}</span>
+                <span className="text-[14px] md:text-[15px] font-bold text-[#333]">{section.title}</span>
               </div>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: meta.bg, color: meta.color }}>
                 {section.items.length}
@@ -239,7 +239,7 @@ export function PendingClient({
             </div>
             <Link
               href={meta.href}
-              className="block text-center text-[12px] font-bold py-2 rounded-lg transition-colors"
+              className="block text-center text-[12px] md:text-[13px] font-bold py-2.5 md:py-3 rounded-xl transition-colors hover:opacity-80"
               style={{ color: meta.color, background: meta.bg }}
             >
               View all →
