@@ -33,6 +33,10 @@ export function BazarTab({ messId, members }: { messId: string; members: any[] }
       <h3 className="text-[15px] md:text-[17px] font-bold mb-4">Input Bazar / Shopping Expense</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <label className="block text-xs font-semibold text-[#666] mb-1.5">Date</label>
+          <DatePickerField value={date} onChange={setDate} className="w-full" />
+        </div>
+        <div>
           <label className="block text-xs font-semibold text-[#666] mb-1.5">Who did the bazar?</label>
           <select value={userId} onChange={(e) => setUserId(e.target.value)}
             className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors bg-white">
@@ -40,16 +44,10 @@ export function BazarTab({ messId, members }: { messId: string; members: any[] }
             {members.map((m: any) => <option key={m.user_id} value={m.user_id}>{m.name || "Unknown"}</option>)}
           </select>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1">
-            <label className="block text-xs font-semibold text-[#666] mb-1.5">Amount (৳)</label>
-            <input type="number" step="0.01" min="0" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)}
-              className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors" required />
-          </div>
-          <div className="flex-1">
-            <label className="block text-xs font-semibold text-[#666] mb-1.5">Date</label>
-            <DatePickerField value={date} onChange={setDate} className="w-full" />
-          </div>
+        <div>
+          <label className="block text-xs font-semibold text-[#666] mb-1.5">Amount (৳)</label>
+          <input type="number" step="0.01" min="0" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)}
+            className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors" required />
         </div>
         <div>
           <label className="block text-xs font-semibold text-[#666] mb-1.5">Notes (optional)</label>
