@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -13,6 +13,23 @@ export function BazarTab({ messId, members }: { messId: string; members: any[] }
   const [userId, setUserId] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
+  const [memberSearch, setMemberSearch] = useState("");
+  const [memberOpen, setMemberOpen] = useState(false);
+  const memberRef = useRef<HTMLDivElement>(null);
+
+  const selectedMember = members.find((m: any) => m.user_id === userId);
+  const filteredMembers = members.filter((m: any) =>
+    (m.name || "Unknown").toLowerCase().includes(memberSearch.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (!memberOpen) return;
+    const handler = (e: PointerEvent) => {
+      if (memberRef.current && !memberRef.current.contains(e.target as Node)) setMemberOpen(false);
+    };
+    document.addEventListener("pointerdown", handler);
+    return () => document.removeEventListener("pointerdown", handler);
+  }, [memberOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,11 +55,38 @@ export function BazarTab({ messId, members }: { messId: string; members: any[] }
         </div>
         <div>
           <label className="block text-xs font-semibold text-[#666] mb-1.5">Who did the bazar?</label>
-          <select value={userId} onChange={(e) => setUserId(e.target.value)}
-            className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors bg-white">
-            <option value="">Select member</option>
-            {members.map((m: any) => <option key={m.user_id} value={m.user_id}>{m.name || "Unknown"}</option>)}
-          </select>
+          <div ref={memberRef} className="relative">
+            <button type="button" onClick={() => { setMemberOpen(!memberOpen); setMemberSearch(""); }}
+              className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm text-left outline-none focus:border-[#6a4fd8] transition-colors bg-white flex items-center justify-between">
+              <span className={selectedMember ? "text-[#333]" : "text-[#aaa]"}>{selectedMember ? selectedMember.name : "Select member"}</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+            {memberOpen && (
+              <div className="absolute z-50 mt-1 w-full bg-white rounded-xl border border-[#e3e0f5] shadow-lg max-h-48 overflow-y-auto">
+                <div className="sticky top-0 bg-white px-3 py-2 border-b border-[#f0f0f5]">
+                  <input
+                    type="text"
+                    value={memberSearch}
+                    onChange={(e) => setMemberSearch(e.target.value)}
+                    placeholder="Search member..."
+                    autoFocus
+                    className="w-full text-sm outline-none text-[#333] placeholder:text-[#aaa]"
+                  />
+                </div>
+                {filteredMembers.length > 0 ? (
+                  filteredMembers.map((m: any) => (
+                    <button key={m.user_id} type="button"
+                      onClick={() => { setUserId(m.user_id); setMemberOpen(false); setMemberSearch(""); }}
+                      className={`w-full px-3 py-2.5 text-sm text-left transition-colors ${userId === m.user_id ? "bg-[#ece9fe] text-[#6a4fd8] font-semibold" : "text-[#333] hover:bg-[#f4f4fb]"}`}>
+                      {m.name || "Unknown"}
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-3 py-4 text-center text-sm text-[#aaa]">No members found</div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <div>
           <label className="block text-xs font-semibold text-[#666] mb-1.5">Amount (৳)</label>
