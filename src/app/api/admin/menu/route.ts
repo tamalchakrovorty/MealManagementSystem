@@ -17,7 +17,8 @@ export async function GET(request: Request) {
     [messId, date]
   );
 
-  const menu = (rows as any[])[0] || { lunch: "", dinner: "" };
+  const raw = (rows as any[])[0] || { lunch: "", dinner: "" };
+  const menu = { lunch_menu: raw.lunch || "", dinner_menu: raw.dinner || "" };
   return NextResponse.json({ menu });
 }
 
