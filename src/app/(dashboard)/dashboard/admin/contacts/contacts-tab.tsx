@@ -116,7 +116,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
   };
 
   const FormCard = () => (
-    <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+    <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
       <h3 className="text-[15px] md:text-[17px] font-bold mb-3 md:mb-4">{editingId ? "Edit Contact" : "Add Contact"}</h3>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div className="flex gap-2">
@@ -135,7 +135,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
             className="w-36 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 md:flex-row">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
