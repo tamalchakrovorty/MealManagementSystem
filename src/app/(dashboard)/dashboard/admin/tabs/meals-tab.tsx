@@ -180,10 +180,10 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
   const activeBg = isGuest ? "#ece9fe" : slot === "lunch" ? "#e3faf0" : "#fff2df";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-[1fr_1.5fr] md:gap-5">
       {/* Card 1: Date & Menu */}
-      <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-        <h3 className="text-[15px] font-bold mb-4">Date & Menu</h3>
+      <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <h3 className="text-[15px] md:text-[17px] font-bold mb-4">Date & Menu</h3>
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-[#666] mb-1.5">Date</label>
@@ -195,7 +195,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
             <button
               type="button"
               onClick={() => setSlot("lunch")}
-              className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all ${
+              className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[14px] font-bold transition-all ${
                 slot === "lunch" ? "bg-[#1bbf7e] text-white shadow-sm" : "text-[#8b8fa3]"
               }`}
             >
@@ -204,7 +204,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
             <button
               type="button"
               onClick={() => setSlot("dinner")}
-              className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all ${
+              className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[14px] font-bold transition-all ${
                 slot === "dinner" ? "bg-[#d98a1c] text-white shadow-sm" : "text-[#8b8fa3]"
               }`}
             >
@@ -217,28 +217,28 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
             <div>
               <label className="block text-xs font-semibold text-[#1bbf7e] mb-1.5">Lunch Menu</label>
               <input type="text" placeholder="e.g. Egg, Rice" value={lunchMenu} onChange={(e) => setLunchMenu(e.target.value)}
-                className="w-full border border-[#e3faf0] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#1bbf7e] transition-colors bg-[#f9fffe]" />
+                className="w-full border border-[#e3faf0] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#1bbf7e] transition-colors bg-[#f9fffe]" />
             </div>
           ) : (
             <div>
               <label className="block text-xs font-semibold text-[#d98a1c] mb-1.5">Dinner Menu</label>
               <input type="text" placeholder="e.g. Chicken, Bread" value={dinnerMenu} onChange={(e) => setDinnerMenu(e.target.value)}
-                className="w-full border border-[#fff2df] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#d98a1c] transition-colors bg-[#fffcf8]" />
+                className="w-full border border-[#fff2df] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#d98a1c] transition-colors bg-[#fffcf8]" />
             </div>
           )}
         </div>
       </div>
 
       {/* Card 2: Meals Input */}
-      <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-        <h3 className="text-[15px] font-bold mb-4">Input Meals</h3>
+      <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <h3 className="text-[15px] md:text-[17px] font-bold mb-4">Input Meals</h3>
         <div className="space-y-4">
           {/* Regular / Guest Toggle */}
           <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex">
             <button
               type="button"
               onClick={() => setMealType("regular")}
-              className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all ${
+              className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[14px] font-bold transition-all ${
                 mealType === "regular" ? "bg-[#5b3fd6] text-white shadow-sm" : "text-[#8b8fa3]"
               }`}
             >
@@ -247,7 +247,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
             <button
               type="button"
               onClick={() => setMealType("guest")}
-              className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all ${
+              className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[14px] font-bold transition-all ${
                 mealType === "guest" ? "bg-[#7c6cf6] text-white shadow-sm" : "text-[#8b8fa3]"
               }`}
             >
@@ -256,7 +256,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           </div>
 
           {/* Column Header */}
-          <div className="grid grid-cols-[1fr_120px] items-center text-[11px] font-bold tracking-wider text-[#8b8fa3] pb-2 border-b border-[#eef0f4]">
+          <div className="grid grid-cols-[1fr_120px] md:grid-cols-[1fr_160px] items-center text-[11px] md:text-[12px] font-bold tracking-wider text-[#8b8fa3] pb-2 border-b border-[#eef0f4]">
             <span>{isGuest ? "BROUGHT BY" : "MEMBER"}</span>
             <span className="text-center rounded-lg py-1" style={{ color: activeColor, background: activeBg }}>
               {isGuest ? "GUEST " : ""}{slot.toUpperCase()}
@@ -264,7 +264,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           </div>
 
           {/* Member Rows */}
-          <div className="space-y-1 max-h-[28rem] overflow-y-auto">
+          <div className="space-y-1 max-h-[28rem] md:max-h-[32rem] overflow-y-auto">
             {fetching ? (
               <div className="flex items-center justify-center py-8">
                 <div className="w-6 h-6 border-2 border-[#6a4fd8] border-t-transparent rounded-full animate-spin" />
@@ -276,12 +276,20 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
               const locked = isSlotLocked(member.user_id, slot);
               const badge = getSlotBadge(member.user_id, slot);
               return (
-                <div key={member.user_id} className="grid grid-cols-[1fr_120px] items-center py-2.5 border-b border-[#f0f0f5] last:border-0">
-                  <span className="text-sm font-medium text-[#333] truncate pr-2">{member.name || "Unknown"}</span>
+                <div key={member.user_id} className="grid grid-cols-[1fr_120px] md:grid-cols-[1fr_160px] items-center py-2.5 md:py-3 border-b border-[#f0f0f5] last:border-0 md:hover:bg-[#f8f8fc] md:transition-colors">
+                  <div className="flex items-center gap-2 min-w-0 pr-2">
+                    <div
+                      className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0"
+                      style={{ background: activeBg, color: activeColor }}
+                    >
+                      {(member.name || "?").charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-[13px] md:text-[14px] font-medium text-[#333] truncate">{member.name || "Unknown"}</span>
+                  </div>
                   <div className="flex items-center justify-center gap-1">
                     {locked && badge ? (
                       <span
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg"
+                        className="text-[10px] md:text-[11px] font-bold px-2 py-1 rounded-lg"
                         style={{ color: badge.color, background: badge.bg }}
                       >
                         {badge.label}
@@ -289,7 +297,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
                     ) : (
                       <>
                         <button type="button" onClick={() => decrement(member.user_id)}
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold leading-none shrink-0"
+                          className="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center text-sm md:text-[15px] font-bold leading-none shrink-0 transition-colors hover:opacity-80"
                           style={{ background: activeBg, color: activeColor }}>
                           −
                         </button>
@@ -299,11 +307,11 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
                           value={val}
                           onChange={(e) => handleChange(member.user_id, e.target.value)}
                           onBlur={() => handleBlur(member.user_id)}
-                          className="w-12 text-center text-sm font-bold text-[#1e2130] border-b border-[#e3e0f5] outline-none transition-colors bg-transparent"
+                          className="w-12 text-center text-sm md:text-[15px] font-bold text-[#1e2130] border-b border-[#e3e0f5] outline-none transition-colors bg-transparent"
                           style={{ borderColor: `${activeColor}33` }}
                         />
                         <button type="button" onClick={() => increment(member.user_id)}
-                          className="w-8 h-8 rounded-lg text-white flex items-center justify-center text-sm font-bold leading-none shrink-0"
+                          className="w-8 h-8 md:w-9 md:h-9 rounded-lg text-white flex items-center justify-center text-sm md:text-[15px] font-bold leading-none shrink-0 transition-colors hover:opacity-80"
                           style={{ background: activeColor }}>
                           +
                         </button>
@@ -316,7 +324,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           </div>
 
           <button type="submit" disabled={loading}
-            className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 text-sm font-bold disabled:opacity-60">
+            className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 md:py-3.5 text-sm md:text-[15px] font-bold disabled:opacity-60 transition-colors hover:bg-[#4a32c0]">
             {loading ? "Saving..." : isGuest ? "Save Guest Meals" : "Save Meals"}
           </button>
         </div>
