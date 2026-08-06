@@ -216,14 +216,14 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           {slot === "lunch" ? (
             <div>
               <label className="block text-xs font-semibold text-[#1bbf7e] mb-1.5">Lunch Menu</label>
-              <input type="text" placeholder="e.g. Egg, Rice" value={lunchMenu} onChange={(e) => setLunchMenu(e.target.value)}
-                className="w-full border border-[#e3faf0] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#1bbf7e] transition-colors bg-[#f9fffe]" />
+              <textarea placeholder="e.g. Egg, Rice, Dal" value={lunchMenu} onChange={(e) => setLunchMenu(e.target.value)} rows={3}
+                className="w-full border border-[#e3faf0] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#1bbf7e] transition-colors bg-[#f9fffe] resize-none" />
             </div>
           ) : (
             <div>
               <label className="block text-xs font-semibold text-[#d98a1c] mb-1.5">Dinner Menu</label>
-              <input type="text" placeholder="e.g. Chicken, Bread" value={dinnerMenu} onChange={(e) => setDinnerMenu(e.target.value)}
-                className="w-full border border-[#fff2df] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#d98a1c] transition-colors bg-[#fffcf8]" />
+              <textarea placeholder="e.g. Chicken, Bread, Salad" value={dinnerMenu} onChange={(e) => setDinnerMenu(e.target.value)} rows={3}
+                className="w-full border border-[#fff2df] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#d98a1c] transition-colors bg-[#fffcf8] resize-none" />
             </div>
           )}
         </div>
