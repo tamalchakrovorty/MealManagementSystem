@@ -454,48 +454,6 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
         </DialogContent>
       </Dialog>
 
-      {/* Request Guest Meal */}
-      <Link
-        href="/dashboard/user/guest-meal"
-        className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left"
-        style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
-      >
-        <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        </div>
-        <span className="text-[14.5px] font-semibold">Request Guest Meal</span>
-      </Link>
-
-      {/* Meal On/Off */}
-      <Dialog open={mealOffOpen} onOpenChange={setMealOffOpen}>
-        <DialogTrigger
-          render={
-            <button className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-              <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M12 8V12L14.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M16 3L20 7L16 11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <span className="text-[14.5px] font-semibold">Meal On / Off</span>
-            </button>
-          }
-        />
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle>Meal On / Off</DialogTitle>
-            <DialogDescription>Set your meal status for today or another date.</DialogDescription>
-          </DialogHeader>
-          <MealOffToggle messId={messId} />
-        </DialogContent>
-      </Dialog>
-
       {/* Download Log Dialog (opened from Settings) */}
       <Dialog open={downloadOpen} onOpenChange={setDownloadOpen}>
         <DialogContent className="max-w-sm max-h-[85dvh] overflow-y-auto">
@@ -603,17 +561,6 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
         </DialogContent>
       </Dialog>
 
-      {/* Settings */}
-      <button
-        onClick={() => setSettingsOpen(true)}
-        className="bg-white rounded-2xl p-4 flex items-center gap-3.5 w-full text-left" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
-      >
-        <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
-          <Settings size={20} />
-        </div>
-        <span className="text-[14.5px] font-semibold">Settings</span>
-      </button>
-
       {/* Settings Dialog */}
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
         <DialogContent className="max-w-sm">
@@ -702,6 +649,64 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Quick Actions Section */}
+      <div className="space-y-3">
+        <p className="text-[12px] md:text-[13px] font-semibold text-[#8b8fa3] uppercase tracking-wide px-1">Quick Actions</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {/* Request Guest Meal */}
+          <Link
+            href="/dashboard/user/guest-meal"
+            className="bg-white rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300"
+          >
+            <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </div>
+            <span className="text-[14.5px] md:text-[15px] font-semibold">Request Guest Meal</span>
+          </Link>
+
+          {/* Meal On/Off */}
+          <Dialog open={mealOffOpen} onOpenChange={setMealOffOpen}>
+            <DialogTrigger
+              render={
+                <button className="bg-white rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+                  <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+                      <path d="M12 8V12L14.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M16 3L20 7L16 11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                  <span className="text-[14.5px] md:text-[15px] font-semibold">Meal On / Off</span>
+                </button>
+              }
+            />
+            <DialogContent className="max-w-sm md:max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Meal On / Off</DialogTitle>
+                <DialogDescription>Set your meal status for today or another date.</DialogDescription>
+              </DialogHeader>
+              <MealOffToggle messId={messId} />
+            </DialogContent>
+          </Dialog>
+
+          {/* Settings */}
+          <button
+            onClick={() => setSettingsOpen(true)}
+            className="bg-white rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300"
+          >
+            <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+              <Settings size={20} />
+            </div>
+            <span className="text-[14.5px] md:text-[15px] font-semibold">Settings</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

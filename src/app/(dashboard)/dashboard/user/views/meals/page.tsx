@@ -20,7 +20,7 @@ export default async function MealsViewPage({ searchParams }: { searchParams: Pr
   const messId = (membership as any).mess_id;
 
   const mealEntries = await query(
-    `SELECT me.*, p.name as member_name FROM meal_entries me
+    `SELECT me.*, p.name as member_name, p.avatar_url FROM meal_entries me
      LEFT JOIN profiles p ON p.id = me.user_id
      WHERE me.mess_id = $1 AND TO_CHAR(me.date, 'YYYY-MM') = $2
      ORDER BY me.date DESC`,
@@ -29,9 +29,9 @@ export default async function MealsViewPage({ searchParams }: { searchParams: Pr
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-lg mx-auto">
+      <div className="max-w-lg md:max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-3 px-5 pt-5 pb-2">
+        <div className="flex items-center gap-3 pt-5 pb-2">
           <Link
             href="/dashboard/user/views"
             className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
@@ -41,18 +41,18 @@ export default async function MealsViewPage({ searchParams }: { searchParams: Pr
             </svg>
           </Link>
           <div>
-            <h1 className="text-[22px] font-extrabold text-[#1e2130] leading-tight">Daily Meals</h1>
-            <p className="text-[13px] text-[#8b8fa3]">View meal entries</p>
+            <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Daily Meals</h1>
+            <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">View meal entries</p>
           </div>
         </div>
 
         {/* Month Picker */}
-        <div className="px-5 pt-2 pb-1">
+        <div className="pt-2 pb-1">
           <MonthPicker currentMonth={month} />
         </div>
 
         {/* Content */}
-        <div className="px-5 pt-3 pb-8">
+        <div className="pt-3 pb-8">
           <MealsViewClient entries={mealEntries || []} currentUserId={user.id} />
         </div>
       </div>

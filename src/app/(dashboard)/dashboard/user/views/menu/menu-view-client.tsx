@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { format, startOfMonth, endOfMonth, addMonths, subMonths, eachDayOfInterval } from "date-fns";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
 import { getFoodImage } from "@/lib/food-images";
 
 interface Menu {
@@ -13,13 +12,12 @@ interface Menu {
 }
 
 export function MenuViewClient({ menus }: { menus: Menu[] }) {
-  const [currentMonth, setCurrentMonth] = useState<Date | null>(() => new Date());
   const [activeTab, setActiveTab] = useState<"lunch" | "dinner">("lunch");
+  const [dateSearch, setDateSearch] = useState("");
 
-  if (!currentMonth) return null;
-
-  const monthStart = startOfMonth(currentMonth);
-  const monthEnd = endOfMonth(currentMonth);
+  const now = new Date();
+  const monthStart = startOfMonth(now);
+  const monthEnd = endOfMonth(now);
   const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
   const menuMap = new Map<string, Menu>();
@@ -40,77 +38,103 @@ export function MenuViewClient({ menus }: { menus: Menu[] }) {
     .filter((item) => item.items && item.items.trim() !== "")
     .reverse();
 
+  const filteredItems = dateSearch
+    ? menuItems.filter((item) => {
+        const label = item.label.toLowerCase();
+        return label.includes(dateSearch.toLowerCase());
+      })
+    : menuItems;
+
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
-      {/* Header */}
-      <div className="flex items-center gap-4 px-1">
-        <Link href="/dashboard/user/views" className="p-2 -ml-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
-        <span className="text-lg font-bold">Monthly Menu</span>
-      </div>
-
-      {/* Month Selector */}
-      <div className="bg-white rounded-[14px] px-4 py-3 flex items-center justify-between" style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
-        <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="text-[#999] p-1">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <span className="text-[15px] font-semibold">{format(currentMonth, "MMMM yyyy")}</span>
-        <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="text-[#999] p-1">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      </div>
-
+    <div className="space-y-4">
       {/* Lunch/Dinner Toggle */}
-      <div className="bg-white rounded-3xl p-1 flex" style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
+      <div className="bg-white rounded-[16px] p-1.5 flex shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
         <button
           onClick={() => setActiveTab("lunch")}
-          className={`flex-1 text-center py-2.5 rounded-[20px] text-sm font-semibold transition-colors ${
-            activeTab === "lunch" ? "bg-[#6a4fd8] text-white" : "text-[#555]"
+          className={`flex-1 py-3 md:py-3.5 rounded-[12px] text-[13px] md:text-[15px] font-bold transition-all ${
+            activeTab === "lunch" ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
           }`}
         >
           Lunch
         </button>
         <button
           onClick={() => setActiveTab("dinner")}
-          className={`flex-1 text-center py-2.5 rounded-[20px] text-sm font-semibold transition-colors ${
-            activeTab === "dinner" ? "bg-[#6a4fd8] text-white" : "text-[#555]"
+          className={`flex-1 py-3 md:py-3.5 rounded-[12px] text-[13px] md:text-[15px] font-bold transition-all ${
+            activeTab === "dinner" ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
           }`}
         >
           Dinner
         </button>
       </div>
 
-      {/* Day Cards */}
-      <div className="space-y-3.5">
-        {menuItems.map((item, i) => (
-          <div
-            key={i}
-            className="bg-white rounded-2xl p-4 flex items-center justify-between"
-            style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
+      {/* Date Search */}
+      <div className="bg-white rounded-[14px] px-4 py-3 flex items-center gap-3 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#8b8fa3] shrink-0">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+          <path d="M16 16L20 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <input
+          type="text"
+          value={dateSearch}
+          onChange={(e) => setDateSearch(e.target.value)}
+          placeholder="Search date (e.g. 5 Aug, Tue)"
+          className="flex-1 text-[14px] md:text-[15px] text-[#1e2130] placeholder:text-[#b0b3c5] outline-none bg-transparent"
+        />
+        {dateSearch.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setDateSearch("")}
+            className="w-6 h-6 rounded-full bg-[#f0f0f5] hover:bg-[#e4e4ed] flex items-center justify-center transition-colors shrink-0"
           >
-            <div className="min-w-0">
-              <div className="text-[14.5px] font-bold mb-1.5">{item.label}</div>
-              <div className="text-[12.5px] text-[#666] leading-snug max-w-[200px]">
-                {item.items || "Not set"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6L18 18" stroke="#8b8fa3" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {/* Menu Cards */}
+      {filteredItems.length > 0 ? (
+        <div className="space-y-3 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
+          {filteredItems.map((item, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-[18px] p-4 md:p-5 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:shadow-[0_8px_24px_rgba(30,30,60,0.08)] md:transition-shadow md:duration-200"
+            >
+              <div className="min-w-0 flex-1 mr-3">
+                <div className="text-[13px] md:text-[14px] font-bold text-[#8b8fa3] tracking-wider mb-1.5">
+                  {item.label}
+                </div>
+                <div className="text-[14px] md:text-[15px] font-semibold text-[#1e2130] leading-snug">
+                  {item.items || "Not set"}
+                </div>
+              </div>
+              <div className="w-[62px] h-[62px] md:w-[72px] md:h-[72px] rounded-full bg-[#ddd] shrink-0 overflow-hidden">
+                <img
+                  src={getFoodImage(item.items || "", i)}
+                  alt="meal"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
-            <div className="w-[62px] h-[62px] rounded-full bg-[#ddd] shrink-0 overflow-hidden">
-              <img
-                src={getFoodImage(item.items || "", i)}
-                alt="meal"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_10px_rgba(0,0,0,0.03)] text-center">
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="7" stroke="#8b8fa3" strokeWidth="2" />
+              <path d="M16 16L20 20" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+            </svg>
           </div>
-        ))}
-      </div>
+          <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">
+            {dateSearch
+              ? <>No menus found for &ldquo;{dateSearch}&rdquo;</>
+              : <>No {activeTab} menus for this month</>
+            }
+          </p>
+        </div>
+      )}
     </div>
   );
 }

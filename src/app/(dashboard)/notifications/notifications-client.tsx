@@ -202,7 +202,7 @@ export function NotificationsClient({
             key={t}
             type="button"
             onClick={() => handleTabChange(t)}
-            className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all capitalize ${
+            className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[15px] font-bold transition-all capitalize ${
               tab === t ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
             }`}
           >
@@ -217,12 +217,12 @@ export function NotificationsClient({
           {negativeUsers.length > 0 ? (
             <div className="space-y-2.5">
               <div className="flex justify-between items-center px-1">
-                <span className="text-[15px] font-bold">Negative Balance Users</span>
-                <span className="text-[13px] font-semibold text-[#e5484d]">{negativeUsers.length}</span>
+                <span className="text-[15px] md:text-[17px] font-bold">Negative Balance Users</span>
+                <span className="text-[13px] md:text-[15px] font-semibold text-[#e5484d]">{negativeUsers.length}</span>
               </div>
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
                 {negativeUsers.map((u) => (
-                  <div key={u.id} className="bg-white rounded-2xl p-2.5 flex flex-col items-center gap-1.5 text-center relative" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
+                  <div key={u.id} className="bg-white rounded-2xl p-2.5 md:p-3 flex flex-col items-center gap-1.5 text-center relative shadow-[0_8px_24px_rgba(0,0,0,.04)]">
                     {u.status !== "active" && (
                       <div
                         className="absolute text-white text-[10px] font-bold leading-none z-10"
@@ -244,32 +244,32 @@ export function NotificationsClient({
                       </div>
                     )}
                     {u.avatar_url ? (
-                      <img src={u.avatar_url} alt={u.name} className="w-9 h-9 rounded-full object-cover bg-[#ddd]" />
+                      <img src={u.avatar_url} alt={u.name} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover bg-[#ddd]" />
                     ) : (
-                      <div className="w-9 h-9 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white">
+                      <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white">
                         {u.name.charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-[12px] font-semibold text-[#333] truncate">{u.name}</p>
-                      <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
+                      <p className="text-[12px] md:text-[13px] font-semibold text-[#333] truncate">{u.name}</p>
+                      <span className="text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
                         Negative Balance
                       </span>
                     </div>
-                    <p className="text-[13px] font-bold text-[#e5484d]">৳ {Number(u.balance).toFixed(0)}</p>
+                    <p className="text-[13px] md:text-[15px] font-bold text-[#e5484d]">৳ {Number(u.balance).toFixed(0)}</p>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-6 text-center" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-              <div className="w-12 h-12 rounded-full bg-[#e3faf0] flex items-center justify-center mx-auto mb-2">
+            <div className="bg-white rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#e3faf0] flex items-center justify-center mx-auto mb-2">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                   <path d="M12 3L14 9L20 9L15.5 13L17.5 19L12 15.5L6.5 19L8.5 13L4 9L10 9L12 3Z" stroke="#1fae70" strokeWidth="1.8" strokeLinejoin="round" />
                 </svg>
               </div>
-              <p className="text-sm font-semibold text-[#333]">All balances are settled</p>
-              <p className="text-xs text-[#999] mt-1">No member has a negative balance right now.</p>
+              <p className="text-sm md:text-[15px] font-semibold text-[#333]">All balances are settled</p>
+              <p className="text-xs md:text-[13px] text-[#999] mt-1">No member has a negative balance right now.</p>
             </div>
           )}
 
@@ -280,7 +280,7 @@ export function NotificationsClient({
                 key={f}
                 type="button"
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all capitalize ${
+                className={`px-4 md:px-5 py-1.5 md:py-2 rounded-full text-[12px] md:text-[13px] font-semibold transition-all capitalize ${
                   filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
                 }`}
               >
@@ -294,20 +294,20 @@ export function NotificationsClient({
             <div className="space-y-3">
               {filteredAllGroups.map((group) => (
                 <div key={group.label}>
-                  <p className="text-[11px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
+                  <p className="text-[11px] md:text-[12px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
                   <div className="space-y-2">
                     {group.items.map((notif: any) => {
                       const style = getTypeStyle(notif.type);
                       const isUnread = !notif.read_at;
                       return (
-                        <div key={notif.id} className="bg-white rounded-2xl p-3.5 flex items-center gap-3" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-                          <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${style.bg} ${style.color}`}>
+                        <div key={notif.id} className="bg-white rounded-2xl p-3.5 md:p-4 flex items-center gap-3 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+                          <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${style.bg} ${style.color}`}>
                             {style.icon}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-[13.5px] font-semibold text-[#333] leading-snug">{notif.message}</p>
+                            <p className="text-[13.5px] md:text-[15px] font-semibold text-[#333] leading-snug">{notif.message}</p>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <p className="text-[10px] text-[#999]">
+                              <p className="text-[10px] md:text-[11px] text-[#999]">
                                 {formatNotifTime(new Date(notif.edited_at || notif.created_at))}
                               </p>
                               {notif.edited_at && (
@@ -346,8 +346,8 @@ export function NotificationsClient({
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-              <p className="text-sm text-[#999]">No notifications yet</p>
+            <div className="bg-white rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+              <p className="text-sm md:text-[15px] text-[#999]">No notifications yet</p>
             </div>
           )}
         </>
@@ -362,7 +362,7 @@ export function NotificationsClient({
                 key={f}
                 type="button"
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all capitalize ${
+                className={`px-4 md:px-5 py-1.5 md:py-2 rounded-full text-[12px] md:text-[13px] font-semibold transition-all capitalize ${
                   filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
                 }`}
               >
@@ -375,7 +375,7 @@ export function NotificationsClient({
           <div className="space-y-3">
             {filteredPersonalGroups.map((group) => (
               <div key={group.label}>
-                <p className="text-[11px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
+                <p className="text-[11px] md:text-[12px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
                 <div className="space-y-2">
                   {group.items.map((notif: any) => {
                     const style = getTypeStyle(notif.type);
@@ -386,12 +386,12 @@ export function NotificationsClient({
                     }
 
                     return (
-                      <div key={notif.id} className="bg-white rounded-2xl p-3.5 flex items-center gap-3" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${style.bg} ${style.color}`}>
+                      <div key={notif.id} className="bg-white rounded-2xl p-3.5 md:p-4 flex items-center gap-3 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+                        <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${style.bg} ${style.color}`}>
                           {style.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[13.5px] font-semibold text-[#333] leading-snug">{displayMessage}</p>
+                          <p className="text-[13.5px] md:text-[15px] font-semibold text-[#333] leading-snug">{displayMessage}</p>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <p className="text-[10px] text-[#999]">
                               {formatNotifTime(new Date(notif.edited_at || notif.created_at))}
@@ -417,15 +417,15 @@ export function NotificationsClient({
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8)" }}>
-            <div className="w-12 h-12 rounded-full bg-[#ece9fe] flex items-center justify-center mx-auto mb-2">
+          <div className="bg-white rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#ece9fe] flex items-center justify-center mx-auto mb-2">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="9" stroke="#6a4fd8" strokeWidth="1.8" />
                 <path d="M12 8V12L15 14" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-[#333]">No personal notifications</p>
-            <p className="text-xs text-[#999] mt-1">Bazar duties and admin notices for you will appear here.</p>
+            <p className="text-sm md:text-[15px] font-semibold text-[#333]">No personal notifications</p>
+            <p className="text-xs md:text-[13px] text-[#999] mt-1">Bazar duties and admin notices for you will appear here.</p>
           </div>
         )}
         </>

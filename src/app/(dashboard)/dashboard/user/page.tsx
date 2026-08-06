@@ -56,87 +56,93 @@ export default async function UserDashboardPage({
   const estimatedDeposit = daysLeft * 2 * 2 - balance;
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
+    <div className="space-y-4 max-w-lg md:max-w-4xl mx-auto pt-2">
       {/* Header */}
-      <div className="flex justify-center px-1">
-        <span className="text-lg font-bold">Dashboard</span>
+      <div className="flex items-center justify-between pt-3 pb-1">
+        <div>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Dashboard</h1>
+          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Welcome back! Here&apos;s what&apos;s happening today.</p>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 px-1">
+      <div className="flex gap-2 bg-white rounded-[16px] p-1.5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
         <Link
           href="/dashboard/user"
-          className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold bg-[#6a4fd8] text-white"
+          className="flex-1 text-center py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[15px] font-bold bg-[#6a4fd8] text-white shadow-sm"
         >
           User Dashboard
         </Link>
         {isManagerOrModerator && (
           <Link
             href="/dashboard/admin"
-            className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold bg-white text-[#555]"
+            className="flex-1 text-center py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[15px] font-bold text-[#8b8fa3]"
           >
             Admin Dashboard
           </Link>
         )}
       </div>
 
-      {/* Profile Card */}
-      <div className="bg-white rounded-2xl p-4 flex items-center gap-3.5" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-        {(profile as any)?.avatar_url ? (
-          <img
-            src={(profile as any).avatar_url}
-            alt={(profile as any)?.name || "User"}
-            className="w-14 h-14 rounded-full object-cover bg-[#ddd] shrink-0"
-          />
-        ) : (
-          <div className="w-14 h-14 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xl font-bold text-white shrink-0">
-            {((profile as any)?.name?.charAt(0)?.toUpperCase() || "U")}
-          </div>
-        )}
-        <div>
-          <div className="text-base font-bold">{(profile as any)?.name || "User"}</div>
-          <div className="text-[12.5px] text-[#777] leading-snug">{user.email}</div>
-          {(profile as any)?.phone && (
-            <div className="text-[12.5px] text-[#777]">{(profile as any).phone}</div>
+      {/* Profile & Mess Row */}
+      <div className="md:grid md:grid-cols-[1fr_auto] md:gap-4 md:items-stretch space-y-4 md:space-y-0">
+        {/* Profile Card */}
+        <div className="bg-white rounded-[18px] p-4 md:p-5 flex items-center gap-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          {(profile as any)?.avatar_url ? (
+            <img
+              src={(profile as any).avatar_url}
+              alt={(profile as any)?.name || "User"}
+              className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover bg-[#ddd] shrink-0"
+            />
+          ) : (
+            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xl md:text-2xl font-bold text-white shrink-0">
+              {((profile as any)?.name?.charAt(0)?.toUpperCase() || "U")}
+            </div>
           )}
+          <div>
+            <div className="text-[15px] md:text-[17px] font-bold">{(profile as any)?.name || "User"}</div>
+            <div className="text-[12.5px] md:text-[14px] text-[#777] leading-snug">{user.email}</div>
+            {(profile as any)?.phone && (
+              <div className="text-[12.5px] md:text-[14px] text-[#777]">{(profile as any).phone}</div>
+            )}
+          </div>
         </div>
+
+        {/* Switch Mess */}
+        {accessibleMesses.length > 1 && (
+          <UserSwitchMess
+            messes={accessibleMesses}
+            currentMessId={messId}
+            currentMessName={(mess as any)?.name || "Mess"}
+            currentRole={(membership as any)?.role || "member"}
+          />
+        )}
       </div>
 
-      {/* Switch Mess */}
-      {accessibleMesses.length > 1 && (
-        <UserSwitchMess
-          messes={accessibleMesses}
-          currentMessId={messId}
-          currentMessName={(mess as any)?.name || "Mess"}
-          currentRole={(membership as any)?.role || "member"}
-        />
-      )}
-
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="text-[13px] text-[#555] font-semibold mb-2.5">Total Deposit</div>
-          <div className="text-[19px] font-bold text-[#1fae70] mb-2">৳ {totalDeposit.toFixed(0)}</div>
-          <Link href="/dashboard/user/views" className="text-[12.5px] font-semibold text-[#1fae70]">
-            View History
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Total Deposit</div>
+          <div className="text-[18px] md:text-[22px] font-extrabold text-[#1fae70] mb-2">৳ {totalDeposit.toFixed(0)}</div>
+          <Link href="/dashboard/user/views/deposits" className="text-[12px] md:text-[13px] font-semibold text-[#1fae70]">
+            View History →
           </Link>
         </div>
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="text-[13px] text-[#555] font-semibold mb-2.5">Total Expense</div>
-          <div className="text-[19px] font-bold text-[#e5484d]">৳ {userExpense.toFixed(0)}</div>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Total Expense</div>
+          <div className="text-[18px] md:text-[22px] font-extrabold text-[#e5484d]">৳ {userExpense.toFixed(0)}</div>
         </div>
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="text-[13px] text-[#555] font-semibold mb-2.5">Current Balance</div>
-          <div className={`text-[19px] font-bold ${balance < 0 ? "text-[#e5484d]" : "text-[#1fae70]"}`}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Current Balance</div>
+          <div className={`text-[18px] md:text-[22px] font-extrabold ${balance < 0 ? "text-[#e5484d]" : "text-[#1fae70]"}`}>
             ৳ {balance.toFixed(0)}
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="text-[13px] text-[#555] font-semibold mb-2.5">Estimated Deposit</div>
-          <div className={`text-[19px] font-bold ${balance < 0 ? "text-[#e5484d]" : "text-[#2f6fed]"}`}>
+        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Estimated Deposit</div>
+          <div className={`text-[18px] md:text-[22px] font-extrabold ${balance < 0 ? "text-[#e5484d]" : "text-[#2f6fed]"}`}>
             ৳ {estimatedDeposit.toFixed(0)}
           </div>
-          <div className={`mt-1.5 text-[10.5px] font-semibold px-2 py-0.5 rounded-full inline-block ${
+          <div className={`mt-1.5 text-[10px] md:text-[11px] font-semibold px-2 py-0.5 rounded-full inline-block ${
             balance < 0 ? "bg-[#ffe9ee] text-[#e5484d]" : "bg-[#e4f1ff] text-[#2f6fed]"
           }`}>
             {balance < 0 ? "Have to Pay" : "Surplus"}
@@ -152,13 +158,13 @@ export default async function UserDashboardPage({
 
 async function NoMessView({ profile, action }: { profile: any; action?: string }) {
   return (
-    <div className="space-y-0 max-w-lg mx-auto">
+    <div className="space-y-0 max-w-lg md:max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-4 px-1 pt-4 pb-2">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span className="text-lg font-bold">Create / Join Mess</span>
+      <div className="flex items-center gap-3 pt-5 pb-2">
+        <div>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Create / Join Mess</h1>
+          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Get started with your mess</p>
+        </div>
       </div>
 
       {/* Illustration */}

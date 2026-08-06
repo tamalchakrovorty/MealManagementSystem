@@ -70,13 +70,13 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
     : [];
 
   return (
-    <div className="space-y-4">
-      <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+    <div className="space-y-4 max-w-md mx-auto">
+      <div className="bg-white rounded-2xl p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
         <div className="flex items-center justify-between mb-4">
           <button type="button" onClick={() => setMonth(addMonths(month, -1))} className="w-8 h-8 rounded-lg flex items-center justify-center text-[#666] hover:bg-[#f4f4fb] transition-colors">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
-          <span className="text-[15px] font-bold capitalize">{format(month, "MMMM yyyy")}</span>
+          <span className="text-[15px] md:text-[17px] font-bold capitalize">{format(month, "MMMM yyyy")}</span>
           <button type="button" onClick={() => setMonth(addMonths(month, 1))} className="w-8 h-8 rounded-lg flex items-center justify-center text-[#666] hover:bg-[#f4f4fb] transition-colors">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
@@ -84,7 +84,7 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
 
         <div className="grid grid-cols-7 mb-2">
           {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
-            <div key={d} className="text-center text-[10px] font-bold text-[#8b8fa3] py-1">{d}</div>
+            <div key={d} className="text-center text-[10px] md:text-[12px] font-bold text-[#8b8fa3] py-1">{d}</div>
           ))}
         </div>
 
@@ -131,9 +131,9 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
               <button key={day.toISOString()} type="button" onClick={() => setSelectedDay(day)}
                 className={`relative aspect-square rounded-xl flex flex-col items-center justify-center transition-all ${cellBg} ${cellText}`}
               >
-                <span className="text-[12px] font-bold">{format(day, "d")}</span>
+                <span className="text-[12px] md:text-[13px] font-bold">{format(day, "d")}</span>
                 {hasItems && (
-                  <span className="text-[8px] leading-none mt-0.5 flex gap-0.5">
+                  <span className="text-[8px] md:text-[10px] leading-none mt-0.5 flex gap-0.5">
                     {hasEv && <span style={{ color: selected ? "#fff" : EVENT_COLOR }}>📅</span>}
                     {hasBz && <span style={{ color: selected ? "#fff" : BAZAR_COLOR }}>🛒</span>}
                     {hasAc && <span style={{ color: selected ? "#fff" : ACTIVITY_COLOR }}>👤</span>}
@@ -147,19 +147,19 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
         <div className="flex flex-wrap gap-3 mt-4 pt-3 border-t border-[#f0f0f5]">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-md bg-[#ece9fe] border border-[#6a4fd844]" />
-            <span className="text-[10px] font-semibold text-[#666]">📅 Today</span>
+            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">📅 Today</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-md bg-[#fff2df] border border-[#d98a1c44]" />
-            <span className="text-[10px] font-semibold text-[#666]">📅 Event</span>
+            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">📅 Event</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-md bg-[#fdeccb] border border-[#c8790b44]" />
-            <span className="text-[10px] font-semibold text-[#666]">🛒 Bazar Duty</span>
+            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">🛒 Bazar Duty</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-md bg-[#ede9fe] border border-[#6a4fd844]" />
-            <span className="text-[10px] font-semibold text-[#666]">👤 Activity</span>
+            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">👤 Activity</span>
           </div>
         </div>
       </div>

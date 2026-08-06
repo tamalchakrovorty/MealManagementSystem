@@ -131,52 +131,52 @@ export function MealOffToggle({ messId }: { messId: string }) {
       slot === "lunch" ? value === pendingLunch : value === pendingDinner
     );
     return (
-      <div className="rounded-xl p-3" style={{ background: slot === "lunch" ? "#f0faf5" : "#fffbf5", border: `1.5px solid ${slot === "lunch" ? "#d5f5e5" : "#fde9c8"}` }}>
-        <div className="flex items-center gap-1.5 mb-2">
-          <div className="w-2 h-2 rounded-full" style={{ background: slotColor }} />
-          <h4 className="text-[13px] font-bold capitalize" style={{ color: slotColor }}>{slot}</h4>
+      <div className="rounded-[14px] md:rounded-[18px] p-3 md:p-4" style={{ background: slot === "lunch" ? "#f0faf5" : "#fffbf5", border: `1.5px solid ${slot === "lunch" ? "#d5f5e5" : "#fde9c8"}` }}>
+        <div className="flex items-center gap-1.5 mb-2.5 md:mb-3">
+          <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full" style={{ background: slotColor }} />
+          <h4 className="text-[13px] md:text-[15px] font-bold capitalize" style={{ color: slotColor }}>{slot}</h4>
           {requestStatus === "pending" && isPending && !isCurrent && (
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto bg-[#fff2df] text-[#d98a1c]">
+            <span className="text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded-full ml-auto bg-[#fff2df] text-[#d98a1c]">
               Pending
             </span>
           )}
           {isCurrent && (
             <span
-              className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto"
+              className="text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded-full ml-auto"
               style={{ color: OPTIONS.find((o) => o.value === value)?.color, background: OPTIONS.find((o) => o.value === value)?.bg }}
             >
               {value === "on" ? "Current" : OPTIONS.find((o) => o.value === value)?.label}
             </span>
           )}
           {!isCurrent && (!requestStatus || requestStatus !== "pending" || !isPending) && value === "on" && (
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto bg-[#e3faf0] text-[#1fae70]">
+            <span className="text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded-full ml-auto bg-[#e3faf0] text-[#1fae70]">
               Selected
             </span>
           )}
           {!isCurrent && (!requestStatus || requestStatus !== "pending" || !isPending) && value !== "on" && (
             <span
-              className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto"
+              className="text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded-full ml-auto"
               style={{ color: OPTIONS.find((o) => o.value === value)?.color, background: OPTIONS.find((o) => o.value === value)?.bg }}
             >
               Selected
             </span>
           )}
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 md:gap-2">
           {OPTIONS.map((opt) => (
             <button
               key={opt.value}
               type="button"
               disabled={fetching}
               onClick={() => slot === "lunch" ? setLunch(opt.value) : setDinner(opt.value)}
-              className="py-2 rounded-lg text-[10px] font-bold transition-all disabled:opacity-50 leading-tight"
+              className="py-2 md:py-2.5 rounded-lg md:rounded-xl text-[10px] md:text-[13px] font-bold transition-all disabled:opacity-50 leading-tight"
               style={{
                 background: value === opt.value ? opt.bg : "#fff",
                 color: value === opt.value ? opt.color : "#8b8fa3",
                 border: value === opt.value ? `1.5px solid ${opt.color}44` : "1.5px solid #eee",
               }}
             >
-              <span className="block text-[12px] mb-0.5">{opt.icon}</span>
+              <span className="block text-[12px] md:text-[16px] mb-0.5">{opt.icon}</span>
               {opt.label}
             </button>
           ))}
@@ -186,13 +186,13 @@ export function MealOffToggle({ messId }: { messId: string }) {
   };
 
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-3 md:space-y-4">
       {/* Duration Toggle */}
-      <div className="bg-[#f4f4fb] rounded-xl p-1 flex">
+      <div className="bg-[#f4f4fb] rounded-[14px] md:rounded-[16px] p-1 md:p-1.5 flex">
         <button
           type="button"
           onClick={() => setDuration("one_time")}
-          className={`flex-1 py-2 rounded-lg text-[12px] font-bold transition-all ${
+          className={`flex-1 py-2 md:py-2.5 rounded-[12px] md:rounded-[14px] text-[12px] md:text-[14px] font-bold transition-all ${
             duration === "one_time" ? "bg-white text-[#333] shadow-sm" : "text-[#8b8fa3]"
           }`}
         >
@@ -201,7 +201,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
         <button
           type="button"
           onClick={() => setDuration("long_time")}
-          className={`flex-1 py-2 rounded-lg text-[12px] font-bold transition-all ${
+          className={`flex-1 py-2 md:py-2.5 rounded-[12px] md:rounded-[14px] text-[12px] md:text-[14px] font-bold transition-all ${
             duration === "long_time" ? "bg-white text-[#333] shadow-sm" : "text-[#8b8fa3]"
           }`}
         >
@@ -212,18 +212,18 @@ export function MealOffToggle({ messId }: { messId: string }) {
       {/* Date Pickers */}
       {duration === "one_time" ? (
         <div>
-          <label className="block text-[11px] font-semibold text-[#666] mb-1">Date</label>
-          <DatePickerField value={date} onChange={setDate} className="w-full" />
+          <label className="block text-[11px] md:text-[13px] font-semibold text-[#666] mb-1.5">Date</label>
+          <DatePickerField value={date} onChange={setDate} className="w-full !h-[42px] md:!h-[48px] !rounded-[12px] md:!rounded-[14px] !text-[13px] md:!text-[14px]" />
         </div>
       ) : (
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col sm:flex-row gap-2.5">
           <div className="flex-1">
-            <label className="block text-[11px] font-semibold text-[#666] mb-1">From</label>
-            <DatePickerField value={startDate} onChange={setStartDate} className="w-full" />
+            <label className="block text-[11px] md:text-[13px] font-semibold text-[#666] mb-1.5">From</label>
+            <DatePickerField value={startDate} onChange={setStartDate} className="w-full !h-[42px] md:!h-[48px] !rounded-[12px] md:!rounded-[14px] !text-[13px] md:!text-[14px]" />
           </div>
           <div className="flex-1">
-            <label className="block text-[11px] font-semibold text-[#666] mb-1">To</label>
-            <DatePickerField value={endDate} onChange={setEndDate} min={startDate} className="w-full" />
+            <label className="block text-[11px] md:text-[13px] font-semibold text-[#666] mb-1.5">To</label>
+            <DatePickerField value={endDate} onChange={setEndDate} min={startDate} className="w-full !h-[42px] md:!h-[48px] !rounded-[12px] md:!rounded-[14px] !text-[13px] md:!text-[14px]" />
           </div>
         </div>
       )}
@@ -231,34 +231,34 @@ export function MealOffToggle({ messId }: { messId: string }) {
       {/* Status */}
       {requestStatus && (
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-semibold text-[#666]">Request:</span>
+          <span className="text-[11px] md:text-[13px] font-semibold text-[#666]">Request:</span>
           {requestStatus === "pending" && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fff2df] text-[#d98a1c]">Pending Approval</span>
+            <span className="text-[10px] md:text-[12px] font-bold px-2 md:px-2.5 py-0.5 rounded-full bg-[#fff2df] text-[#d98a1c]">Pending Approval</span>
           )}
           {requestStatus === "approved" && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#e3faf0] text-[#1fae70]">Approved</span>
+            <span className="text-[10px] md:text-[12px] font-bold px-2 md:px-2.5 py-0.5 rounded-full bg-[#e3faf0] text-[#1fae70]">Approved</span>
           )}
         </div>
       )}
 
       {/* Combined request info */}
       {requestStatus === "pending" && partOfCombined && combinedDates.length > 1 && (
-        <div className="bg-[#f4f0ff] rounded-xl px-3 py-2 flex items-center gap-2">
+        <div className="bg-[#f4f0ff] rounded-[14px] md:rounded-[16px] px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="9" stroke="#6a4fd8" strokeWidth="1.8" />
             <path d="M12 8V13" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" />
             <circle cx="12" cy="16.5" r="1" fill="#6a4fd8" />
           </svg>
-          <span className="text-[11px] font-semibold text-[#6a4fd8]">
+          <span className="text-[11px] md:text-[13px] font-semibold text-[#6a4fd8]">
             Long-time request ({format(parseISO(combinedDates[0]), "d MMM")} – {format(parseISO(combinedDates[combinedDates.length - 1]), "d MMM")})
           </span>
         </div>
       )}
 
       {fetching ? (
-        <div className="flex items-center justify-center py-6">
-          <div className="w-5 h-5 border-2 border-[#6a4fd8] border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm text-[#8b8fa3] ml-2">Loading...</span>
+        <div className="flex items-center justify-center py-6 md:py-8">
+          <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-[#6a4fd8] border-t-transparent rounded-full animate-spin" />
+          <span className="text-[13px] md:text-[15px] text-[#8b8fa3] ml-2">Loading...</span>
         </div>
       ) : (
         <>
@@ -268,7 +268,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
             type="button"
             onClick={handleRequest}
             disabled={loading || !hasChanges}
-            className="w-full bg-[#5b3fd6] text-white rounded-xl py-2.5 text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            className="w-full bg-[#5b3fd6] text-white rounded-[14px] md:rounded-[16px] py-2.5 md:py-3 text-[14px] md:text-[15px] font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:bg-[#4a32b5] hover:shadow-md"
           >
             {loading ? "Sending..." : "Send Request"}
           </button>

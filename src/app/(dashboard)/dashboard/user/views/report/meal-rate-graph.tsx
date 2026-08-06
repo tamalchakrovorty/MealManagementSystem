@@ -12,7 +12,7 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const chartWidth = 600;
-  const chartHeight = 160;
+  const chartHeight = 200;
   const padding = { top: 20, right: 10, bottom: 30, left: 10 };
   const plotWidth = chartWidth - padding.left - padding.right;
   const plotHeight = chartHeight - padding.top - padding.bottom;
@@ -31,19 +31,19 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="bg-white rounded-[18px] p-4 shadow-[0_2px_8px_rgba(30,30,60,0.05)] text-left cursor-pointer hover:shadow-[0_4px_12px_rgba(30,30,60,0.1)] transition-shadow"
+        className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)] text-left cursor-pointer hover:-translate-y-[3px] hover:shadow-[0_4px_12px_rgba(30,30,60,0.1)] transition-all duration-300"
       >
-        <div className="w-[38px] h-[38px] rounded-full bg-[#fff2df] flex items-center justify-center mb-3">
+        <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#fff2df] flex items-center justify-center mb-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M3 20L8 14L12 16L16 10L21 4" stroke="#f2a03d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M15 4H21V10" stroke="#f2a03d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <p className="text-[11px] text-[#8b8fa3] font-semibold mb-1">Meal Rate</p>
-        <p className="text-[20px] font-extrabold text-[#1e2130]">
+        <p className="text-[11px] md:text-[13px] text-[#8b8fa3] font-semibold mb-1">Meal Rate</p>
+        <p className="text-[20px] md:text-[24px] font-extrabold text-[#1e2130]">
           ৳{mealRate.toFixed(2)}
         </p>
-        <p className="text-[10px] text-[#8b8fa3] mt-1 flex items-center gap-1">
+        <p className="text-[10px] md:text-[11px] text-[#8b8fa3] mt-1 flex items-center gap-1">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -52,12 +52,12 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[100] flex items-end justify-center" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center" onClick={() => setOpen(false)}>
           <style>{`@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
           <div className="absolute inset-0 bg-black/40" />
 
           <div
-            className="relative bg-white w-full max-w-lg rounded-t-[24px] p-5 pb-8"
+            className="relative bg-white w-full max-w-lg md:max-w-2xl rounded-t-[24px] md:rounded-[24px] p-5 pb-8 md:p-6"
             style={{ animation: "slideUp 0.3s ease-out" }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -65,8 +65,8 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
 
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-[17px] font-bold text-[#1e2130]">Meal Rate Trend</h3>
-                <p className="text-[12px] text-[#8b8fa3]">{monthLabel}</p>
+                <h3 className="text-[17px] md:text-[19px] font-bold text-[#1e2130]">Meal Rate Trend</h3>
+                <p className="text-[12px] md:text-[13px] text-[#8b8fa3]">{monthLabel}</p>
               </div>
               <button
                 onClick={() => setOpen(false)}
@@ -79,7 +79,7 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
             </div>
 
             {data.length > 0 ? (
-              <div className="bg-[#fafafe] rounded-[16px] p-4 pt-5 pb-3">
+              <div className="bg-[#fafafe] rounded-[16px] p-4 md:p-5 pt-5 md:pt-6 pb-3">
                 <div className="relative">
                   <svg
                     viewBox={`0 0 ${chartWidth} ${chartHeight}`}
@@ -186,21 +186,21 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
                   {data.map((d, i) => {
                     const dayNum = new Date(d.date).getDate();
                     const show = dayNum === 1 || dayNum % 5 === 0 || i === data.length - 1;
-                    if (!show) return <span key={i} className="text-[8px] text-transparent">{dayNum}</span>;
+                    if (!show) return <span key={i} className="text-[8px] md:text-[10px] text-transparent">{dayNum}</span>;
                     return (
-                      <span key={i} className="text-[8px] text-[#8b8fa3] font-medium">{dayNum}</span>
+                      <span key={i} className="text-[8px] md:text-[10px] text-[#8b8fa3] font-medium">{dayNum}</span>
                     );
                   })}
                 </div>
 
                 {/* Summary */}
                 <div className="mt-3 pt-3 border-t border-[#eef0f4] flex items-center justify-between">
-                  <span className="text-[11px] text-[#8b8fa3] font-semibold">Avg Daily Rate</span>
-                  <span className="text-[13px] font-bold text-[#f2a03d]">৳{avgRate.toFixed(2)}</span>
+                  <span className="text-[11px] md:text-[13px] text-[#8b8fa3] font-semibold">Avg Daily Rate</span>
+                  <span className="text-[13px] md:text-[15px] font-bold text-[#f2a03d]">৳{avgRate.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-[#8b8fa3] font-semibold">Month Meal Rate</span>
-                  <span className="text-[13px] font-bold text-[#1e2130]">৳{mealRate.toFixed(2)}</span>
+                  <span className="text-[11px] md:text-[13px] text-[#8b8fa3] font-semibold">Month Meal Rate</span>
+                  <span className="text-[13px] md:text-[15px] font-bold text-[#1e2130]">৳{mealRate.toFixed(2)}</span>
                 </div>
               </div>
             ) : (

@@ -131,7 +131,7 @@ export default async function NotificationsPage() {
   }
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
+    <div className="space-y-4 max-w-lg md:max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between px-1">
         <Link href="/homepage" className="p-2 -ml-2">
@@ -139,7 +139,7 @@ export default async function NotificationsPage() {
             <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
-        <span className="text-lg font-bold">Notifications</span>
+        <span className="text-lg md:text-xl font-bold">Notifications</span>
       </div>
 
       <Suspense>

@@ -249,10 +249,13 @@ export function AdminDashboardClient({
   ];
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
+    <div className="space-y-4 md:space-y-6 max-w-lg md:max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between px-1">
-        <span className="text-lg font-bold">Admin Dashboard</span>
+      <div className="flex items-center justify-between px-1 pt-2">
+        <div>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Admin Dashboard</h1>
+          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Overview of your mess management system</p>
+        </div>
       </div>
 
       {/* Stats */}
@@ -263,8 +266,8 @@ export function AdminDashboardClient({
       />
 
       {/* Tile Grid */}
-      <div className="bg-white rounded-2xl p-4 px-5" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <div className="bg-white rounded-[18px] md:rounded-[20px] p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {tiles.map((tile) => (
             <Link
               key={tile.id}
@@ -277,17 +280,17 @@ export function AdminDashboardClient({
               }}
             >
               <div
-                className="bg-[#f9fafb] rounded-2xl p-4 pb-3.5 flex flex-col items-center gap-2.5 text-center relative cursor-pointer transition-all"
+                className="bg-white rounded-[18px] md:rounded-[20px] p-4 md:p-5 pb-3.5 md:pb-4 flex flex-col items-center gap-2.5 md:gap-3 text-center relative cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
               >
                 {tile.badge && (
-                  <span className="absolute top-2.5 right-2.5 bg-[#6a4fd8] text-white text-[8.5px] font-bold px-1.5 py-0.5 rounded-lg">
+                  <span className="absolute top-2.5 right-2.5 md:top-3 md:right-3 bg-[#6a4fd8] text-white text-[8.5px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-lg">
                     {tile.badge}
                   </span>
                 )}
-                <div className={`w-[46px] h-[46px] rounded-full flex items-center justify-center ${tile.bg}`}>
+                <div className={`w-[46px] h-[46px] md:w-[52px] md:h-[52px] rounded-full flex items-center justify-center ${tile.bg}`}>
                   {tile.icon}
                 </div>
-                <span className="text-xs font-semibold leading-tight">{tile.label}</span>
+                <span className="text-xs md:text-[13px] font-semibold leading-tight">{tile.label}</span>
               </div>
             </Link>
           ))}
@@ -296,7 +299,7 @@ export function AdminDashboardClient({
 
       {/* Download Log Dialog */}
       <Dialog open={downloadOpen} onOpenChange={setDownloadOpen}>
-        <DialogContent className="max-w-sm max-h-[85dvh] overflow-y-auto">
+        <DialogContent className="max-w-sm md:max-w-md max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Download Log</DialogTitle>
             <DialogDescription>Export mess data as an Excel file.</DialogDescription>
@@ -354,11 +357,7 @@ export function AdminDashboardClient({
               type="button"
               onClick={handleDownloadLog}
               disabled={loading}
-              className="w-full text-white rounded-[16px] py-[14px] text-[15px] font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:-translate-y-0.5"
-              style={{
-                background: "linear-gradient(135deg, #7C6DE8, #6C5DD3)",
-                boxShadow: "0 10px 20px rgba(108,93,211,0.35)",
-              }}
+              className="w-full bg-[#6a4fd8] text-white rounded-[16px] py-[14px] text-[15px] font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:-translate-y-0.5 hover:bg-[#5a42c0]"
             >
               {loading ? (
                 <>
