@@ -31,7 +31,7 @@ export function BazarTab({ messId, members }: { messId: string; members: any[] }
   return (
     <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
       <h3 className="text-[15px] md:text-[17px] font-bold mb-4">Input Bazar / Shopping Expense</h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
         <div>
           <label className="block text-xs font-semibold text-[#666] mb-1.5">Date</label>
           <DatePickerField value={date} onChange={setDate} className="w-full" />
@@ -55,7 +55,7 @@ export function BazarTab({ messId, members }: { messId: string; members: any[] }
             className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors resize-none" />
         </div>
         <button type="submit" disabled={loading}
-          className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 md:py-3.5 text-sm md:text-[15px] font-bold disabled:opacity-60 transition-colors hover:bg-[#4a32c0]">
+          className="md:col-span-2 w-full bg-[#5b3fd6] text-white rounded-xl py-3 md:py-3.5 text-sm md:text-[15px] font-bold disabled:opacity-60 transition-colors hover:bg-[#4a32c0]">
           {loading ? "Saving..." : "Save Expense"}
         </button>
       </form>
