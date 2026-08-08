@@ -40,11 +40,13 @@ export function DepositsTab({ messId, members }: { messId: string; members: any[
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) { popup.error("Select a member"); return; }
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount)) { popup.error("Enter a valid amount"); return; }
     setLoading(true);
     const res = await fetch("/api/admin/deposits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mess_id: messId, user_id: userId, amount: Number(amount), date }),
+      body: JSON.stringify({ mess_id: messId, user_id: userId, amount: parsedAmount, date }),
     });
     if (!res.ok) { const d = await res.json(); popup.error(d.error); }
     else { popup.success("Deposit recorded"); setAmount(""); router.refresh(); }
@@ -92,7 +94,7 @@ export function DepositsTab({ messId, members }: { messId: string; members: any[
         </div>
         <div>
           <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Amount (৳)</label>
-          <input type="number" step="0.01" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)}
+          <input type="text" inputMode="decimal" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)}
             className="w-full border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors" required />
         </div>
         <div>
