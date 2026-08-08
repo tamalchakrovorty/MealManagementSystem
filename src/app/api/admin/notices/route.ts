@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { queryOne, query } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function PATCH(request: Request) {
   const { id, mess_id, message } = await request.json();
@@ -40,6 +41,8 @@ export async function PATCH(request: Request) {
     `UPDATE notices SET message = $1, edited_at = NOW() WHERE id = $2 AND mess_id = $3`,
     [message, id, mess_id]
   );
+
+  invalidateTags(["notices", "notifications"]);
 
   return NextResponse.json({ success: true });
 }
@@ -85,6 +88,8 @@ export async function POST(request: Request) {
     }
   }
 
+  invalidateTags(["notices", "notifications"]);
+
   return NextResponse.json({ success: true });
 }
 
@@ -116,6 +121,8 @@ export async function DELETE(request: Request) {
     `DELETE FROM notices WHERE id = $1 AND mess_id = $2`,
     [id, mess_id]
   );
+
+  invalidateTags(["notices", "notifications"]);
 
   return NextResponse.json({ success: true });
 }

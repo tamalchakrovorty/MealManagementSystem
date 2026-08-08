@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -36,6 +37,8 @@ export async function POST(request: Request) {
      DO UPDATE SET lunch = EXCLUDED.lunch, dinner = EXCLUDED.dinner`,
     [mess_id, date, lunch_menu || "", dinner_menu || ""]
   );
+
+  invalidateTags(["menus"]);
 
   return NextResponse.json({ success: true });
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query, queryOne, pool } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function PUT(request: Request) {
   const { mess_id, userId, role, moderatorFrom, moderatorUntil, action } = await request.json();
@@ -38,6 +39,7 @@ export async function PUT(request: Request) {
         [mess_id, userId]
       );
       await client.query("COMMIT");
+      invalidateTags(["members", "memberships"]);
     } catch (err: any) {
       await client.query("ROLLBACK");
       return NextResponse.json({ error: err.message }, { status: 500 });
@@ -65,6 +67,8 @@ export async function PUT(request: Request) {
     );
   }
 
+  invalidateTags(["members", "memberships"]);
+
   return NextResponse.json({ success: true });
 }
 
@@ -78,6 +82,8 @@ export async function POST(request: Request) {
     `INSERT INTO notifications (user_id, mess_id, type, message) VALUES ($1, $2, $3, $4)`,
     [userId, mess_id, type, message]
   );
+
+  invalidateTags(["notifications"]);
 
   return NextResponse.json({ success: true });
 }
@@ -124,6 +130,8 @@ export async function DELETE(request: Request) {
       [m.user_id, mess_id, `${userName} has been removed from the mess by the manager.`]
     );
   }
+
+  invalidateTags(["members", "memberships", "notifications"]);
 
   return NextResponse.json({ success: true });
 }

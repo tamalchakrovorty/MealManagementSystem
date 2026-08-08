@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query, queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function POST(request: Request) {
   const user = await getSessionUser();
@@ -62,6 +63,8 @@ export async function POST(request: Request) {
       [m.user_id, messId, `${userName} has requested to leave the mess.`]
     );
   }
+
+  invalidateTags(["notifications", "memberships"]);
 
   return NextResponse.json({ success: true, message: "Leave request sent to the manager" });
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query, pool } from "@/lib/db";
 import { getSessionUser, requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -101,6 +102,7 @@ export async function POST(request: Request) {
     }
 
     await client.query("COMMIT");
+    invalidateTags(["members", "totals"]);
   } catch (err: any) {
     await client.query("ROLLBACK");
     console.error("Failed to save meal entries:", err.message);

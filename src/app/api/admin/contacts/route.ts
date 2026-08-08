@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query, queryOne } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 interface ContactRow {
   id: string;
@@ -48,6 +49,8 @@ export async function POST(request: Request) {
     [mess_id, name, category || "General", phone, description || null, (maxOrder as Record<string, number>).next_order]
   );
 
+  invalidateTags(["contacts"]);
+
   return NextResponse.json(contact);
 }
 
@@ -67,6 +70,8 @@ export async function PUT(request: Request) {
     [name, category, phone, description || null, sort_order ?? existing.sort_order, id]
   );
 
+  invalidateTags(["contacts"]);
+
   return NextResponse.json(contact);
 }
 
@@ -81,5 +86,6 @@ export async function DELETE(request: Request) {
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   await query("DELETE FROM contacts WHERE id = $1", [id]);
+  invalidateTags(["contacts"]);
   return NextResponse.json({ success: true });
 }

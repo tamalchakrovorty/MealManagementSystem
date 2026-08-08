@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { queryOne } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function POST(request: Request) {
   const { mess_id, user_id, amount, date, notes } = await request.json();
@@ -18,6 +19,8 @@ export async function POST(request: Request) {
      WHERE mess_id = $1 AND user_id = $2 AND assigned_date = $3 AND status = 'pending'`,
     [mess_id, user_id, date]
   );
+
+  invalidateTags(["totals"]);
 
   return NextResponse.json({ success: true });
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function POST(request: Request) {
   const user = await getSessionUser();
@@ -48,6 +49,8 @@ export async function POST(request: Request) {
     );
 
     await client.query("COMMIT");
+
+    invalidateTags(["members", "memberships", "notifications"]);
 
     const profile = await client.query("SELECT name FROM profiles WHERE id = $1", [userId]);
     const userName = profile.rows[0]?.name || "A member";

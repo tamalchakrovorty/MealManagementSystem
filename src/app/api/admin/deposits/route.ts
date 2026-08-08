@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { queryOne } from "@/lib/db";
 import { requireMessMembership } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function POST(request: Request) {
   const { mess_id, user_id, amount, date } = await request.json();
@@ -12,6 +13,8 @@ export async function POST(request: Request) {
     `INSERT INTO deposits (mess_id, user_id, amount, date) VALUES ($1, $2, $3, $4)`,
     [mess_id, user_id, amount, date]
   );
+
+  invalidateTags(["totals"]);
 
   return NextResponse.json({ success: true });
 }
