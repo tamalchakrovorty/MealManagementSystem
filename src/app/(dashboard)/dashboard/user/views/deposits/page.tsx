@@ -25,14 +25,14 @@ export default async function DepositsViewPage({ searchParams }: { searchParams:
     query(
       `SELECT d.*, p.name as member_name, p.avatar_url FROM deposits d
        LEFT JOIN profiles p ON p.id = d.user_id
-       WHERE d.mess_id = $1 AND TO_CHAR(d.date, 'YYYY-MM') = $2
+       WHERE d.mess_id = $1 AND d.date >= ($2 || '-01')::date AND d.date < (($2 || '-01')::date + INTERVAL '1 month')
        ORDER BY d.date DESC`,
       [messId, month]
     ),
     query(
       `SELECT be.*, p.name as member_name, p.avatar_url FROM bazar_expenses be
        LEFT JOIN profiles p ON p.id = be.user_id
-       WHERE be.mess_id = $1 AND TO_CHAR(be.date, 'YYYY-MM') = $2
+       WHERE be.mess_id = $1 AND be.date >= ($2 || '-01')::date AND be.date < (($2 || '-01')::date + INTERVAL '1 month')
        ORDER BY be.date DESC`,
       [messId, month]
     ),

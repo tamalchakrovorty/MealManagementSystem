@@ -25,7 +25,7 @@ export default async function MealsViewPage({ searchParams }: { searchParams: Pr
   const mealEntries = await query(
     `SELECT me.*, p.name as member_name, p.avatar_url FROM meal_entries me
      LEFT JOIN profiles p ON p.id = me.user_id
-     WHERE me.mess_id = $1 AND TO_CHAR(me.date, 'YYYY-MM') = $2
+     WHERE me.mess_id = $1 AND me.date >= ($2 || '-01')::date AND me.date < (($2 || '-01')::date + INTERVAL '1 month')
      ORDER BY me.date DESC`,
     [messId, month]
   );

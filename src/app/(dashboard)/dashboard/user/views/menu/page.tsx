@@ -23,7 +23,7 @@ export default async function MenuViewPage({ searchParams }: { searchParams: Pro
   const messId = (membership as any).mess_id;
 
   const menus = await query(
-    `SELECT * FROM menus WHERE mess_id = $1 AND TO_CHAR(date, 'YYYY-MM') = $2 ORDER BY date DESC`,
+    `SELECT * FROM menus WHERE mess_id = $1 AND date >= ($2 || '-01')::date AND date < (($2 || '-01')::date + INTERVAL '1 month') ORDER BY date DESC`,
     [messId, month]
   );
 
