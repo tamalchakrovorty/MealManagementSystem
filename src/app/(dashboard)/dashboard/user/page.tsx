@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { queryOne } from "@/lib/db";
@@ -93,11 +92,9 @@ export default async function UserDashboardPage({
         {/* Profile Card */}
         <div className="bg-card rounded-[18px] p-4 md:p-5 flex items-center gap-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
           {(profile as any)?.avatar_url ? (
-            <Image
+            <img
               src={(profile as any).avatar_url}
               alt={(profile as any)?.name || "User"}
-              width={64}
-              height={64}
               className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover bg-muted shrink-0"
             />
           ) : (

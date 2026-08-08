@@ -97,7 +97,7 @@ export default async function HomepagePage() {
             <div className="flex justify-between items-end">
               <div className="flex items-center gap-2">
                 {(latestNotice as any).author_avatar ? (
-                  <Image src={(latestNotice as any).author_avatar} alt="" width={28} height={28} className="w-[28px] h-[28px] rounded-full object-cover" />
+                  <img src={(latestNotice as any).author_avatar} alt="" className="w-[28px] h-[28px] rounded-full object-cover" />
                 ) : (
                   <div className="w-[28px] h-[28px] rounded-full bg-white/25 flex items-center justify-center text-[11px] font-bold">
                     {((latestNotice as any).author_name || "M").charAt(0).toUpperCase()}

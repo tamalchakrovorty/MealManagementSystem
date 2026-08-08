@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { format } from "date-fns";
 
 interface PendingProps {
@@ -88,9 +87,9 @@ export function PendingClient({
       items: leaveRequests,
       renderItem: (r) => (
         <>
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0 relative">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
             {r.avatar_url ? (
-              <Image src={r.avatar_url} alt="" fill className="rounded-full object-cover" />
+              <img src={r.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
             ) : (
               r.name?.charAt(0)?.toUpperCase() || "?"
             )}

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { query, queryOne } from "@/lib/db";
@@ -180,7 +179,7 @@ export default async function ReportViewPage({
           {/* Total Meals */}
           <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#e3faf0] flex items-center justify-center mb-3">
-              <Image src="/icons/meal-utensils.svg" alt="" width={36} height={36} />
+              <img src="/icons/meal-utensils.svg" alt="" className="w-[36px] h-[36px]" />
             </div>
             <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold mb-1">Total Meals</p>
             <p className="text-[20px] md:text-[24px] font-extrabold text-foreground">{totalMeals.toFixed(1)}</p>
@@ -189,7 +188,7 @@ export default async function ReportViewPage({
           {/* Total Deposit */}
           <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
             <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#fff8e6] flex items-center justify-center mb-3">
-              <Image src="/icons/coin.svg" alt="" width={32} height={32} />
+              <img src="/icons/coin.svg" alt="" className="w-[32px] h-[32px]" />
             </div>
             <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold mb-1">Total Deposit</p>
             <p className="text-[20px] md:text-[24px] font-extrabold text-foreground">৳{totalDeposits.toFixed(0)}</p>
@@ -248,7 +247,7 @@ export default async function ReportViewPage({
                 <div key={r.name} className="grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr_1fr] items-center py-3.5 md:py-4 border-b border-border last:border-0">
                   <div className="flex items-center gap-3 min-w-0 pr-2">
                     {r.avatarUrl ? (
-                      <Image src={r.avatarUrl} alt={r.name} width={38} height={38} className="w-[38px] h-[38px] rounded-full object-cover shrink-0 bg-muted" />
+                      <img src={r.avatarUrl} alt={r.name} className="w-[38px] h-[38px] rounded-full object-cover shrink-0 bg-muted" />
                     ) : (
                       <div className={`w-[38px] h-[38px] rounded-full flex items-center justify-center font-bold text-[15px] shrink-0 ${color.bg} ${color.text}`}>
                         {initial}

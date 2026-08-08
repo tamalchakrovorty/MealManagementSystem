@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { popup } from "@/lib/popup";
@@ -306,9 +305,9 @@ export function NoticesTab({
                     onChange={() => toggleSelect(m.user_id)}
                     className="w-4 h-4 rounded accent-[#6a4fd8]"
                   />
-                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0 relative">
+                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
                     {m.avatar_url ? (
-                      <Image src={m.avatar_url} alt="" fill className="rounded-full object-cover" />
+                      <img src={m.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                     ) : (
                       m.name?.charAt(0)?.toUpperCase() || "?"
                     )}
@@ -343,9 +342,9 @@ export function NoticesTab({
           {selectedSingle ? (
             <div className="flex items-center justify-between bg-primary/10 rounded-xl px-3 py-2.5 mb-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0 relative">
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
                   {members.find((m) => m.user_id === selectedSingle)?.avatar_url ? (
-                    <Image src={members.find((m) => m.user_id === selectedSingle)!.avatar_url!} alt="" fill className="rounded-full object-cover" />
+                    <img src={members.find((m) => m.user_id === selectedSingle)!.avatar_url!} alt="" className="w-full h-full rounded-full object-cover" />
                   ) : (
                     members.find((m) => m.user_id === selectedSingle)?.name?.charAt(0)?.toUpperCase() || "?"
                   )}
@@ -378,9 +377,9 @@ export function NoticesTab({
                       onClick={() => { setSelectedSingle(m.user_id); setSearchQuery(""); }}
                       className="w-full flex items-center gap-3 px-3 py-2.5 border-b border-border last:border-0 hover:bg-muted transition-colors text-left"
                     >
-                      <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0 relative">
+                      <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
                         {m.avatar_url ? (
-                          <Image src={m.avatar_url} alt="" fill className="rounded-full object-cover" />
+                          <img src={m.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                         ) : (
                           m.name?.charAt(0)?.toUpperCase() || "?"
                         )}

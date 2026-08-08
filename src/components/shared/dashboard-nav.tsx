@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -196,7 +195,7 @@ export function DashboardNav({
                 }
               >
                 {profile?.avatar_url ? (
-                  <Image src={profile.avatar_url} alt={profile?.name || "User"} width={32} height={32} className="h-8 w-8 rounded-full object-cover bg-[#ddd]" />
+                  <img src={profile.avatar_url} alt={profile?.name || "User"} className="h-8 w-8 rounded-full object-cover bg-[#ddd]" />
                 ) : (
                   <Avatar className="h-8 w-8">
                     <AvatarFallback>

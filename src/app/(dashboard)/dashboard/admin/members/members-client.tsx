@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { popup } from "@/lib/popup";
@@ -73,9 +72,9 @@ export function MembersListClient({
   };
 
   const Avatar = ({ member, size }: { member: Member; size: string }) => (
-    <div className={`${size} rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 overflow-hidden relative`}>
+    <div className={`${size} rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 overflow-hidden`}>
       {member.avatar_url ? (
-        <Image src={member.avatar_url} alt="" fill className="rounded-full object-cover" />
+        <img src={member.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
       ) : (
         member.name?.charAt(0)?.toUpperCase() || "?"
       )}
@@ -307,9 +306,9 @@ export function MembersListClient({
             <div className="space-y-3">
               {rejectedLeaveRequests.map((r) => (
                 <div key={r.id} className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 overflow-hidden relative">
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 overflow-hidden">
                     {r.avatar_url ? (
-                      <Image src={r.avatar_url} alt="" fill className="rounded-full object-cover" />
+                      <img src={r.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                     ) : (
                       r.name?.charAt(0)?.toUpperCase() || "?"
                     )}
@@ -333,9 +332,9 @@ export function MembersListClient({
             <>
               <DialogHeader>
                 <div className="flex flex-col items-center gap-3 py-2">
-                  <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center text-2xl font-bold text-primary-foreground bg-primary relative">
+                  <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center text-2xl font-bold text-primary-foreground bg-primary">
                     {selectedMember.avatar_url ? (
-                      <Image src={selectedMember.avatar_url} alt="" fill className="object-cover" />
+                      <img src={selectedMember.avatar_url} alt="" className="w-full h-full object-cover" />
                     ) : (
                       selectedMember.name?.charAt(0)?.toUpperCase() || "?"
                     )}
