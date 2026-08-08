@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { query } from "@/lib/db";
 
 const MAX_SIZE = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -21,15 +20,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Image must be under 2MB" }, { status: 400 });
   }
 
-  const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-  const filename = `${user.id}-${Date.now()}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "avatars");
-  const filepath = path.join(uploadDir, filename);
-
-  await mkdir(uploadDir, { recursive: true });
   const bytes = await file.arrayBuffer();
-  await writeFile(filepath, Buffer.from(bytes));
+  const base64 = Buffer.from(bytes).toString("base64");
+  const dataUrl = `data:${file.type};base64,${base64}`;
 
-  const url = `/uploads/avatars/${filename}`;
-  return NextResponse.json({ url });
+  await query("UPDATE profiles SET avatar_url = $1 WHERE id = $2", [dataUrl, user.id]);
+
+  return NextResponse.json({ url: dataUrl });
 }
