@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
 import { popup } from "@/lib/popup";
 
-export function DepositsTab({ messId, members, onSaved }: { messId: string; members: any[]; onSaved?: () => void }) {
+export function DepositsTab({ messId, members }: { messId: string; members: any[] }) {
   const router = useRouter();
   const [userId, setUserId] = useState("");
   const [amount, setAmount] = useState("");
@@ -49,7 +49,7 @@ export function DepositsTab({ messId, members, onSaved }: { messId: string; memb
       body: JSON.stringify({ mess_id: messId, user_id: userId, amount: parsedAmount, date }),
     });
     if (!res.ok) { const d = await res.json(); popup.error(d.error); }
-    else { popup.success("Deposit recorded"); setAmount(""); router.refresh(); onSaved?.(); }
+    else { popup.success("Deposit recorded"); setAmount(""); router.refresh(); }
     setLoading(false);
   };
 

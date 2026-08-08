@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 interface Deposit {
@@ -30,20 +29,7 @@ function getAvatarColor(name: string) {
   return avatarPastels[Math.abs(hash) % avatarPastels.length];
 }
 
-export function DepositHistory({ messId, refreshKey }: { messId: string; refreshKey: number }) {
-  const [deposits, setDeposits] = useState<Deposit[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    fetch(`/api/admin/deposits?mess_id=${messId}`)
-      .then((r) => r.json())
-      .then((d) => { if (!cancelled) { setDeposits(d.deposits || []); setLoading(false); } })
-      .catch(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [messId, refreshKey]);
-
+export function DepositHistory({ deposits }: { deposits: Deposit[] }) {
   const grouped = new Map<string, Deposit[]>();
   for (const d of deposits) {
     const key = d.date;
@@ -55,11 +41,7 @@ export function DepositHistory({ messId, refreshKey }: { messId: string; refresh
   return (
     <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
       <h3 className="text-[15px] md:text-[17px] font-bold mb-4">Deposit History</h3>
-      {loading ? (
-        <div className="flex items-center justify-center py-8">
-          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : deposits.length === 0 ? (
+      {deposits.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-6">No deposits yet</p>
       ) : (
         <div className="space-y-3 max-h-[28rem] overflow-y-auto">

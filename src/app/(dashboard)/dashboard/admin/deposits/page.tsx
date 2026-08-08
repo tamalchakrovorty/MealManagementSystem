@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { getAdminContext, getMembers } from "../_lib/helpers";
+import { query } from "@/lib/db";
 import { DepositsPageClient } from "./deposits-page-client";
 
 export default async function DepositsPage() {
   const { messId } = await getAdminContext();
-  const members = await getMembers(messId);
+  const [members, deposits] = await Promise.all([
+    getMembers(messId),
+    query(
+      `SELECT d.id, d.user_id, d.amount, d.date, d.created_at, p.name, p.avatar_url
+       FROM deposits d
+       LEFT JOIN profiles p ON p.id = d.user_id
+       WHERE d.mess_id = $1
+       ORDER BY d.date DESC, d.created_at DESC
+       LIMIT 100`,
+      [messId]
+    ),
+  ]);
 
   return (
     <div className="space-y-4 md:space-y-6 max-w-lg md:max-w-4xl mx-auto pb-24">
@@ -22,7 +34,7 @@ export default async function DepositsPage() {
           <p className="text-[13px] md:text-[15px] text-muted-foreground">Record member deposits</p>
         </div>
       </div>
-      <DepositsPageClient messId={messId} members={members || []} />
+      <DepositsPageClient messId={messId} members={members || []} deposits={deposits || []} />
     </div>
   );
 }
