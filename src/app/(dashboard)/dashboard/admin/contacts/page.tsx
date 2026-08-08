@@ -3,6 +3,8 @@ import { getAdminContext } from "../_lib/helpers";
 import { query } from "@/lib/db";
 import { ContactsTab } from "./contacts-tab";
 
+export const dynamic = "force-dynamic";
+
 export default async function ContactsPage() {
   const { messId } = await getAdminContext();
   const contacts = await query(

@@ -6,6 +6,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { DepositsViewClient } from "./deposits-view-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function DepositsViewPage({ searchParams }: { searchParams: Promise<{ month?: string }> }) {
   const user = await getSessionUser();
   if (!user) redirect("/login");

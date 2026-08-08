@@ -15,7 +15,9 @@ export async function GET() {
     [user.id, (membership as any).mess_id]
   );
 
-  return NextResponse.json({ unreadCount: (result as any)?.count || 0 });
+  return NextResponse.json({ unreadCount: (result as any)?.count || 0 }, {
+    headers: { "Cache-Control": "private, max-age=10, stale-while-revalidate=30" },
+  });
 }
 
 export async function PUT(request: Request) {

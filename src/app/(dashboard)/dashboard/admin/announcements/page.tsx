@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext } from "../_lib/helpers";
 import { NoticesTab } from "../tabs/notices-tab";
 
+export const dynamic = "force-dynamic";
+
 export default async function AnnouncementsPage() {
   const { messId } = await getAdminContext();
   const [notices, members, events] = await Promise.all([

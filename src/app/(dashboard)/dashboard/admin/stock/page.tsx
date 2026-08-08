@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext } from "../_lib/helpers";
 import { StockTab } from "../tabs/stock-tab";
 
+export const dynamic = "force-dynamic";
+
 export default async function StockPage() {
   const { messId } = await getAdminContext();
   const stockItems = await query("SELECT * FROM freezer_stock WHERE mess_id = $1 ORDER BY item", [messId]);

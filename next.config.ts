@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  cacheComponents: false,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

@@ -3,6 +3,8 @@ import { getAdminContext } from "../_lib/helpers";
 import { query } from "@/lib/db";
 import { PendingClient } from "./pending-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function PendingPage() {
   const { messId } = await getAdminContext();
 

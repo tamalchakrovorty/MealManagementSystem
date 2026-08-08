@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext } from "../../_lib/helpers";
 import { JoinRequests } from "./join-requests";
 
+export const dynamic = "force-dynamic";
+
 export default async function JoinRequestsPage() {
   const { messId } = await getAdminContext();
   const joinRequests = await query(

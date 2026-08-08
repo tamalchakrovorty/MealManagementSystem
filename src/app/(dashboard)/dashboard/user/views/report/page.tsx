@@ -7,6 +7,8 @@ import { format, eachDayOfInterval } from "date-fns";
 import { MonthPicker } from "./month-picker";
 import { MealRateGraph } from "./meal-rate-graph";
 
+export const dynamic = "force-dynamic";
+
 const badgeColors = [
   { bg: "bg-primary/10", text: "text-primary" },
   { bg: "bg-[#e3faf0]", text: "text-[#1bbf7e]" },

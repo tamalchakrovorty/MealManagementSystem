@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext } from "../_lib/helpers";
 import { MenuTab } from "../tabs/menu-tab";
 
+export const dynamic = "force-dynamic";
+
 export default async function MenuPage() {
   const { messId } = await getAdminContext();
   const menus = await query("SELECT * FROM menus WHERE mess_id = $1 ORDER BY date DESC LIMIT 31", [messId]);

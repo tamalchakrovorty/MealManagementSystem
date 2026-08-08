@@ -5,6 +5,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { StockAccessRequest } from "../stock-access-button";
 
+export const dynamic = "force-dynamic";
+
 const STOCK_IMAGES: Record<string, { img: string; bg: string }> = {
   chicken: { img: "https://images.unsplash.com/photo-1598515213692-5f0f9e5d3a8b?w=100&h=100&fit=crop", bg: "#f6dcdc" },
   "chicken breast": { img: "https://images.unsplash.com/photo-1604503468506-a8da13d82571?w=100&h=100&fit=crop", bg: "#f6dcdc" },

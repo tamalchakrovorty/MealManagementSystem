@@ -6,6 +6,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { NotificationsClient } from "./notifications-client";
 
+export const dynamic = "force-dynamic";
+
 interface NegativeUser {
   id: string;
   name: string;

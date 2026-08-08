@@ -4,6 +4,8 @@ import { query, queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function ViewsPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");

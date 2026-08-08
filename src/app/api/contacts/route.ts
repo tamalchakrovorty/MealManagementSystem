@@ -14,5 +14,7 @@ export async function GET(request: Request) {
     "SELECT id, name, category, phone, description FROM contacts WHERE mess_id = $1 ORDER BY sort_order, created_at",
     [messId]
   );
-  return NextResponse.json(contacts);
+  return NextResponse.json(contacts, {
+    headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" },
+  });
 }

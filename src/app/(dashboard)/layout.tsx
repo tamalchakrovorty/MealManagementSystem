@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { DashboardNav } from "@/components/shared/dashboard-nav";
 import { BottomNav } from "@/components/shared/bottom-nav";
-import { queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
-import { getAccessibleMesses, getSelectedMembership } from "@/lib/server-utils";
+import { getSelectedMembership } from "@/lib/server-utils";
+import { getProfile, getAccessibleMesses, getMessFull, getUnreadCount } from "@/lib/cached-queries";
 
 export default async function DashboardLayout({
   children,
@@ -14,26 +14,20 @@ export default async function DashboardLayout({
   if (!user) redirect("/login");
 
   const [profile, membership, accessibleMesses] = await Promise.all([
-    queryOne("SELECT * FROM profiles WHERE id = $1", [user.id]),
+    getProfile(user.id),
     getSelectedMembership(user.id),
     getAccessibleMesses(user.id),
   ]);
 
   const messId = (membership as any)?.mess_id;
 
-  const [mess, unreadResult] = await Promise.all([
-    messId ? queryOne("SELECT * FROM messes WHERE id = $1", [messId]) : null,
-    messId
-      ? queryOne(
-          "SELECT COUNT(*)::int AS count FROM notifications WHERE user_id = $1 AND mess_id = $2 AND read_at IS NULL",
-          [user.id, messId]
-        )
-      : null,
+  const [mess, unreadCount] = await Promise.all([
+    messId ? getMessFull(messId) : null,
+    messId ? getUnreadCount(user.id, messId) : 0,
   ]);
 
   const isManagerOrModerator =
     (membership as any)?.role === "manager" || (membership as any)?.role === "moderator";
-  const unreadCount = (unreadResult as any)?.count || 0;
 
   return (
     <div className="flex min-h-screen flex-col bg-page-bg">

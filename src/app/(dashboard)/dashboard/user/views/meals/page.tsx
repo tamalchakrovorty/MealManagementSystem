@@ -7,6 +7,8 @@ import { getSelectedMembership } from "@/lib/server-utils";
 import { MonthPicker } from "../report/month-picker";
 import { MealsViewClient } from "./meals-view-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function MealsViewPage({ searchParams }: { searchParams: Promise<{ month?: string }> }) {
   const user = await getSessionUser();
   if (!user) redirect("/login");

@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext } from "../../_lib/helpers";
 import { GuestMealRequests } from "./guest-meal-requests";
 
+export const dynamic = "force-dynamic";
+
 export default async function GuestMealsPage() {
   const { messId } = await getAdminContext();
   const [guestMealRequests, members] = await Promise.all([

@@ -4,9 +4,12 @@ import Image from "next/image";
 import { queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
+import { getMessInfo, getLatestNotice, getTodayMenu } from "@/lib/cached-queries";
 import { CreateMessDialog } from "../dashboard/user/create-mess-dialog";
 import Link from "next/link";
 import { getFoodImage } from "@/lib/food-images";
+
+export const dynamic = "force-dynamic";
 
 interface Membership {
   id: string;
@@ -33,17 +36,13 @@ export default async function HomepagePage() {
   const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const mEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
 
+  const today = format(new Date(), "yyyy-MM-dd");
+
   const [, latestNotice, todayMenu, totalMealsResult, totalExpensesResult, depositsResult, userMealsResult, negativeBalanceResult] =
     await Promise.all([
-      queryOne("SELECT id, name FROM messes WHERE id = $1", [messId]),
-      queryOne(
-        `SELECT n.*, p.name as author_name, p.avatar_url as author_avatar FROM notices n
-         LEFT JOIN profiles p ON p.id = n.author_id
-         WHERE n.mess_id = $1 AND n.target_type = 'all'
-         ORDER BY COALESCE(n.edited_at, n.created_at) DESC LIMIT 1`,
-        [messId]
-      ),
-      queryOne("SELECT * FROM menus WHERE mess_id = $1 AND date = $2", [messId, format(new Date(), "yyyy-MM-dd")]),
+      getMessInfo(messId),
+      getLatestNotice(messId),
+      getTodayMenu(messId, today),
       queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
       queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
       queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, mStart, mEnd]),

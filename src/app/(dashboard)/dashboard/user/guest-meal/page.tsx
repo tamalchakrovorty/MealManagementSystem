@@ -4,6 +4,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { GuestMealForm } from "./guest-meal-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function GuestMealPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");

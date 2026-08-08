@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { query, queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
@@ -45,7 +46,7 @@ export async function getAccessibleMesses(userId: string): Promise<AccessibleMes
   });
 }
 
-export async function getSelectedMembership(userId: string): Promise<Membership | null> {
+export const getSelectedMembership = cache(async (userId: string): Promise<Membership | null> => {
   const cookieStore = await cookies();
   const selectedId = cookieStore.get(MESS_COOKIE)?.value;
 
@@ -74,7 +75,7 @@ export async function getSelectedMembership(userId: string): Promise<Membership 
     "SELECT * FROM memberships WHERE user_id = $1 AND status = 'active' ORDER BY joined_at ASC LIMIT 1",
     [userId]
   ) as Promise<Membership | null>;
-}
+});
 
 export async function getUserRole(messId: string, userId: string): Promise<Role | null> {
   const result = await queryOne<{ role: string }>(

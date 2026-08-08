@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext, getMembers, getPendingMembers } from "../_lib/helpers";
 import { MembersTab } from "../tabs/members-tab";
 
+export const dynamic = "force-dynamic";
+
 export default async function MembersPage() {
   const { messId } = await getAdminContext();
   const [members, pendingMembers, bazarDuties] = await Promise.all([

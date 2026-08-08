@@ -5,6 +5,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { ContactsView } from "./contacts-view";
 
+export const dynamic = "force-dynamic";
+
 export default async function ContactsPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");

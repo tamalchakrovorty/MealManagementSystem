@@ -3,6 +3,8 @@ import { query } from "@/lib/db";
 import { getAdminContext } from "../../_lib/helpers";
 import { MealOffRequests } from "./meal-off-requests";
 
+export const dynamic = "force-dynamic";
+
 export default async function MealOffOnPage() {
   const { messId } = await getAdminContext();
   const mealRequests = await query(

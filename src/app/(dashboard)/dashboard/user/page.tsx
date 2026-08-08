@@ -2,11 +2,14 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
-import { getSelectedMembership, getAccessibleMesses } from "@/lib/server-utils";
+import { getSelectedMembership } from "@/lib/server-utils";
+import { getProfile, getAccessibleMesses, getMessFull } from "@/lib/cached-queries";
 import { UserActions } from "./user-actions";
 import { UserSwitchMess } from "./user-switch-mess";
 import { CreateMessDialog } from "./create-mess-dialog";
 import { JoinMessDialog } from "./join-mess-dialog";
+
+export const dynamic = "force-dynamic";
 
 export default async function UserDashboardPage({
   searchParams,
@@ -18,7 +21,7 @@ export default async function UserDashboardPage({
   if (!user) redirect("/login");
 
   const [profile, membership, accessibleMesses] = await Promise.all([
-    queryOne("SELECT * FROM profiles WHERE id = $1", [user.id]),
+    getProfile(user.id),
     getSelectedMembership(user.id),
     getAccessibleMesses(user.id),
   ]);
@@ -37,7 +40,7 @@ export default async function UserDashboardPage({
   const monthEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
 
   const [mess, totalDepositResult, totalUserMealsResult, allExpensesResult, totalMealsResult] = await Promise.all([
-    queryOne("SELECT * FROM messes WHERE id = $1", [messId]),
+    getMessFull(messId),
     queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
     queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
     queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, monthStart, monthEnd]),

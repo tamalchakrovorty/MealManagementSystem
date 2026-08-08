@@ -3,6 +3,8 @@ import { getAdminContext, getMembers } from "../_lib/helpers";
 import { query } from "@/lib/db";
 import { DepositsPageClient } from "./deposits-page-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function DepositsPage() {
   const { messId } = await getAdminContext();
   const [members, deposits] = await Promise.all([

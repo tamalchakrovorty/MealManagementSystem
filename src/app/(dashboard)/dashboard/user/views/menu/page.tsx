@@ -7,6 +7,8 @@ import { format } from "date-fns";
 import { MonthPicker } from "../report/month-picker";
 import { MenuViewClient } from "./menu-view-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function MenuViewPage({ searchParams }: { searchParams: Promise<{ month?: string }> }) {
   const user = await getSessionUser();
   if (!user) redirect("/login");

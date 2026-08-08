@@ -4,6 +4,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { MessCodeClient } from "./mess-code-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function MessCodePage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");

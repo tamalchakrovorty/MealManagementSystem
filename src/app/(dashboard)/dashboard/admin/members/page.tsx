@@ -3,6 +3,8 @@ import { getAdminContext } from "../_lib/helpers";
 import { query } from "@/lib/db";
 import { MembersListClient } from "./members-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function MembersPage() {
   const { user, messId, membership } = await getAdminContext();
   const isManager = (membership as any).role === "manager";
