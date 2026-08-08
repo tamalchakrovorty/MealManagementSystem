@@ -35,6 +35,7 @@ import {
   Users,
   FileText,
   Eye,
+  Building2,
 } from "lucide-react";
 
 interface NavProps {
@@ -99,7 +100,10 @@ export function DashboardNav({
                 <MessSwitcher messes={accessibleMesses} currentMessId={mess?.id || null} />
               ) : (
                 <>
-                  <p className="font-semibold">{mess?.name || "No Mess"}</p>
+                  <p className="font-semibold flex items-center gap-1.5">
+                    <Building2 className="h-4 w-4 text-muted-foreground" />
+                    {mess?.name || "No Mess"}
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     {mess?.mess_code ? `Code: ${mess.mess_code}` : ""}
                   </p>
@@ -145,7 +149,8 @@ export function DashboardNav({
         {showSwitcher ? (
           <MessSwitcher messes={accessibleMesses} currentMessId={mess?.id || null} />
         ) : (
-          <Link href="/homepage" className="font-bold text-lg">
+          <Link href="/homepage" className="font-bold text-lg flex items-center gap-1.5">
+            <Building2 className="h-5 w-5" />
             {mess?.name || "MMS"}
           </Link>
         )}
