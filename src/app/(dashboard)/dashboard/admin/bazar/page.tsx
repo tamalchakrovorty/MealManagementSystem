@@ -1,13 +1,25 @@
 import Link from "next/link";
 import { getAdminContext, getMembers } from "../_lib/helpers";
-import { BazarTab } from "../tabs/bazar-tab";
+import { query } from "@/lib/db";
+import { BazarPageClient } from "./bazar-page-client";
 
 export default async function BazarPage() {
   const { messId } = await getAdminContext();
-  const members = await getMembers(messId);
+  const [members, expenses] = await Promise.all([
+    getMembers(messId),
+    query(
+      `SELECT e.id, e.user_id, e.amount, e.date::text, e.created_at::text, e.notes, p.name, p.avatar_url
+       FROM bazar_expenses e
+       LEFT JOIN profiles p ON p.id = e.user_id
+       WHERE e.mess_id = $1
+       ORDER BY e.date DESC, e.created_at DESC
+       LIMIT 100`,
+      [messId]
+    ),
+  ]);
 
   return (
-    <div className="space-y-4 md:space-y-6 max-w-lg md:max-w-4xl mx-auto">
+    <div className="space-y-4 md:space-y-6 max-w-lg md:max-w-4xl mx-auto pb-24">
       <div className="flex items-center gap-3 pt-5 pb-2">
         <Link
           href="/dashboard/admin"
@@ -22,7 +34,7 @@ export default async function BazarPage() {
           <p className="text-[13px] md:text-[15px] text-muted-foreground">Record shopping expenses</p>
         </div>
       </div>
-      <BazarTab messId={messId} members={members || []} />
+      <BazarPageClient messId={messId} members={members || []} expenses={expenses || []} />
     </div>
   );
 }
