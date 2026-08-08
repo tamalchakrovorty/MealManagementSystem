@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { query, queryOne } from "@/lib/db";
@@ -38,12 +39,14 @@ export default async function DepositsViewPage({ searchParams }: { searchParams:
   return (
     <div className="min-h-screen">
       <div className="max-w-lg md:max-w-5xl mx-auto">
-        <DepositsViewClient
-          deposits={deposits || []}
-          expenses={expenses || []}
-          currentUserId={user.id}
-          currentMonth={month}
-        />
+        <Suspense>
+          <DepositsViewClient
+            deposits={deposits || []}
+            expenses={expenses || []}
+            currentUserId={user.id}
+            currentMonth={month}
+          />
+        </Suspense>
       </div>
     </div>
   );

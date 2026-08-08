@@ -19,19 +19,20 @@ export default async function DashboardLayout({
     getAccessibleMesses(user.id),
   ]);
 
-  const mess = membership
-    ? await queryOne("SELECT * FROM messes WHERE id = $1", [(membership as any).mess_id])
-    : null;
+  const messId = (membership as any)?.mess_id;
+
+  const [mess, unreadResult] = await Promise.all([
+    messId ? queryOne("SELECT * FROM messes WHERE id = $1", [messId]) : null,
+    messId
+      ? queryOne(
+          "SELECT COUNT(*)::int AS count FROM notifications WHERE user_id = $1 AND mess_id = $2 AND read_at IS NULL",
+          [user.id, messId]
+        )
+      : null,
+  ]);
 
   const isManagerOrModerator =
     (membership as any)?.role === "manager" || (membership as any)?.role === "moderator";
-
-  const unreadResult = membership
-    ? await queryOne(
-        "SELECT COUNT(*)::int AS count FROM notifications WHERE user_id = $1 AND mess_id = $2 AND read_at IS NULL",
-        [user.id, (membership as any).mess_id]
-      )
-    : null;
   const unreadCount = (unreadResult as any)?.count || 0;
 
   return (

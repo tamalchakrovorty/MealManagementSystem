@@ -35,7 +35,7 @@ export default async function AdminDashboardPage() {
       queryOne(`SELECT COUNT(*)::int AS count FROM bazar_duties WHERE mess_id = $1 AND status = 'pending' AND assigned_date < CURRENT_DATE`, [messId]),
       queryOne(
         `SELECT COUNT(*)::int AS count FROM generate_series(
-           (SELECT COALESCE(MIN(joined_at)::date, CURRENT_DATE - INTERVAL '30 days') FROM memberships WHERE mess_id = $1),
+           CURRENT_DATE - INTERVAL '7 days',
            CURRENT_DATE - 1,
            '1 day'
          ) AS d(day)

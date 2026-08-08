@@ -51,7 +51,7 @@ export default async function PendingPage() {
     ),
     query(
       `SELECT d.day::date AS date FROM generate_series(
-         (SELECT COALESCE(MIN(joined_at)::date, CURRENT_DATE - INTERVAL '30 days') FROM memberships WHERE mess_id = $1),
+         CURRENT_DATE - INTERVAL '7 days',
          CURRENT_DATE - 1,
          '1 day'
        ) AS d(day)

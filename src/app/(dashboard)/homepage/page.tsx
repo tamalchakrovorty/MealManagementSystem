@@ -33,7 +33,7 @@ export default async function HomepagePage() {
   const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const mEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
 
-  const [, latestNotice, todayMenu, totalMealsResult, totalExpensesResult, depositsResult, userMealsResult] =
+  const [, latestNotice, todayMenu, totalMealsResult, totalExpensesResult, depositsResult, userMealsResult, negativeBalanceResult] =
     await Promise.all([
       queryOne("SELECT id, name FROM messes WHERE id = $1", [messId]),
       queryOne(
@@ -48,6 +48,27 @@ export default async function HomepagePage() {
       queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
       queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, mStart, mEnd]),
       queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, mStart, mEnd]),
+      queryOne(
+        `SELECT COUNT(*)::int as count FROM (
+          SELECT m.user_id,
+            COALESCE(d.total_deposit, 0) - COALESCE(me.total_meals, 0) *
+              NULLIF(COALESCE(te.total_expenses, 0), 0) / NULLIF(COALESCE(tm.total_meals, 0), 0) as balance
+          FROM memberships m
+          LEFT JOIN (
+            SELECT user_id, SUM(amount) as total_deposit
+            FROM deposits WHERE mess_id = $1 AND date >= $2 AND date <= $3 GROUP BY user_id
+          ) d ON d.user_id = m.user_id
+          LEFT JOIN (
+            SELECT user_id, SUM(quantity) as total_meals
+            FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3
+            GROUP BY user_id
+          ) me ON me.user_id = m.user_id
+          CROSS JOIN (SELECT COALESCE(SUM(amount), 0) as total_expenses FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3) te
+          CROSS JOIN (SELECT COALESCE(SUM(quantity), 0) as total_meals FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3) tm
+          WHERE m.mess_id = $1 AND m.status = 'active'
+        ) sub WHERE sub.balance < 0`,
+        [messId, mStart, mEnd]
+      ),
     ]);
 
   const totalMeals = Number((totalMealsResult as any)?.total || 0);
@@ -57,25 +78,6 @@ export default async function HomepagePage() {
   const userMeals = Number((userMealsResult as any)?.total || 0);
   const userExpense = userMeals * mealRate;
   const balance = totalDeposit - userExpense;
-
-  const negativeBalanceResult = await queryOne(
-    `SELECT COUNT(*)::int as count FROM (
-      SELECT m.user_id,
-        COALESCE(d.total_deposit, 0) - COALESCE(me.total_meals, 0) * $2 as balance
-      FROM memberships m
-      LEFT JOIN (
-        SELECT user_id, SUM(amount) as total_deposit
-        FROM deposits WHERE mess_id = $1 AND date >= $3 AND date <= $4 GROUP BY user_id
-      ) d ON d.user_id = m.user_id
-      LEFT JOIN (
-        SELECT user_id, SUM(quantity) as total_meals
-        FROM meal_entries WHERE mess_id = $1 AND date >= $3 AND date <= $4
-        GROUP BY user_id
-      ) me ON me.user_id = m.user_id
-      WHERE m.mess_id = $1 AND m.status = 'active'
-    ) sub WHERE sub.balance < 0`,
-    [messId, mealRate, mStart, mEnd]
-  );
   const negativeCount = (negativeBalanceResult as any)?.count || 0;
 
   return (

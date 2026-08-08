@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { query, queryOne } from "@/lib/db";
@@ -53,7 +54,9 @@ export default async function MealsViewPage({ searchParams }: { searchParams: Pr
 
         {/* Content */}
         <div className="pt-3 pb-8">
-          <MealsViewClient entries={mealEntries || []} currentUserId={user.id} />
+          <Suspense>
+            <MealsViewClient entries={mealEntries || []} currentUserId={user.id} />
+          </Suspense>
         </div>
       </div>
     </div>
