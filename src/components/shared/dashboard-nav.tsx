@@ -60,6 +60,7 @@ export function DashboardNav({
   const pathname = usePathname();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
   const handleSignOut = async () => {
@@ -90,7 +91,7 @@ export function DashboardNav({
     <header className="sticky top-0 z-50 border-b bg-background" suppressHydrationWarning>
       <div className="flex h-14 items-center px-4 gap-4">
         {mounted && (
-          <Sheet>
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
               <Menu className="h-5 w-5" />
             </SheetTrigger>
@@ -115,6 +116,7 @@ export function DashboardNav({
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={() => setSheetOpen(false)}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                     pathname === link.href
                       ? "bg-primary text-primary-foreground"
@@ -138,7 +140,7 @@ export function DashboardNav({
                   <p className="px-3 text-xs font-medium text-muted-foreground">
                     Admin Quick Links
                   </p>
-                  <AdminSidebarLinks pathname={pathname} />
+                  <AdminSidebarLinks pathname={pathname} onNavigate={() => setSheetOpen(false)} />
                 </>
               )}
             </nav>
@@ -231,7 +233,7 @@ export function DashboardNav({
   );
 }
 
-function AdminSidebarLinks({ pathname }: { pathname: string }) {
+function AdminSidebarLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   const links = [
     { href: "/dashboard/admin", label: "Overview", icon: Settings },
     { href: "/dashboard/admin?tab=meals", label: "Meals", icon: UtensilsCrossed },
@@ -250,6 +252,7 @@ function AdminSidebarLinks({ pathname }: { pathname: string }) {
         <Link
           key={link.href}
           href={link.href}
+          onClick={onNavigate}
           className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
             pathname === link.href
               ? "bg-primary text-primary-foreground"
