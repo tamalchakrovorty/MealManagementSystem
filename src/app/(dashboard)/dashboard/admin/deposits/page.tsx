@@ -8,7 +8,7 @@ export default async function DepositsPage() {
   const [members, deposits] = await Promise.all([
     getMembers(messId),
     query(
-      `SELECT d.id, d.user_id, d.amount, d.date, d.created_at, p.name, p.avatar_url
+      `SELECT d.id, d.user_id, d.amount, d.date::text, d.created_at::text, p.name, p.avatar_url
        FROM deposits d
        LEFT JOIN profiles p ON p.id = d.user_id
        WHERE d.mess_id = $1
