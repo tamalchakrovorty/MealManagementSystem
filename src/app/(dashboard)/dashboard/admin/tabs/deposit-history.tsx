@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface Deposit {
   id: string;
   user_id: string;
@@ -56,7 +58,7 @@ export function DepositHistory({ deposits }: { deposits: Deposit[] }) {
             return (
               <div key={d.id} className="flex items-center gap-3 py-2.5 px-2 rounded-lg md:hover:bg-muted md:transition-colors">
                 {d.avatar_url ? (
-                  <img src={d.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
+                  <Image src={d.avatar_url} alt="" width={32} height={32} className="w-8 h-8 rounded-full object-cover shrink-0" />
                 ) : (
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[11px] shrink-0 ${colorClass}`}>
                     {(d.name || "?").charAt(0).toUpperCase()}

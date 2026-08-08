@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { popup } from "@/lib/popup";
@@ -368,7 +369,7 @@ export function AdminDashboardClient({
               {negativeBalanceMembers.map((m) => (
                 <div key={m.user_id} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
                   {m.avatar_url ? (
-                    <img src={m.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover bg-muted shrink-0" />
+                    <Image src={m.avatar_url} alt="" width={40} height={40} className="w-10 h-10 rounded-full object-cover bg-muted shrink-0" />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
                       {m.name?.charAt(0)?.toUpperCase() || "?"}
@@ -415,7 +416,7 @@ export function AdminDashboardClient({
               {estimatedCollectionMembers.map((m) => (
                 <div key={m.user_id} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
                   {m.avatar_url ? (
-                    <img src={m.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover bg-muted shrink-0" />
+                    <Image src={m.avatar_url} alt="" width={40} height={40} className="w-10 h-10 rounded-full object-cover bg-muted shrink-0" />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
                       {m.name?.charAt(0)?.toUpperCase() || "?"}

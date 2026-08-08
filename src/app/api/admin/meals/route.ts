@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { query } from "@/lib/db";
+import { query, pool } from "@/lib/db";
 import { getSessionUser, requireMessMembership } from "@/lib/auth";
 
 export async function GET(request: Request) {
@@ -59,31 +59,55 @@ export async function POST(request: Request) {
 
   const auth = await requireMessMembership(firstMessId, ["manager", "moderator"]);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
-  const user = auth.user;
 
-  let saved = 0;
-  for (const e of entries) {
-    try {
-      if (e.quantity === 0) {
-        await query(
-          `DELETE FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND date = $3 AND slot = $4 AND is_guest = $5`,
-          [e.mess_id, e.user_id, e.date, e.slot, e.is_guest || false]
-        );
-      } else {
-        await query(
-          `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
-           VALUES ($1, $2, $3, $4, $5, $6)
-           ON CONFLICT (mess_id, user_id, date, slot, is_guest)
-           DO UPDATE SET quantity = EXCLUDED.quantity`,
-          [e.mess_id, e.user_id, e.date, e.slot, e.quantity, e.is_guest || false]
-        );
+  const toUpsert = entries.filter((e: any) => e.quantity > 0);
+  const toDelete = entries.filter((e: any) => e.quantity === 0);
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    if (toUpsert.length > 0) {
+      const values: string[] = [];
+      const params: any[] = [];
+      let i = 1;
+      for (const e of toUpsert) {
+        values.push(`($${i}, $${i+1}, $${i+2}, $${i+3}, $${i+4}, $${i+5})`);
+        params.push(e.mess_id, e.user_id, e.date, e.slot, e.quantity, e.is_guest || false);
+        i += 6;
       }
-      saved++;
-    } catch (err: any) {
-      console.error("Failed to save meal entry:", err.message);
+      await client.query(
+        `INSERT INTO meal_entries (mess_id, user_id, date, slot, quantity, is_guest)
+         VALUES ${values.join(", ")}
+         ON CONFLICT (mess_id, user_id, date, slot, is_guest)
+         DO UPDATE SET quantity = EXCLUDED.quantity`,
+        params
+      );
     }
+
+    if (toDelete.length > 0) {
+      const conditions: string[] = [];
+      const params: any[] = [];
+      let i = 1;
+      for (const e of toDelete) {
+        conditions.push(`(mess_id = $${i} AND user_id = $${i+1} AND date = $${i+2} AND slot = $${i+3} AND is_guest = $${i+4})`);
+        params.push(e.mess_id, e.user_id, e.date, e.slot, e.is_guest || false);
+        i += 5;
+      }
+      await client.query(
+        `DELETE FROM meal_entries WHERE ${conditions.join(" OR ")}`,
+        params
+      );
+    }
+
+    await client.query("COMMIT");
+  } catch (err: any) {
+    await client.query("ROLLBACK");
+    console.error("Failed to save meal entries:", err.message);
+    return NextResponse.json({ error: "Failed to save entries" }, { status: 500 });
+  } finally {
+    client.release();
   }
 
-  if (saved === 0) return NextResponse.json({ error: "Failed to save any entries" }, { status: 500 });
-  return NextResponse.json({ success: true, count: saved });
+  return NextResponse.json({ success: true, count: entries.length });
 }

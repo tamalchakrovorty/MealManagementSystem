@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function FindAccountPage() {
@@ -299,7 +300,7 @@ export default function FindAccountPage() {
             <div className="w-16 h-16 rounded-full shrink-0 flex items-center justify-center overflow-hidden"
               style={{ background: "linear-gradient(160deg, #C9BFF0, #6C5DD3)" }}>
               {userAvatar ? (
-                <img src={userAvatar} alt={userName} className="w-full h-full object-cover" />
+                <Image src={userAvatar} alt={userName} width={64} height={64} className="w-full h-full object-cover" />
               ) : (
                 <svg viewBox="0 0 40 40" fill="none" width="38" height="38">
                   <circle cx="20" cy="15" r="7" fill="#fff" fillOpacity="0.9" />

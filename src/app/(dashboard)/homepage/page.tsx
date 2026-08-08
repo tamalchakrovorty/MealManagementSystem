@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { format } from "date-fns";
+import Image from "next/image";
 import { queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
@@ -27,6 +28,11 @@ export default async function HomepagePage() {
 
   const messId = membership.mess_id;
 
+  const now = new Date();
+  const mStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const mEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
   const [, latestNotice, todayMenu, totalMealsResult, totalExpensesResult, depositsResult, userMealsResult] =
     await Promise.all([
       queryOne("SELECT id, name FROM messes WHERE id = $1", [messId]),
@@ -38,10 +44,10 @@ export default async function HomepagePage() {
         [messId]
       ),
       queryOne("SELECT * FROM menus WHERE mess_id = $1 AND date = $2", [messId, format(new Date(), "yyyy-MM-dd")]),
-      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1", [messId]),
-      queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1", [messId]),
-      queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2", [messId, user.id]),
-      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2", [messId, user.id]),
+      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
+      queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
+      queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, mStart, mEnd]),
+      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, mStart, mEnd]),
     ]);
 
   const totalMeals = Number((totalMealsResult as any)?.total || 0);
@@ -59,16 +65,16 @@ export default async function HomepagePage() {
       FROM memberships m
       LEFT JOIN (
         SELECT user_id, SUM(amount) as total_deposit
-        FROM deposits WHERE mess_id = $1 GROUP BY user_id
+        FROM deposits WHERE mess_id = $1 AND date >= $3 AND date <= $4 GROUP BY user_id
       ) d ON d.user_id = m.user_id
       LEFT JOIN (
         SELECT user_id, SUM(quantity) as total_meals
-        FROM meal_entries WHERE mess_id = $1
+        FROM meal_entries WHERE mess_id = $1 AND date >= $3 AND date <= $4
         GROUP BY user_id
       ) me ON me.user_id = m.user_id
       WHERE m.mess_id = $1 AND m.status = 'active'
     ) sub WHERE sub.balance < 0`,
-    [messId, mealRate]
+    [messId, mealRate, mStart, mEnd]
   );
   const negativeCount = (negativeBalanceResult as any)?.count || 0;
 
@@ -91,7 +97,7 @@ export default async function HomepagePage() {
             <div className="flex justify-between items-end">
               <div className="flex items-center gap-2">
                 {(latestNotice as any).author_avatar ? (
-                  <img src={(latestNotice as any).author_avatar} alt="" className="w-[28px] h-[28px] rounded-full object-cover" />
+                  <Image src={(latestNotice as any).author_avatar} alt="" width={28} height={28} className="w-[28px] h-[28px] rounded-full object-cover" />
                 ) : (
                   <div className="w-[28px] h-[28px] rounded-full bg-white/25 flex items-center justify-center text-[11px] font-bold">
                     {((latestNotice as any).author_name || "M").charAt(0).toUpperCase()}
@@ -186,13 +192,15 @@ export default async function HomepagePage() {
             </p>
             <small className="text-muted-foreground text-[11px]">{format(new Date(), "EEEE")}</small>
           </div>
-          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
-            <img
-              src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
-              alt="lunch"
-              className="w-full h-full object-cover"
-            />
-          </div>
+            <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
+              <Image
+                src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
+                alt="lunch"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
+            </div>
         </div>
 
         {/* Today's Dinner */}
@@ -204,13 +212,15 @@ export default async function HomepagePage() {
             </p>
             <small className="text-muted-foreground text-[11px]">{format(new Date(), "EEEE")}</small>
           </div>
-          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
-            <img
-              src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
-              alt="dinner"
-              className="w-full h-full object-cover"
-            />
-          </div>
+            <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
+              <Image
+                src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
+                alt="dinner"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
+            </div>
         </div>
       </div>
     </div>

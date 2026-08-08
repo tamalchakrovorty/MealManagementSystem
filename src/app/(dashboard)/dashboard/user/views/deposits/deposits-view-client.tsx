@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
@@ -38,7 +39,7 @@ function getAvatarColor(name: string) {
 function Avatar({ name, avatarUrl, size = "md" }: { name: string; avatarUrl?: string; size?: "sm" | "md" }) {
   const sizeClass = size === "sm" ? "w-8 h-8 text-[13px]" : "w-10 h-10 text-[15px]";
   if (avatarUrl) {
-    return <img src={avatarUrl} alt={name} className={`${sizeClass} rounded-full object-cover shrink-0`} />;
+    return <Image src={avatarUrl} alt={name} width={40} height={40} className={`${sizeClass} rounded-full object-cover shrink-0`} />;
   }
   return (
     <div className={`${sizeClass} rounded-full flex items-center justify-center font-bold shrink-0 ${getAvatarColor(name)}`}>

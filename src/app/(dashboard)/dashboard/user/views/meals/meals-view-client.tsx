@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 
@@ -170,7 +171,7 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                           <div key={row.name} className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] items-center py-2.5 border-b border-border last:border-0 md:hover:bg-muted md:transition-colors">
                             <div className="flex items-center gap-2 min-w-0 pr-2">
                               {row.avatar_url ? (
-                                <img src={row.avatar_url} alt={row.name} className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full object-cover shrink-0 bg-muted" />
+                                <Image src={row.avatar_url} alt={row.name} width={32} height={32} className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full object-cover shrink-0 bg-muted" />
                               ) : (
                                 <div className={`w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0 ${color.bg} ${color.text}`}>
                                   {row.name.charAt(0).toUpperCase()}

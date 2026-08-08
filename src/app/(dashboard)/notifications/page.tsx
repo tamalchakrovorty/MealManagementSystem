@@ -80,10 +80,15 @@ export default async function NotificationsPage() {
 
   const negativeUsers: NegativeUser[] = [];
   if (messId) {
+    const now = new Date();
+    const mStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const mEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
     const [mealData, depositData, expenseData, profilesData] = await Promise.all([
-      query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1", [messId]),
-      query("SELECT user_id, amount FROM deposits WHERE mess_id = $1", [messId]),
-      query("SELECT amount FROM bazar_expenses WHERE mess_id = $1", [messId]),
+      query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
+      query("SELECT user_id, amount FROM deposits WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
+      query("SELECT amount FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
       query(
         `SELECT m.user_id, m.status, p.name, p.avatar_url FROM memberships m
          LEFT JOIN profiles p ON p.id = m.user_id

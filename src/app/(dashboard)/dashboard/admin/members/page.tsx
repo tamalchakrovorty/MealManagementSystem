@@ -7,6 +7,11 @@ export default async function MembersPage() {
   const { user, messId, membership } = await getAdminContext();
   const isManager = (membership as any).role === "manager";
 
+  const now = new Date();
+  const mStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const mEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
   const [activeMembers, leaveRequests, rejectedLeaveRequests, mealsData, depositsData, expenseData, leftMembersRaw, removedUserIds] = await Promise.all([
     query(
       `SELECT m.*, p.name, p.phone, p.avatar_url FROM memberships m
@@ -28,9 +33,9 @@ export default async function MembersPage() {
        ORDER BY r.updated_at DESC`,
       [messId]
     ),
-    query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1", [messId]),
-    query("SELECT user_id, amount FROM deposits WHERE mess_id = $1", [messId]),
-    query("SELECT amount FROM bazar_expenses WHERE mess_id = $1", [messId]),
+    query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
+    query("SELECT user_id, amount FROM deposits WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
+    query("SELECT amount FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, mStart, mEnd]),
     query(
       `SELECT m.*, p.name, p.phone, p.avatar_url FROM memberships m
        LEFT JOIN profiles p ON p.id = m.user_id

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
@@ -279,7 +280,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
                 <div key={member.user_id} className="grid grid-cols-[1fr_120px] md:grid-cols-[1fr_160px] items-center py-2.5 md:py-3 border-b border-border last:border-0 md:hover:bg-muted md:transition-colors">
                   <div className="flex items-center gap-2 min-w-0 pr-2">
                     {member.avatar_url ? (
-                      <img src={member.avatar_url} alt="" className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full object-cover shrink-0 bg-muted" />
+                      <Image src={member.avatar_url} alt="" width={32} height={32} className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full object-cover shrink-0 bg-muted" />
                     ) : (
                       <div
                         className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full flex items-center justify-center font-bold text-[11px] shrink-0"

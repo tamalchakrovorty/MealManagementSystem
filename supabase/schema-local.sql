@@ -189,6 +189,9 @@ CREATE INDEX IF NOT EXISTS idx_menus_mess_id ON public.menus(mess_id);
 CREATE INDEX IF NOT EXISTS idx_contacts_mess_id ON public.contacts(mess_id);
 CREATE INDEX IF NOT EXISTS idx_memberships_user_mess_status ON public.memberships(user_id, mess_id, status);
 CREATE INDEX IF NOT EXISTS idx_meal_entries_mess_date ON public.meal_entries(mess_id, date);
+CREATE INDEX IF NOT EXISTS idx_deposits_mess_date ON public.deposits(mess_id, date);
+CREATE INDEX IF NOT EXISTS idx_bazar_expenses_mess_date ON public.bazar_expenses(mess_id, date);
+CREATE INDEX IF NOT EXISTS idx_bazar_duties_mess_status ON public.bazar_duties(mess_id, status);
 CREATE INDEX IF NOT EXISTS idx_deposits_mess_user ON public.deposits(mess_id, user_id);
 CREATE INDEX IF NOT EXISTS idx_messes_mess_code ON public.messes(mess_code);
 

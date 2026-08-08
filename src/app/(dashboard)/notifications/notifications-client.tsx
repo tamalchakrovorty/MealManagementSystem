@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format, isToday, isYesterday } from "date-fns";
 import { CalendarView } from "./calendar-view";
@@ -244,7 +245,7 @@ export function NotificationsClient({
                       </div>
                     )}
                     {u.avatar_url ? (
-                      <img src={u.avatar_url} alt={u.name} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover bg-muted" />
+                      <Image src={u.avatar_url} alt={u.name} width={40} height={40} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover bg-muted" />
                     ) : (
                       <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
                         {u.name.charAt(0).toUpperCase()}

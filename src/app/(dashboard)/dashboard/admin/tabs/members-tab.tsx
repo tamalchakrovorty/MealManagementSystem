@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { popup } from "@/lib/popup";
 import { format } from "date-fns";
@@ -140,9 +141,9 @@ export function MembersTab({
               {members.map((m) => (
                 <div key={m.user_id} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 relative">
                       {m.avatar_url ? (
-                        <img src={m.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                        <Image src={m.avatar_url} alt="" fill className="rounded-full object-cover" />
                       ) : (
                         m.name?.charAt(0)?.toUpperCase() || "?"
                       )}
@@ -177,9 +178,9 @@ export function MembersTab({
               {pendingDuties.map((d) => (
                 <div key={d.id} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 relative">
                       {d.avatar_url ? (
-                        <img src={d.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                        <Image src={d.avatar_url} alt="" fill className="rounded-full object-cover" />
                       ) : (
                         d.user_name?.charAt(0)?.toUpperCase() || "?"
                       )}
@@ -213,9 +214,9 @@ export function MembersTab({
               {completedDuties.map((d) => (
                 <div key={d.id} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 relative">
                       {d.avatar_url ? (
-                        <img src={d.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                        <Image src={d.avatar_url} alt="" fill className="rounded-full object-cover" />
                       ) : (
                         d.user_name?.charAt(0)?.toUpperCase() || "?"
                       )}

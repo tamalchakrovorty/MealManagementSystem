@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { query, queryOne } from "@/lib/db";
@@ -178,7 +179,7 @@ export default async function StockViewPage() {
                       className="w-12 h-12 md:w-14 md:h-14 rounded-[14px] flex items-center justify-center shrink-0 overflow-hidden"
                       style={{ background: bg }}
                     >
-                      <img src={img} alt={stock.item} className="w-full h-full object-cover" />
+                      <Image src={img} alt={stock.item} width={56} height={56} className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <div className="text-[14px] md:text-[15px] font-bold text-[#1a1a1a] mb-1">{stock.item}</div>
