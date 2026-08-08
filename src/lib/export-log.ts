@@ -209,7 +209,7 @@ function addSummarySheet(wb: ExcelJS.Workbook, params: BuildParams) {
     const meals = params.days.reduce((s, d) => s + (d.meals[m.userId] || 0), 0);
     const guestMeals = params.days.reduce((s, d) => s + (d.guestMeals[m.userId] || 0), 0);
     const deposit = params.days.reduce((s, d) => s + (d.deposits[m.userId] || 0), 0);
-    const expense = meals * params.mealRate;
+    const expense = (meals + guestMeals) * params.mealRate;
     const balance = deposit - expense;
     rowValues.push([m.name, m.role, meals, guestMeals, deposit, expense, balance]);
   }

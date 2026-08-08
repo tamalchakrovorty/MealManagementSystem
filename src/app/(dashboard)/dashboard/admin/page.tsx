@@ -47,7 +47,7 @@ export default async function AdminDashboardPage() {
       queryOne(`SELECT COUNT(*)::int AS count FROM contacts WHERE mess_id = $1`, [messId]),
       queryOne(`SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND date >= $2 AND date <= $3`, [messId, monthStart, monthEnd]),
       queryOne(`SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3`, [messId, monthStart, monthEnd]),
-      queryOne(`SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND is_guest = false AND date >= $2 AND date <= $3`, [messId, monthStart, monthEnd]),
+      queryOne(`SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3`, [messId, monthStart, monthEnd]),
       query(
         `SELECT m.user_id, m.status, p.name, p.avatar_url,
                 COALESCE(me.meals, 0)::numeric AS meals,
@@ -55,10 +55,10 @@ export default async function AdminDashboardPage() {
          FROM memberships m
          LEFT JOIN profiles p ON p.id = m.user_id
          LEFT JOIN (
-           SELECT user_id, SUM(quantity) AS meals
-           FROM meal_entries
-           WHERE mess_id = $1 AND is_guest = false AND date >= $2 AND date <= $3
-           GROUP BY user_id
+          SELECT user_id, SUM(quantity) AS meals
+          FROM meal_entries
+          WHERE mess_id = $1 AND date >= $2 AND date <= $3
+          GROUP BY user_id
          ) me ON me.user_id = m.user_id
          LEFT JOIN (
            SELECT user_id, SUM(amount) AS deposits

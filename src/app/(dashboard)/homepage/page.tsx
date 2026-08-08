@@ -38,10 +38,10 @@ export default async function HomepagePage() {
         [messId]
       ),
       queryOne("SELECT * FROM menus WHERE mess_id = $1 AND date = $2", [messId, format(new Date(), "yyyy-MM-dd")]),
-      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND is_guest = false", [messId]),
+      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1", [messId]),
       queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1", [messId]),
       queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2", [messId, user.id]),
-      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = false", [messId, user.id]),
+      queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2", [messId, user.id]),
     ]);
 
   const totalMeals = Number((totalMealsResult as any)?.total || 0);
@@ -63,7 +63,7 @@ export default async function HomepagePage() {
       ) d ON d.user_id = m.user_id
       LEFT JOIN (
         SELECT user_id, SUM(quantity) as total_meals
-        FROM meal_entries WHERE mess_id = $1 AND is_guest = false
+        FROM meal_entries WHERE mess_id = $1
         GROUP BY user_id
       ) me ON me.user_id = m.user_id
       WHERE m.mess_id = $1 AND m.status = 'active'

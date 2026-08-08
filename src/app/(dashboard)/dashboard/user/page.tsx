@@ -36,13 +36,12 @@ export default async function UserDashboardPage({
   const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const monthEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
 
-  const [mess, totalDepositResult, totalUserMealsResult, totalGuestMealsResult, allExpensesResult, totalMealsResult] = await Promise.all([
+  const [mess, totalDepositResult, totalUserMealsResult, allExpensesResult, totalMealsResult] = await Promise.all([
     queryOne("SELECT * FROM messes WHERE id = $1", [messId]),
     queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
-    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = false AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
-    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = true AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
+    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
     queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, monthStart, monthEnd]),
-    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND is_guest = false AND date >= $2 AND date <= $3", [messId, monthStart, monthEnd]),
+    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, monthStart, monthEnd]),
   ]);
 
   const totalExpenses = Number((allExpensesResult as any)?.total || 0);

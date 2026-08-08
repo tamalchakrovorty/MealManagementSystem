@@ -128,7 +128,7 @@ export async function GET(request: Request) {
         ),
         query(
           `SELECT COALESCE(SUM(quantity), 0) AS total FROM meal_entries
-           WHERE mess_id = $1 AND is_guest = false AND date >= $2::date AND date < $3::date`,
+           WHERE mess_id = $1 AND date >= $2::date AND date < $3::date`,
           [messId, monthStart, nextMonthStart]
         ),
         query(

@@ -71,7 +71,7 @@ export default async function ReportViewPage({
       [messId, monthStart, monthEnd]
     ),
     query(
-      "SELECT user_id, quantity, is_guest FROM meal_entries WHERE mess_id = $1 AND is_guest = false AND date >= $2::date AND date <= $3::date",
+      "SELECT user_id, quantity, is_guest FROM meal_entries WHERE mess_id = $1 AND date >= $2::date AND date <= $3::date",
       [messId, monthStart, monthEnd]
     ),
     query(
@@ -87,7 +87,7 @@ export default async function ReportViewPage({
       [messId, monthStart, monthEnd]
     ),
     query(
-      "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date_str, SUM(quantity) as total FROM meal_entries WHERE mess_id = $1 AND is_guest = false AND date >= $2::date AND date <= $3::date GROUP BY TO_CHAR(date, 'YYYY-MM-DD') ORDER BY TO_CHAR(date, 'YYYY-MM-DD')",
+      "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date_str, SUM(quantity) as total FROM meal_entries WHERE mess_id = $1 AND date >= $2::date AND date <= $3::date GROUP BY TO_CHAR(date, 'YYYY-MM-DD') ORDER BY TO_CHAR(date, 'YYYY-MM-DD')",
       [messId, monthStart, monthEnd]
     ),
   ]);

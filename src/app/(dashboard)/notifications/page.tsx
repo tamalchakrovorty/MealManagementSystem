@@ -81,7 +81,7 @@ export default async function NotificationsPage() {
   const negativeUsers: NegativeUser[] = [];
   if (messId) {
     const [mealData, depositData, expenseData, profilesData] = await Promise.all([
-      query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1 AND is_guest = false", [messId]),
+      query("SELECT user_id, quantity FROM meal_entries WHERE mess_id = $1", [messId]),
       query("SELECT user_id, amount FROM deposits WHERE mess_id = $1", [messId]),
       query("SELECT amount FROM bazar_expenses WHERE mess_id = $1", [messId]),
       query(
