@@ -49,21 +49,21 @@ export function MessCodeClient({ messCode }: { messCode: string }) {
     <div className="space-y-4 max-w-lg mx-auto">
       {/* Header */}
       <div className="flex items-center justify-center relative px-1 pt-4">
-        <Link href="/dashboard/admin" className="absolute left-1 p-2">
+        <Link href="/dashboard/admin" className="absolute left-1 p-2 text-foreground">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
         <span className="text-[17px] font-bold">Your Mess Code</span>
       </div>
 
       {/* Subtitle */}
-      <p className="text-center text-[13.5px] text-[#6a4fd8] font-medium leading-relaxed px-6">
+      <p className="text-center text-[13.5px] text-primary font-medium leading-relaxed px-6">
         Share this code with others<br />to join your mess
       </p>
 
       {/* Code Box */}
-      <div className="border-2 border-dashed border-[#c9c0f2] rounded-[14px] bg-white py-4 text-center">
+      <div className="border-2 border-dashed border-primary/20 rounded-[14px] bg-card py-4 text-center">
         <span className="text-[22px] font-bold tracking-wider">{code}</span>
       </div>
 
@@ -71,20 +71,20 @@ export function MessCodeClient({ messCode }: { messCode: string }) {
       <div className="flex gap-3">
         <button
           onClick={handleCopy}
-          className="flex-1 bg-[#5b3fd6] text-white rounded-xl py-3.5 text-sm font-bold"
+          className="flex-1 bg-primary text-primary-foreground rounded-xl py-3.5 text-sm font-bold"
         >
           Copy Code
         </button>
         <button
           onClick={() => setShareOpen(true)}
-          className="flex-1 bg-white text-[#5b3fd6] border-[1.6px] border-[#d9d3f7] rounded-xl py-3.5 text-sm font-bold"
+          className="flex-1 bg-card text-primary border-[1.6px] border-primary/20 rounded-xl py-3.5 text-sm font-bold"
         >
           Share Code
         </button>
       </div>
 
       {/* QR Code */}
-      <div className="bg-white rounded-2xl p-5 flex justify-center" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
+      <div className="bg-card rounded-2xl p-5 flex justify-center" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
         <img
           src={`https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${code}&color=1a1a1a&bgcolor=ffffff`}
           alt="QR Code"
@@ -96,7 +96,7 @@ export function MessCodeClient({ messCode }: { messCode: string }) {
       <button
         onClick={handleRegenerate}
         disabled={regenerating}
-        className="w-full bg-white text-[#5b3fd6] border-[1.6px] border-[#d9d3f7] rounded-[14px] py-3.5 text-[14.5px] font-bold flex items-center justify-center gap-2 disabled:opacity-60"
+        className="w-full bg-card text-primary border-[1.6px] border-primary/20 rounded-[14px] py-3.5 text-[14.5px] font-bold flex items-center justify-center gap-2 disabled:opacity-60"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M4 12C4 7.58 7.58 4 12 4C15 4 17.6 5.6 19 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

@@ -99,22 +99,22 @@ export function MembersTab({
   };
 
   const roleColor = (role: string) => {
-    if (role === "manager") return "bg-[#ece9fb] text-[#6a4fd8]";
+    if (role === "manager") return "bg-primary/10 text-primary";
     if (role === "moderator") return "bg-[#fbe4cf] text-[#d98a1c]";
-    return "bg-[#f4f4fb] text-[#777]";
+    return "bg-muted text-muted-foreground";
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 md:space-y-6">
       {/* Tabs */}
-      <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex">
+      <div className="bg-muted rounded-[14px] p-1.5 flex">
         {(["assign", "pending", "completed"] as TabType[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTab(t)}
-            className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all capitalize ${
-              tab === t ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
+            className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[12px] md:text-[13px] font-bold transition-all capitalize ${
+              tab === t ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             {t === "assign" && "Assign Bazar"}
@@ -128,19 +128,19 @@ export function MembersTab({
       {tab === "assign" && (
         <div className="space-y-3">
           {/* Date Picker */}
-          <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-            <label className="text-[13px] font-bold text-[#555] mb-2 block">Assign for Date</label>
+          <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+            <label className="text-[13px] font-bold text-muted-foreground mb-2 block">Assign for Date</label>
             <DatePickerField value={selectedDate} onChange={setSelectedDate} className="w-full font-semibold" />
           </div>
 
           {/* Members List */}
-          <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+          <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
             <h3 className="text-[15px] font-bold mb-3">Members ({members.length})</h3>
             <div className="space-y-2">
               {members.map((m) => (
-                <div key={m.user_id} className="flex items-center justify-between py-2.5 border-b border-[#f0f0f5] last:border-0">
+                <div key={m.user_id} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0">
                       {m.avatar_url ? (
                         <img src={m.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                       ) : (
@@ -148,15 +148,15 @@ export function MembersTab({
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#333]">{m.name || "Unknown"}</p>
-                      <p className="text-xs text-[#999]">{m.phone || ""}</p>
+                      <p className="text-sm font-semibold text-foreground">{m.name || "Unknown"}</p>
+                      <p className="text-xs text-muted-foreground">{m.phone || ""}</p>
                     </div>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${roleColor(m.role)}`}>{m.role}</span>
                   </div>
                   <button
                     onClick={() => handleAssign(m.user_id)}
                     disabled={assigning === m.user_id}
-                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#ece9fb] text-[#6a4fd8] disabled:opacity-50"
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-primary/10 text-primary disabled:opacity-50"
                   >
                     {assigning === m.user_id ? "..." : "Assign"}
                   </button>
@@ -169,15 +169,15 @@ export function MembersTab({
 
       {/* Pending Tab */}
       {tab === "pending" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
           {pendingDuties.length === 0 ? (
-            <p className="text-sm text-[#999] text-center py-6">No pending bazar duties</p>
+            <p className="text-sm text-muted-foreground text-center py-6">No pending bazar duties</p>
           ) : (
             <div className="space-y-2">
               {pendingDuties.map((d) => (
-                <div key={d.id} className="flex items-center justify-between py-2.5 border-b border-[#f0f0f5] last:border-0">
+                <div key={d.id} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0">
                       {d.avatar_url ? (
                         <img src={d.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                       ) : (
@@ -185,8 +185,8 @@ export function MembersTab({
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#333]">{d.user_name || "Unknown"}</p>
-                      <p className="text-xs text-[#999]">Date: {fmtDate(d.assigned_date)}</p>
+                      <p className="text-sm font-semibold text-foreground">{d.user_name || "Unknown"}</p>
+                      <p className="text-xs text-muted-foreground">Date: {fmtDate(d.assigned_date)}</p>
                     </div>
                   </div>
                   <button
@@ -205,15 +205,15 @@ export function MembersTab({
 
       {/* Completed Tab */}
       {tab === "completed" && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
           {completedDuties.length === 0 ? (
-            <p className="text-sm text-[#999] text-center py-6">No completed bazar duties</p>
+            <p className="text-sm text-muted-foreground text-center py-6">No completed bazar duties</p>
           ) : (
             <div className="space-y-2">
               {completedDuties.map((d) => (
-                <div key={d.id} className="flex items-center justify-between py-2.5 border-b border-[#f0f0f5] last:border-0">
+                <div key={d.id} className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0">
                       {d.avatar_url ? (
                         <img src={d.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                       ) : (
@@ -221,11 +221,11 @@ export function MembersTab({
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#333]">{d.user_name || "Unknown"}</p>
-                      <p className="text-xs text-[#999]">Date: {fmtDate(d.assigned_date)}</p>
+                      <p className="text-sm font-semibold text-foreground">{d.user_name || "Unknown"}</p>
+                      <p className="text-xs text-muted-foreground">Date: {fmtDate(d.assigned_date)}</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#f4f4fb] text-[#777]">
+                  <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-muted text-muted-foreground">
                     Done
                   </span>
                 </div>
@@ -237,12 +237,12 @@ export function MembersTab({
 
       {/* Pending Members Section */}
       {tab === "assign" && pendingMembers.length > 0 && (
-        <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
           <h3 className="text-[15px] font-bold mb-3">Pending Members</h3>
           <div className="space-y-2">
             {pendingMembers.map((m: any) => (
-              <div key={m.user_id} className="flex items-center justify-between py-2 border-b border-[#f0f0f5] last:border-0">
-                <span className="text-sm text-[#333]">{m.name || "Unknown"}</span>
+              <div key={m.user_id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                <span className="text-sm text-foreground">{m.name || "Unknown"}</span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fbe9c9] text-[#d98a1c]">Pending</span>
               </div>
             ))}

@@ -50,7 +50,7 @@ export default async function ViewsPage() {
     {
       id: "menu",
       label: "Monthly Menu",
-      bg: "bg-[#ece9fb]",
+      bg: "bg-primary/10",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M3 5H21V19H3V5Z" stroke="#6a4fd8" strokeWidth="1.8" strokeLinejoin="round" />
@@ -88,15 +88,15 @@ export default async function ViewsPage() {
       <div className="flex items-center gap-3 pt-5 pb-2">
         <Link
           href="/dashboard/user"
-          className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
+          className="w-[46px] h-[46px] min-w-[46px] bg-card rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1e2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-foreground">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
         <div>
-          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Other Views</h1>
-          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Browse detailed reports</p>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Other Views</h1>
+          <p className="text-[13px] md:text-[15px] text-muted-foreground">Browse detailed reports</p>
         </div>
       </div>
 
@@ -106,12 +106,12 @@ export default async function ViewsPage() {
           <Link
             key={view.id}
             href={`/dashboard/user/views/${view.id}`}
-            className="bg-white rounded-[18px] p-5 flex items-center gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+            className="bg-card rounded-[18px] p-5 flex items-center gap-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
           >
             <div className={`w-[46px] h-[46px] rounded-[14px] flex items-center justify-center shrink-0 ${view.bg}`}>
               {view.icon}
             </div>
-            <span className="flex-1 text-[15px] md:text-[16px] font-semibold text-[#1e2130]">{view.label}</span>
+            <span className="flex-1 text-[15px] md:text-[16px] font-semibold text-foreground">{view.label}</span>
             <svg className="text-[#bbb]" width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

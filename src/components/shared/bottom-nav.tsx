@@ -37,7 +37,7 @@ export function BottomNav({ isManagerOrModerator, unreadCount }: BottomNavProps)
               <div className="relative">
                 <link.icon className="h-6 w-6" />
                 {link.href === "/notifications" && unreadCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#6a4fd8] text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
+                  <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}

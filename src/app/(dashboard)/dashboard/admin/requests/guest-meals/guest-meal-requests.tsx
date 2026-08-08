@@ -55,38 +55,38 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
   const getBadge = (type: string) => MEAL_TYPE_BADGES[type] || MEAL_TYPE_BADGES.full;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 md:space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white rounded-2xl p-4 text-center" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="w-9 h-9 rounded-full bg-[#fff2df] flex items-center justify-center mx-auto mb-2">
-            <span className="text-[15px] font-bold text-[#d98a1c]">{pending.length}</span>
+      <div className="grid grid-cols-3 gap-3 md:gap-4">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-[#fff2df] flex items-center justify-center mx-auto mb-2 transition-all">
+            <span className="text-[15px] md:text-[17px] font-bold text-[#d98a1c]">{pending.length}</span>
           </div>
-          <p className="text-[11px] font-semibold text-[#8b8fa3]">Pending</p>
+          <p className="text-[11px] md:text-[13px] font-semibold text-muted-foreground">Pending</p>
         </div>
-        <div className="bg-white rounded-2xl p-4 text-center" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="w-9 h-9 rounded-full bg-[#d9f2e0] flex items-center justify-center mx-auto mb-2">
-            <span className="text-[15px] font-bold text-[#1fae70]">{approved.length}</span>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-[#d9f2e0] flex items-center justify-center mx-auto mb-2 transition-all">
+            <span className="text-[15px] md:text-[17px] font-bold text-[#1fae70]">{approved.length}</span>
           </div>
-          <p className="text-[11px] font-semibold text-[#8b8fa3]">Approved</p>
+          <p className="text-[11px] md:text-[13px] font-semibold text-muted-foreground">Approved</p>
         </div>
-        <div className="bg-white rounded-2xl p-4 text-center" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <div className="w-9 h-9 rounded-full bg-[#fadada] flex items-center justify-center mx-auto mb-2">
-            <span className="text-[15px] font-bold text-[#e5484d]">{rejected.length}</span>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-[#fadada] flex items-center justify-center mx-auto mb-2 transition-all">
+            <span className="text-[15px] md:text-[17px] font-bold text-[#e5484d]">{rejected.length}</span>
           </div>
-          <p className="text-[11px] font-semibold text-[#8b8fa3]">Rejected</p>
+          <p className="text-[11px] md:text-[13px] font-semibold text-muted-foreground">Rejected</p>
         </div>
       </div>
 
       {/* Filter Toggle */}
-      <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex">
+      <div className="bg-muted rounded-[14px] p-1.5 flex">
         {(["all", "pending", "approved", "rejected"] as FilterType[]).map((f) => (
           <button
             key={f}
             type="button"
             onClick={() => setFilter(f)}
-            className={`flex-1 py-2 rounded-[10px] text-[12px] font-bold transition-all capitalize ${
-              filter === f ? "bg-white text-[#333] shadow-sm" : "text-[#8b8fa3]"
+            className={`flex-1 py-2 md:py-2.5 rounded-[10px] text-[12px] md:text-[13px] font-bold transition-all capitalize ${
+              filter === f ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             {f}
@@ -96,11 +96,11 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
 
       {/* Request List */}
       {filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-          <p className="text-sm text-[#999]">No {filter === "all" ? "" : filter} requests</p>
+        <div className="bg-card rounded-[18px] p-8 md:p-12 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border">
+          <p className="text-sm md:text-base text-muted-foreground">No {filter === "all" ? "" : filter} requests</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
           {filtered.map((req: any) => {
             const details = typeof req.details === "string" ? JSON.parse(req.details) : req.details;
             const guests = details?.guests || [];
@@ -116,19 +116,18 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
             return (
               <div
                 key={req.id}
-                className="bg-white rounded-2xl p-4"
-                style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}
+                className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
               >
                 {/* Top: Brought by + Status */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full bg-[#7c6cf6] flex items-center justify-center text-white text-sm font-bold shrink-0">
+                    <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm md:text-base font-bold shrink-0">
                       {(req.name || "U").charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#333]">{req.name || "Unknown"}</p>
+                      <p className="text-sm md:text-base font-semibold text-foreground">{req.name || "Unknown"}</p>
                       {dateStr && (
-                        <p className="text-[11px] text-[#999] mt-0.5">{dateStr}</p>
+                        <p className="text-[11px] md:text-[12px] text-muted-foreground mt-0.5">{dateStr}</p>
                       )}
                     </div>
                   </div>
@@ -147,8 +146,8 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
                       const lunchBadge = g.lunch > 0 ? getBadge(g.lunch_type || "full") : null;
                       const dinnerBadge = g.dinner > 0 ? getBadge(g.dinner_type || "full") : null;
                       return (
-                        <div key={i} className="bg-[#f9f9fc] rounded-xl px-3 py-2.5">
-                          <p className="text-[13px] font-semibold text-[#333] mb-1.5">{g.name}</p>
+                        <div key={i} className="bg-muted/50 rounded-xl px-3 py-2.5 md:px-4 md:py-3">
+                          <p className="text-[13px] font-semibold text-foreground mb-1.5">{g.name}</p>
                           <div className="flex gap-2">
                             {lunchBadge && (
                               <div className="flex items-center gap-1.5">
@@ -181,7 +180,7 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
 
                 {/* Shared With */}
                 {sharedWith.length > 0 && (
-                  <p className="text-[11px] text-[#6a4fd8] font-medium mb-3">
+                  <p className="text-[11px] md:text-[12px] text-primary font-medium mb-3">
                     Shared with: {sharedWith.map((id: string) => getMemberName(id)).join(", ")}
                   </p>
                 )}
@@ -192,14 +191,14 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
                     <button
                       onClick={() => handleRequest(req.id, "approved")}
                       disabled={loading === req.id}
-                      className="flex-1 py-2.5 rounded-xl text-[13px] font-bold bg-[#d9f2e0] text-[#1fae70] disabled:opacity-60 transition-all"
+                      className="flex-1 py-2.5 md:py-3 rounded-xl text-[13px] md:text-[14px] font-bold bg-[#d9f2e0] text-[#1fae70] disabled:opacity-60 transition-all"
                     >
                       {loading === req.id ? "..." : "Approve"}
                     </button>
                     <button
                       onClick={() => handleRequest(req.id, "rejected")}
                       disabled={loading === req.id}
-                      className="flex-1 py-2.5 rounded-xl text-[13px] font-bold bg-[#fadada] text-[#e5484d] disabled:opacity-60 transition-all"
+                      className="flex-1 py-2.5 md:py-3 rounded-xl text-[13px] md:text-[14px] font-bold bg-[#fadada] text-[#e5484d] disabled:opacity-60 transition-all"
                     >
                       {loading === req.id ? "..." : "Reject"}
                     </button>

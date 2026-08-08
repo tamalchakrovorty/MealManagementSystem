@@ -153,7 +153,7 @@ export function JoinMessClient() {
       <div className="flex-1 px-6 pb-8 flex flex-col items-center">
         {/* Title */}
         <h1 className="text-xl font-bold text-center mt-1 mb-1.5">Join a Mess</h1>
-        <p className="text-[13.5px] text-[#777] text-center leading-relaxed mb-5">
+        <p className="text-[13.5px] text-muted-foreground text-center leading-relaxed mb-5">
           Enter the mess code shared<br />with you
         </p>
 
@@ -171,7 +171,7 @@ export function JoinMessClient() {
             <path d="M209 89C209 78 216 71 225 71C234 71 241 78 241 89" fill="#1a1410" />
             <rect x="206" y="103" width="38" height="47" rx="12" fill="#e0a23a" />
           </svg>
-          <div className="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-[34px] h-[34px] rounded-full bg-[#5b3fd6] flex items-center justify-center" style={{ boxShadow: "0 3px 8px rgba(91,63,214,0.4)" }}>
+          <div className="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-[34px] h-[34px] rounded-full bg-primary flex items-center justify-center" style={{ boxShadow: "0 3px 8px rgba(91,63,214,0.4)" }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M12 5V19M5 12H19" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
             </svg>
@@ -180,21 +180,21 @@ export function JoinMessClient() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="w-full">
-          <label className="block text-[12.5px] font-semibold text-[#666] mb-2">Mess Code</label>
+          <label className="block text-[12.5px] font-semibold text-muted-foreground mb-2">Mess Code</label>
           <input
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
             maxLength={6}
             placeholder="e.g. GHM-7X9K"
-            className="w-full bg-white border-[1.4px] border-[#e3e0f5] rounded-xl px-4 py-3.5 text-[15px] font-semibold text-[#222] mb-4 outline-none focus:border-[#6a4fd8] transition-colors"
+            className="w-full bg-card border-[1.4px] border-border rounded-xl px-4 py-3.5 text-[15px] font-semibold text-foreground mb-4 outline-none focus:border-primary transition-colors"
             required
           />
 
           {/* Divider */}
           <div className="flex items-center gap-2.5 w-full mb-4">
             <div className="flex-1 h-px bg-[#e3e0f5]" />
-            <span className="text-xs text-[#999] font-semibold">OR</span>
+            <span className="text-xs text-muted-foreground font-semibold">OR</span>
             <div className="flex-1 h-px bg-[#e3e0f5]" />
           </div>
 
@@ -202,7 +202,7 @@ export function JoinMessClient() {
           <button
             type="button"
             onClick={startScanner}
-            className="w-full bg-white text-[#5b3fd6] border-[1.6px] border-[#d9d3f7] rounded-xl py-3.5 text-sm font-bold flex items-center justify-center gap-2.5 mb-4"
+            className="w-full bg-card text-primary border-[1.6px] border-border rounded-xl py-3.5 text-sm font-bold flex items-center justify-center gap-2.5 mb-4"
           >
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
               <path d="M4 8V5C4 4.44772 4.44772 4 5 4H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -231,14 +231,14 @@ export function JoinMessClient() {
           <button
             type="submit"
             disabled={loading || !code.trim()}
-            className="w-full bg-[#5b3fd6] text-white rounded-[14px] py-4 text-[15.5px] font-bold disabled:opacity-50 mb-4"
+            className="w-full bg-primary text-primary-foreground rounded-[14px] py-4 text-[15.5px] font-bold disabled:opacity-50 mb-4"
           >
             {loading ? "Sending request..." : "Submit Request"}
           </button>
         </form>
 
         {/* Back */}
-        <Link href="/homepage" className="text-sm font-bold text-[#6a4fd8]">
+        <Link href="/homepage" className="text-sm font-bold text-primary">
           Back to Dashboard
         </Link>
       </div>

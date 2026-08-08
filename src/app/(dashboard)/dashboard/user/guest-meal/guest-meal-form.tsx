@@ -25,9 +25,9 @@ interface Member {
 }
 
 const mealOptions: { value: MealType; label: string; qty: number; color: string; bg: string; border: string }[] = [
-  { value: "full", label: "Full Meal", qty: 1, color: "#1fae70", bg: "#e3faf0", border: "#c5f0de" },
-  { value: "rice_only", label: "Rice Only", qty: 0.5, color: "#d98a1c", bg: "#fff2df", border: "#fde9c8" },
-  { value: "curry_only", label: "Curry Only", qty: 0.5, color: "#c47a20", bg: "#fef3e2", border: "#fde9c8" },
+  { value: "full", label: "Full Meal", qty: 1, color: "var(--success)", bg: "var(--success-bg)", border: "var(--success-border)" },
+  { value: "rice_only", label: "Rice Only", qty: 0.5, color: "var(--warning)", bg: "var(--warning-bg)", border: "var(--warning-border)" },
+  { value: "curry_only", label: "Curry Only", qty: 0.5, color: "var(--warning)", bg: "var(--warning-bg)", border: "var(--warning-border)" },
 ];
 
 export function GuestMealForm({ messId, members }: { messId: string; members: Member[] }) {
@@ -43,6 +43,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
     { name: "", lunch: 0, lunchType: "full", dinner: 0, dinnerType: "full", sharedWith: [] },
   ]);
   const [expandedShare, setExpandedShare] = useState<Record<number, boolean>>({});
+  const [searchQuery, setSearchQuery] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(false);
 
   const today = todayStr;
@@ -128,15 +129,14 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
     const guest = guests[guestIdx];
     const currentQty = slot === "lunch" ? guest.lunch : guest.dinner;
     const currentType = slot === "lunch" ? guest.lunchType : guest.dinnerType;
-    const slotColor = slot === "lunch" ? "#18B875" : "#F59E0B";
-    const slotBg = slot === "lunch" ? "#f0faf5" : "#fffbf5";
-    const slotBorder = slot === "lunch" ? "#d5f5e5" : "#fde9c8";
 
     return (
-      <div className="flex-1 rounded-[16px] p-3.5 md:p-4 space-y-2.5" style={{ background: slotBg, border: `1.5px solid ${slotBorder}` }}>
+      <div className={`flex-1 rounded-[16px] p-3.5 md:p-4 space-y-2.5 border ${
+        slot === "lunch" ? "bg-lunch-bg border-lunch-border" : "bg-dinner-bg border-dinner-border"
+      }`} style={{ borderWidth: "1.5px" }}>
         <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ background: slotColor }} />
-          <p className="text-[13px] md:text-[14px] font-bold capitalize" style={{ color: slotColor }}>{slot}</p>
+          <div className={`w-2.5 h-2.5 rounded-full ${slot === "lunch" ? "bg-lunch" : "bg-dinner"}`} />
+          <p className={`text-[13px] md:text-[14px] font-bold capitalize ${slot === "lunch" ? "text-lunch" : "text-dinner"}`}>{slot}</p>
         </div>
         <div className="space-y-1.5">
           {mealOptions.map((opt) => {
@@ -149,12 +149,9 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
                 className={`w-full py-2 md:py-2.5 rounded-[12px] text-[12px] md:text-[13px] font-bold transition-all duration-200 border ${
                   isActive
                     ? "text-white border-transparent shadow-sm"
-                    : "border-transparent hover:scale-[1.02]"
+                    : "bg-card text-muted-foreground border-border hover:scale-[1.02]"
                 }`}
-                style={isActive
-                  ? { background: opt.color, borderColor: opt.color }
-                  : { background: "#fff", color: "#666", borderColor: slotBorder }
-                }
+                style={isActive ? { background: opt.color, borderColor: opt.color } : undefined}
               >
                 {opt.label}
               </button>
@@ -172,15 +169,15 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
         <div className="flex items-center gap-3 pt-5 pb-2">
           <Link
             href="/dashboard/user"
-            className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
+            className="w-[46px] h-[46px] min-w-[46px] bg-card rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1e2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-foreground">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Request Guest Meal</h1>
-            <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Add guests to have meals with you</p>
+            <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Request Guest Meal</h1>
+            <p className="text-[13px] md:text-[15px] text-muted-foreground">Add guests to have meals with you</p>
           </div>
         </div>
 
@@ -188,7 +185,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
           {/* Hero Section - Two Columns on Desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {/* Left Card - Illustration */}
-            <div className="bg-white rounded-[24px] p-6 md:p-8 shadow-[0_2px_12px_rgba(30,30,60,0.04)] md:hover:-translate-y-[2px] md:transition-all md:duration-300 flex flex-col items-center justify-center text-center">
+            <div className="bg-card rounded-[24px] p-6 md:p-8 shadow-[0_2px_12px_rgba(30,30,60,0.04)] md:hover:-translate-y-[2px] md:transition-all md:duration-300 flex flex-col items-center justify-center text-center">
               <svg viewBox="0 0 320 170" xmlns="http://www.w3.org/2000/svg" className="w-full max-w-[280px] mb-5">
                 <ellipse cx="160" cy="150" rx="90" ry="12" fill="#d6f3e4" />
                 <rect x="80" y="140" width="160" height="8" fill="#b8e8d0" rx="4" />
@@ -203,16 +200,16 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
                 <circle cx="160" cy="55" r="12" fill="#3CB878" />
                 <path d="M154 55L158 59L166 51" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <h2 className="text-[18px] md:text-[20px] font-bold text-[#1e2130] mb-2">Add guests to have meals with you</h2>
-              <p className="text-[13px] md:text-[14px] text-[#7D8596] leading-relaxed">You can request meals for one or multiple days.</p>
+              <h2 className="text-[18px] md:text-[20px] font-bold text-foreground mb-2">Add guests to have meals with you</h2>
+              <p className="text-[13px] md:text-[14px] text-muted-foreground leading-relaxed">You can request meals for one or multiple days.</p>
             </div>
 
             {/* Right Card - Duration & Date */}
-            <div className="bg-white rounded-[24px] p-5 md:p-6 shadow-[0_2px_12px_rgba(30,30,60,0.04)] md:hover:-translate-y-[2px] md:transition-all md:duration-300 flex flex-col gap-5">
+            <div className="bg-card rounded-[24px] p-5 md:p-6 shadow-[0_2px_12px_rgba(30,30,60,0.04)] md:hover:-translate-y-[2px] md:transition-all md:duration-300 flex flex-col gap-5">
               {/* Duration */}
               <div>
-                <label className="block text-[13px] md:text-[14px] font-semibold text-[#7D8596] mb-2.5">Duration</label>
-                <div className="flex gap-2 bg-[#F7F8FC] rounded-[14px] p-1.5">
+                <label className="block text-[13px] md:text-[14px] font-semibold text-muted-foreground mb-2.5">Duration</label>
+                <div className="flex gap-2 bg-muted rounded-[14px] p-1.5">
                   {(["one_day", "multi_day"] as const).map((d) => (
                     <button
                       key={d}
@@ -220,8 +217,8 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
                       onClick={() => setDuration(d)}
                       className={`flex-1 py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[14px] font-bold transition-all duration-200 ${
                         duration === d
-                          ? "bg-[#6A4FD8] text-white shadow-sm"
-                          : "text-[#7D8596] hover:text-[#1e2130]"
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
                       {d === "one_day" ? "One Day" : "Multiple Days"}
@@ -232,22 +229,22 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
 
               {/* Date Picker */}
               <div className="flex-1">
-                <label className="block text-[13px] md:text-[14px] font-semibold text-[#7D8596] mb-2.5">
+                <label className="block text-[13px] md:text-[14px] font-semibold text-muted-foreground mb-2.5">
                   {duration === "one_day" ? "Date" : "From"}
                 </label>
                 {duration === "one_day" ? (
                   <div className="h-[52px]">
-                    <DatePickerField value={date} onChange={setDate} min={today} max={maxDate} className="!h-[52px] !rounded-[14px] !border-[#ECEEF5] !text-[15px] font-semibold" />
+                    <DatePickerField value={date} onChange={setDate} min={today} max={maxDate} className="!h-[52px] !rounded-[14px] !border-border !text-[15px] font-semibold" />
                   </div>
                 ) : (
                   <div className="space-y-3">
                     <div className="h-[52px]">
-                      <DatePickerField value={startDate} onChange={setStartDate} min={today} max={maxDate} className="!h-[52px] !rounded-[14px] !border-[#ECEEF5] !text-[15px] font-semibold" />
+                      <DatePickerField value={startDate} onChange={setStartDate} min={today} max={maxDate} className="!h-[52px] !rounded-[14px] !border-border !text-[15px] font-semibold" />
                     </div>
                     <div>
-                      <label className="block text-[13px] md:text-[14px] font-semibold text-[#7D8596] mb-2.5">To</label>
+                      <label className="block text-[13px] md:text-[14px] font-semibold text-muted-foreground mb-2.5">To</label>
                       <div className="h-[52px]">
-                        <DatePickerField value={endDate} onChange={setEndDate} min={startDate} max={maxDate} className="!h-[52px] !rounded-[14px] !border-[#ECEEF5] !text-[15px] font-semibold" />
+                        <DatePickerField value={endDate} onChange={setEndDate} min={startDate} max={maxDate} className="!h-[52px] !rounded-[14px] !border-border !text-[15px] font-semibold" />
                       </div>
                     </div>
                   </div>
@@ -256,12 +253,12 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
 
               {/* Multi-day preview */}
               {duration === "multi_day" && (
-                <div className="bg-[#F7F8FC] rounded-[14px] px-4 py-2.5 flex items-center gap-2">
+                <div className="bg-muted rounded-[14px] px-4 py-2.5 flex items-center gap-2">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                     <rect x="3" y="4" width="18" height="18" rx="2" stroke="#6A4FD8" strokeWidth="1.8" />
                     <path d="M16 2V6M8 2V6M3 10H21" stroke="#6A4FD8" strokeWidth="1.8" strokeLinecap="round" />
                   </svg>
-                  <span className="text-[12px] md:text-[13px] font-semibold text-[#6A4FD8]">
+                  <span className="text-[12px] md:text-[13px] font-semibold text-primary">
                     {eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) }).length} day{eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) }).length > 1 ? "s" : ""} selected
                   </span>
                 </div>
@@ -270,27 +267,27 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
           </div>
 
           {/* Guests Section */}
-          <div className="bg-white rounded-[24px] shadow-[0_2px_12px_rgba(30,30,60,0.04)] overflow-hidden">
+          <div className="bg-card rounded-[24px] shadow-[0_2px_12px_rgba(30,30,60,0.04)] overflow-hidden">
             {/* Guests Header */}
-            <div className="px-5 md:px-6 py-4 border-b border-[#ECEEF5]">
-              <h3 className="text-[16px] md:text-[18px] font-bold text-[#1e2130]">Guests</h3>
+            <div className="px-5 md:px-6 py-4 border-b border-border">
+              <h3 className="text-[16px] md:text-[18px] font-bold text-foreground">Guests</h3>
             </div>
 
             {/* Guest Entries */}
-            <div className="divide-y divide-[#ECEEF5]">
+            <div className="divide-y divide-border">
               {guests.map((guest, idx) => (
                 <div key={idx} className="p-4 md:p-6 space-y-4">
                   {/* Guest Name */}
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#6A4FD8]/10 flex items-center justify-center shrink-0">
-                      <span className="text-[14px] font-bold text-[#6A4FD8]">{idx + 1}</span>
+                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <span className="text-[14px] font-bold text-primary">{idx + 1}</span>
                     </div>
                     <input
                       type="text"
                       value={guest.name}
                       onChange={(e) => updateGuest(idx, "name", e.target.value)}
                       placeholder={`Guest ${idx + 1} name`}
-                      className="flex-1 h-[52px] bg-[#F7F8FC] border border-[#ECEEF5] rounded-[14px] px-4 text-[15px] font-semibold text-[#1e2130] placeholder:text-[#aaa] placeholder:font-normal outline-none focus:border-[#6A4FD8] focus:ring-2 focus:ring-[#6A4FD8]/20 transition-all"
+                      className="flex-1 h-[52px] bg-muted border border-border rounded-[14px] px-4 text-[15px] font-semibold text-foreground placeholder:text-muted-foreground placeholder:font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                       required
                     />
                     {guests.length > 1 && (
@@ -318,7 +315,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
                       <button
                         type="button"
                         onClick={() => setExpandedShare((prev) => ({ ...prev, [idx]: !prev[idx] }))}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[14px] text-[13px] md:text-[14px] font-semibold transition-colors border border-[#ECEEF5] bg-[#F7F8FC] text-[#6A4FD8] hover:bg-[#ede9fb]"
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[14px] text-[13px] md:text-[14px] font-semibold transition-colors border border-border bg-muted text-primary hover:bg-muted"
                       >
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -332,45 +329,72 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
                       </button>
 
                       {expandedShare[idx] && (
-                        <div className="mt-2 space-y-1 max-h-40 overflow-y-auto bg-white border border-[#ECEEF5] rounded-[14px] p-2">
+                        <div className="mt-2 bg-card border border-border rounded-[14px] overflow-hidden">
                           {members.length === 0 ? (
-                            <p className="text-[12px] md:text-[13px] text-[#999] p-2">No other members in this mess</p>
+                            <p className="text-[12px] md:text-[13px] text-muted-foreground p-4">No other members in this mess</p>
                           ) : (
-                            members.map((m) => (
-                              <div
-                                key={m.user_id}
-                                onClick={() => {
-                                  setGuests((prev) =>
-                                    prev.map((g, i) => {
-                                      if (i !== idx) return g;
-                                      const has = g.sharedWith.includes(m.user_id);
-                                      return {
-                                        ...g,
-                                        sharedWith: has
-                                          ? g.sharedWith.filter((id) => id !== m.user_id)
-                                          : [...g.sharedWith, m.user_id],
-                                      };
-                                    })
-                                  );
-                                }}
-                                className="flex items-center gap-3 py-2 px-3 rounded-[12px] hover:bg-[#F7F8FC] cursor-pointer transition-colors"
-                              >
-                                <div
-                                  className={`w-5 h-5 rounded-[6px] border-[1.5px] flex items-center justify-center transition-colors ${
-                                    guest.sharedWith.includes(m.user_id)
-                                      ? "bg-[#6A4FD8] border-[#6A4FD8]"
-                                      : "border-[#ccc]"
-                                  }`}
-                                >
-                                  {guest.sharedWith.includes(m.user_id) && (
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                                      <path d="M5 12L10 17L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                  )}
+                            <>
+                              {/* Search Input */}
+                              <div className="sticky top-0 bg-card px-3 py-2 border-b border-border">
+                                <div className="relative">
+                                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" />
+                                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                  </svg>
+                                  <input
+                                    type="text"
+                                    value={searchQuery[idx] || ""}
+                                    onChange={(e) => setSearchQuery((prev) => ({ ...prev, [idx]: e.target.value }))}
+                                    placeholder="Search member..."
+                                    className="w-full pl-9 pr-3 py-2 text-[13px] outline-none text-foreground placeholder:text-muted-foreground bg-muted rounded-[10px] border border-transparent focus:border-primary focus:bg-card transition-colors"
+                                  />
                                 </div>
-                                <span className="text-[14px] font-medium text-[#1e2130]">{m.name || "Unknown"}</span>
                               </div>
-                            ))
+                              
+                              {/* Members List */}
+                              <div className="max-h-[200px] overflow-y-auto">
+                                {members
+                                  .filter((m) => (m.name || "Unknown").toLowerCase().includes((searchQuery[idx] || "").toLowerCase()))
+                                  .map((m) => (
+                                    <div
+                                      key={m.user_id}
+                                      onClick={() => {
+                                        setGuests((prev) =>
+                                          prev.map((g, i) => {
+                                            if (i !== idx) return g;
+                                            const has = g.sharedWith.includes(m.user_id);
+                                            return {
+                                              ...g,
+                                              sharedWith: has
+                                                ? g.sharedWith.filter((id) => id !== m.user_id)
+                                                : [...g.sharedWith, m.user_id],
+                                            };
+                                          })
+                                        );
+                                      }}
+                                      className="flex items-center gap-3 py-2.5 px-3 hover:bg-muted cursor-pointer transition-colors"
+                                    >
+                                      <div
+                                        className={`w-5 h-5 rounded-[6px] border-[1.5px] flex items-center justify-center transition-colors ${
+                                          guest.sharedWith.includes(m.user_id)
+                                            ? "bg-primary border-primary"
+                                            : "border-[ccc]"
+                                        }`}
+                                      >
+                                        {guest.sharedWith.includes(m.user_id) && (
+                                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                                            <path d="M5 12L10 17L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                          </svg>
+                                        )}
+                                      </div>
+                                      <span className="text-[14px] font-medium text-foreground">{m.name || "Unknown"}</span>
+                                    </div>
+                                  ))}
+                                {members.filter((m) => (m.name || "Unknown").toLowerCase().includes((searchQuery[idx] || "").toLowerCase())).length === 0 && (
+                                  <p className="text-[12px] md:text-[13px] text-muted-foreground p-4 text-center">No members found</p>
+                                )}
+                              </div>
+                            </>
                           )}
                         </div>
                       )}
@@ -385,7 +409,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
               <button
                 type="button"
                 onClick={addGuest}
-                className="w-full border-[1.5px] border-dashed border-[#d9d3f7] rounded-[14px] py-3 text-[14px] font-bold text-[#6A4FD8] flex items-center justify-center gap-2 hover:bg-[#F7F8FC] transition-colors"
+                className="w-full border-[1.5px] border-dashed border-border rounded-[14px] py-3 text-[14px] font-bold text-primary flex items-center justify-center gap-2 hover:bg-muted transition-colors"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
@@ -396,14 +420,14 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
           </div>
 
           {/* Info Box */}
-          <div className="bg-[#F7F8FC] rounded-[18px] p-4 md:p-5 flex items-start gap-3 border border-[#ECEEF5]">
-            <div className="w-5 h-5 rounded-full bg-[#6A4FD8] flex items-center justify-center shrink-0 mt-0.5">
+          <div className="bg-muted rounded-[18px] p-4 md:p-5 flex items-start gap-3 border border-border">
+            <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shrink-0 mt-0.5">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                 <path d="M12 11V17" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
                 <circle cx="12" cy="7.5" r="1.3" fill="#fff" />
               </svg>
             </div>
-            <p className="text-[13px] md:text-[14px] text-[#7D8596] leading-relaxed">
+            <p className="text-[13px] md:text-[14px] text-muted-foreground leading-relaxed">
               Guest meals require manager approval. You can request up to 7 days in advance. Use &quot;Share cost&quot; to split the meal expense with another member.
             </p>
           </div>
@@ -413,7 +437,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
             <button
               type="submit"
               disabled={loading || !canSubmit}
-              className="w-full md:w-auto md:min-w-[280px] h-[52px] bg-[#6A4FD8] text-white rounded-[14px] text-[15px] md:text-[16px] font-bold flex items-center justify-center gap-2.5 disabled:opacity-50 transition-all duration-200 hover:bg-[#5a42c0] hover:shadow-lg hover:-translate-y-[1px] active:translate-y-0"
+              className="w-full md:w-auto md:min-w-[280px] h-[52px] bg-primary text-primary-foreground rounded-[14px] text-[15px] md:text-[16px] font-bold flex items-center justify-center gap-2.5 disabled:opacity-50 transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:-translate-y-[1px] active:translate-y-0"
             >
               {loading ? (
                 <>

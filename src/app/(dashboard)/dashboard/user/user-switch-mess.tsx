@@ -61,7 +61,7 @@ export function UserSwitchMess({
   if (messes.length <= 1) return null;
 
   return (
-    <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+    <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
       <DropdownMenu>
         <DropdownMenuTrigger
           render={

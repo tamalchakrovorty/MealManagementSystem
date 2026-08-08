@@ -31,13 +31,18 @@ export default async function UserDashboardPage({
   const isManagerOrModerator =
     (membership as any).role === "manager" || (membership as any).role === "moderator";
 
+  const now = new Date();
+  const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const monthEnd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
   const [mess, totalDepositResult, totalUserMealsResult, totalGuestMealsResult, allExpensesResult, totalMealsResult] = await Promise.all([
     queryOne("SELECT * FROM messes WHERE id = $1", [messId]),
-    queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2", [messId, user.id]),
-    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = false", [messId, user.id]),
-    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = true", [messId, user.id]),
-    queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1", [messId]),
-    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND is_guest = false", [messId]),
+    queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM deposits WHERE mess_id = $1 AND user_id = $2 AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
+    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = false AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
+    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND user_id = $2 AND is_guest = true AND date >= $3 AND date <= $4", [messId, user.id, monthStart, monthEnd]),
+    queryOne("SELECT COALESCE(SUM(amount), 0)::numeric AS total FROM bazar_expenses WHERE mess_id = $1 AND date >= $2 AND date <= $3", [messId, monthStart, monthEnd]),
+    queryOne("SELECT COALESCE(SUM(quantity), 0)::numeric AS total FROM meal_entries WHERE mess_id = $1 AND is_guest = false AND date >= $2 AND date <= $3", [messId, monthStart, monthEnd]),
   ]);
 
   const totalExpenses = Number((allExpensesResult as any)?.total || 0);
@@ -53,30 +58,30 @@ export default async function UserDashboardPage({
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     return Math.ceil((endOfMonth.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
   })();
-  const estimatedDeposit = daysLeft * 2 * 2 - balance;
+  const estimatedDeposit = daysLeft * 2 * mealRate - balance;
 
   return (
     <div className="space-y-4 max-w-lg md:max-w-4xl mx-auto pt-2">
       {/* Header */}
       <div className="flex items-center justify-between pt-3 pb-1">
         <div>
-          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Dashboard</h1>
-          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Welcome back! Here&apos;s what&apos;s happening today.</p>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Dashboard</h1>
+          <p className="text-[13px] md:text-[15px] text-muted-foreground">Welcome back! Here&apos;s what&apos;s happening today.</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 bg-white rounded-[16px] p-1.5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
+      <div className="flex gap-2 bg-card rounded-[16px] p-1.5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
         <Link
           href="/dashboard/user"
-          className="flex-1 text-center py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[15px] font-bold bg-[#6a4fd8] text-white shadow-sm"
+          className="flex-1 text-center py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[15px] font-bold bg-primary text-primary-foreground shadow-sm"
         >
           User Dashboard
         </Link>
         {isManagerOrModerator && (
           <Link
             href="/dashboard/admin"
-            className="flex-1 text-center py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[15px] font-bold text-[#8b8fa3]"
+            className="flex-1 text-center py-2.5 md:py-3 rounded-[12px] text-[13px] md:text-[15px] font-bold text-muted-foreground"
           >
             Admin Dashboard
           </Link>
@@ -86,23 +91,23 @@ export default async function UserDashboardPage({
       {/* Profile & Mess Row */}
       <div className="md:grid md:grid-cols-[1fr_auto] md:gap-4 md:items-stretch space-y-4 md:space-y-0">
         {/* Profile Card */}
-        <div className="bg-white rounded-[18px] p-4 md:p-5 flex items-center gap-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 flex items-center gap-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
           {(profile as any)?.avatar_url ? (
             <img
               src={(profile as any).avatar_url}
               alt={(profile as any)?.name || "User"}
-              className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover bg-[#ddd] shrink-0"
+              className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover bg-muted shrink-0"
             />
           ) : (
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xl md:text-2xl font-bold text-white shrink-0">
+            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary flex items-center justify-center text-xl md:text-2xl font-bold text-primary-foreground shrink-0">
               {((profile as any)?.name?.charAt(0)?.toUpperCase() || "U")}
             </div>
           )}
           <div>
             <div className="text-[15px] md:text-[17px] font-bold">{(profile as any)?.name || "User"}</div>
-            <div className="text-[12.5px] md:text-[14px] text-[#777] leading-snug">{user.email}</div>
+            <div className="text-[12.5px] md:text-[14px] text-muted-foreground leading-snug">{user.email}</div>
             {(profile as any)?.phone && (
-              <div className="text-[12.5px] md:text-[14px] text-[#777]">{(profile as any).phone}</div>
+              <div className="text-[12.5px] md:text-[14px] text-muted-foreground">{(profile as any).phone}</div>
             )}
           </div>
         </div>
@@ -120,32 +125,32 @@ export default async function UserDashboardPage({
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
-          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Total Deposit</div>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-muted-foreground font-semibold mb-2.5">Total Deposit</div>
           <div className="text-[18px] md:text-[22px] font-extrabold text-[#1fae70] mb-2">৳ {totalDeposit.toFixed(0)}</div>
           <Link href="/dashboard/user/views/deposits" className="text-[12px] md:text-[13px] font-semibold text-[#1fae70]">
             View History →
           </Link>
         </div>
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
-          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Total Expense</div>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-muted-foreground font-semibold mb-2.5">Total Expense</div>
           <div className="text-[18px] md:text-[22px] font-extrabold text-[#e5484d]">৳ {userExpense.toFixed(0)}</div>
         </div>
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
-          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Current Balance</div>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-muted-foreground font-semibold mb-2.5">Current Balance</div>
           <div className={`text-[18px] md:text-[22px] font-extrabold ${balance < 0 ? "text-[#e5484d]" : "text-[#1fae70]"}`}>
             ৳ {balance.toFixed(0)}
           </div>
         </div>
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
-          <div className="text-[12px] md:text-[13px] text-[#8b8fa3] font-semibold mb-2.5">Estimated Deposit</div>
-          <div className={`text-[18px] md:text-[22px] font-extrabold ${balance < 0 ? "text-[#e5484d]" : "text-[#2f6fed]"}`}>
-            ৳ {estimatedDeposit.toFixed(0)}
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+          <div className="text-[12px] md:text-[13px] text-muted-foreground font-semibold mb-2.5">Estimated Deposit</div>
+          <div className={`text-[18px] md:text-[22px] font-extrabold ${estimatedDeposit > 0 ? "text-[#e5484d]" : estimatedDeposit < 0 ? "text-[#2f6fed]" : "text-foreground"}`}>
+            ৳ {Math.abs(estimatedDeposit).toFixed(0)}
           </div>
           <div className={`mt-1.5 text-[10px] md:text-[11px] font-semibold px-2 py-0.5 rounded-full inline-block ${
-            balance < 0 ? "bg-[#ffe9ee] text-[#e5484d]" : "bg-[#e4f1ff] text-[#2f6fed]"
+            estimatedDeposit > 0 ? "bg-[#ffe9ee] text-[#e5484d]" : estimatedDeposit < 0 ? "bg-[#e4f1ff] text-[#2f6fed]" : "bg-muted text-muted-foreground"
           }`}>
-            {balance < 0 ? "Have to Pay" : "Surplus"}
+            {estimatedDeposit > 0 ? "Have to Pay" : estimatedDeposit < 0 ? "Surplus" : "No Additional Deposit Required"}
           </div>
         </div>
       </div>
@@ -162,8 +167,8 @@ async function NoMessView({ profile, action }: { profile: any; action?: string }
       {/* Header */}
       <div className="flex items-center gap-3 pt-5 pb-2">
         <div>
-          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Create / Join Mess</h1>
-          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Get started with your mess</p>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Create / Join Mess</h1>
+          <p className="text-[13px] md:text-[15px] text-muted-foreground">Get started with your mess</p>
         </div>
       </div>
 
@@ -193,7 +198,7 @@ async function NoMessView({ profile, action }: { profile: any; action?: string }
       </div>
 
       {/* Message */}
-      <p className="text-center text-[15px] font-semibold text-[#333] px-6 mb-7">
+      <p className="text-center text-[15px] font-semibold text-foreground px-6 mb-7">
         You are not part of any mess yet.
       </p>
 

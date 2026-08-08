@@ -38,7 +38,7 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
 
   const categoryColor = (cat: string) => {
     const colors: Record<string, string> = {
-      Manager: "bg-[#ece9fb] text-[#6a4fd8]",
+      Manager: "bg-primary/10 text-primary",
       Owner: "bg-[#dbeafe] text-[#2563eb]",
       Electrician: "bg-[#fef3c7] text-[#d97706]",
       Plumber: "bg-[#d1fae5] text-[#059669]",
@@ -50,7 +50,7 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
       Police: "bg-[#dbeafe] text-[#1d4ed8]",
       "Fire Service": "bg-[#fee2e2] text-[#dc2626]",
     };
-    return colors[cat] || "bg-[#f0f0f5] text-[#666]";
+    return colors[cat] || "bg-muted text-muted-foreground";
   };
 
   const categoryIcon = (cat: string) => {
@@ -72,15 +72,15 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
 
   if (contacts.length === 0) {
     return (
-      <div className="bg-white rounded-[18px] p-8 md:p-10 text-center shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-        <div className="w-16 h-16 rounded-full bg-[#f0f0f5] flex items-center justify-center mx-auto mb-4">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <rect x="5" y="2" width="14" height="20" rx="2" stroke="#999" strokeWidth="1.8" />
-            <path d="M9 10H15M9 14H13" stroke="#999" strokeWidth="1.6" strokeLinecap="round" />
+      <div className="bg-card rounded-[18px] p-8 md:p-10 text-center shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+            <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M9 10H15M9 14H13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         </div>
-        <p className="text-[15px] md:text-[17px] font-semibold text-[#333] mb-1">No contacts yet</p>
-        <p className="text-[13px] md:text-[14px] text-[#999]">Important contacts will appear here once added by the admin.</p>
+        <p className="text-[15px] md:text-[17px] font-semibold text-foreground mb-1">No contacts yet</p>
+        <p className="text-[13px] md:text-[14px] text-muted-foreground">Important contacts will appear here once added by the admin.</p>
       </div>
     );
   }
@@ -90,13 +90,13 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
       {contacts.map((contact) => (
         <div
           key={contact.id}
-          className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:shadow-[0_8px_24px_rgba(30,30,60,0.08)] md:transition-shadow md:duration-200"
+          className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:shadow-[0_8px_24px_rgba(30,30,60,0.08)] md:transition-shadow md:duration-200"
         >
           <div className="flex items-start justify-between mb-2">
             <div className="flex items-center gap-2.5">
               <span className="text-xl md:text-2xl">{categoryIcon(contact.category)}</span>
               <div>
-                <span className="text-[15px] md:text-[16px] font-bold text-[#333] block">{contact.name}</span>
+                <span className="text-[15px] md:text-[16px] font-bold text-foreground block">{contact.name}</span>
                 <span className={`text-[10px] md:text-[11px] font-bold px-2 py-0.5 rounded-full ${categoryColor(contact.category)}`}>
                   {contact.category}
                 </span>
@@ -105,7 +105,7 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
           </div>
 
           {contact.description && (
-            <p className="text-[13px] md:text-[14px] text-[#666] mb-3 ml-9">{contact.description}</p>
+            <p className="text-[13px] md:text-[14px] text-muted-foreground mb-3 ml-9">{contact.description}</p>
           )}
 
           <div className="flex items-center gap-2 ml-9">
@@ -123,7 +123,7 @@ export function ContactsView({ contacts }: { contacts: Contact[] }) {
               className={`flex items-center justify-center gap-2 rounded-xl py-2.5 md:py-3 px-4 text-[13px] md:text-[14px] font-bold border transition-colors ${
                 copiedId === contact.id
                   ? "bg-[#d6f3e4] border-[#1fae70] text-[#1fae70]"
-                  : "bg-[#f4f4fb] border-[#e3e0f5] text-[#666] hover:bg-[#ece9fb]"
+                  : "bg-muted border-border text-muted-foreground hover:bg-primary/10"
               }`}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">

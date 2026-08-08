@@ -42,7 +42,7 @@ export function CreateMessDialog({ defaultOpen }: { defaultOpen?: boolean }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <button className="w-full bg-[#5b3fd6] text-white rounded-2xl py-4 text-[15.5px] font-bold flex items-center justify-center gap-2.5">
+          <button className="w-full bg-primary text-primary-foreground rounded-2xl py-4 text-[15.5px] font-bold flex items-center justify-center gap-2.5">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
               <path d="M12 8V16M8 12H16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -54,7 +54,7 @@ export function CreateMessDialog({ defaultOpen }: { defaultOpen?: boolean }) {
       <DialogContent className="sm:max-w-[400px] p-0 gap-0 overflow-hidden">
         {/* Header */}
         <div className="flex items-center gap-4 px-5 pt-5 pb-3">
-          <button onClick={() => setOpen(false)} className="text-[#222]">
+          <button onClick={() => setOpen(false)} className="text-foreground">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -64,7 +64,7 @@ export function CreateMessDialog({ defaultOpen }: { defaultOpen?: boolean }) {
 
         {/* Illustration */}
         <div className="px-5 mb-5">
-          <div className="bg-white rounded-2xl p-2.5" style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
+          <div className="bg-card rounded-2xl p-2.5" style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
             <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" className="w-full block">
               <ellipse cx="160" cy="165" rx="140" ry="14" fill="#e3e6f0" />
               <polygon points="160,20 235,65 85,65" fill="#3f5478" />
@@ -101,7 +101,7 @@ export function CreateMessDialog({ defaultOpen }: { defaultOpen?: boolean }) {
               placeholder="e.g. Green House Mess"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-white border-[1.4px] border-[#e3e0f5] rounded-[14px] px-4 py-3.5 text-[14.5px] text-[#222] placeholder:text-[#aaa] outline-none focus:border-[#5b3fd6] transition-colors"
+              className="w-full bg-card border-[1.4px] border-border rounded-[14px] px-4 py-3.5 text-[14.5px] text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
               required
             />
           </div>
@@ -114,7 +114,7 @@ export function CreateMessDialog({ defaultOpen }: { defaultOpen?: boolean }) {
               placeholder="e.g. Dhanmondi, Dhaka"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full bg-white border-[1.4px] border-[#e3e0f5] rounded-[14px] px-4 py-3.5 text-[14.5px] text-[#222] placeholder:text-[#aaa] outline-none focus:border-[#5b3fd6] transition-colors"
+              className="w-full bg-card border-[1.4px] border-border rounded-[14px] px-4 py-3.5 text-[14.5px] text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
             />
           </div>
 
@@ -123,7 +123,7 @@ export function CreateMessDialog({ defaultOpen }: { defaultOpen?: boolean }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#5b3fd6] text-white rounded-[14px] py-4 text-[15.5px] font-bold disabled:opacity-60"
+            className="w-full bg-primary text-primary-foreground rounded-[14px] py-4 text-[15.5px] font-bold disabled:opacity-60"
           >
             {loading ? "Creating..." : "Create"}
           </button>

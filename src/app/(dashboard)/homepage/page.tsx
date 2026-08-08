@@ -119,31 +119,31 @@ export default async function HomepagePage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {/* Meal Rate Card */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#4f8cff] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M4 20L20 4M20 4H12M20 4V12" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#fff" strokeWidth="1.8" />
             </svg>
           </div>
-          <p className="text-[12px] font-semibold text-[#777] mb-1">Meal Rate</p>
+          <p className="text-[12px] font-semibold text-muted-foreground mb-1">Meal Rate</p>
           <p className="text-[22px] font-extrabold">৳{mealRate.toFixed(0)}</p>
         </div>
 
         {/* Balance Card */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#22c55e] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="3" width="16" height="18" rx="2" stroke="#fff" strokeWidth="1.8" />
               <path d="M8 8H16M8 12H16M8 16H12" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </div>
-          <p className="text-[12px] font-semibold text-[#777] mb-1">Balance</p>
+          <p className="text-[12px] font-semibold text-muted-foreground mb-1">Balance</p>
           <p className={`text-[22px] font-extrabold ${balance < 0 ? "text-[#ef4444]" : ""}`}>৳{balance.toFixed(0)}</p>
         </div>
 
         {/* Estimated Deposit - Desktop only */}
-        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="hidden md:block bg-card rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#f59e0b] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" strokeWidth="1.8" />
@@ -151,12 +151,12 @@ export default async function HomepagePage() {
               <path d="M6 14H10" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </div>
-          <p className="text-[12px] font-semibold text-[#777] mb-1">Est. Deposit</p>
+          <p className="text-[12px] font-semibold text-muted-foreground mb-1">Est. Deposit</p>
           <p className="text-[22px] font-extrabold text-[#ef4444]">৳{userExpense.toFixed(0)}</p>
         </div>
 
         {/* Negative Balance - Desktop only */}
-        <div className="hidden md:block bg-white rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="hidden md:block bg-card rounded-[16px] p-3.5 md:p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="w-[38px] h-[38px] rounded-[10px] bg-[#ef4444] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" stroke="#fff" strokeWidth="1.8" />
@@ -164,7 +164,7 @@ export default async function HomepagePage() {
               <circle cx="12" cy="16.5" r="1" fill="#fff" />
             </svg>
           </div>
-          <p className="text-[12px] font-semibold text-[#777] mb-1">Negative Balance</p>
+          <p className="text-[12px] font-semibold text-muted-foreground mb-1">Negative Balance</p>
           <p className={`text-[22px] font-extrabold ${negativeCount > 0 ? "text-[#ef4444]" : ""}`}>{negativeCount}</p>
         </div>
       </div>
@@ -178,15 +178,15 @@ export default async function HomepagePage() {
       {/* Menu Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         {/* Today's Lunch */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="min-w-0">
             <h3 className="text-[15px] font-bold mb-1">Lunch</h3>
             <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
               {(todayMenu as any)?.lunch || "Not set"}
             </p>
-            <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
+            <small className="text-muted-foreground text-[11px]">{format(new Date(), "EEEE")}</small>
           </div>
-          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
+          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
             <img
               src={getFoodImage((todayMenu as any)?.lunch || "", 0)}
               alt="lunch"
@@ -196,15 +196,15 @@ export default async function HomepagePage() {
         </div>
 
         {/* Today's Dinner */}
-        <div className="bg-white rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="min-w-0">
             <h3 className="text-[15px] font-bold mb-1">Dinner</h3>
             <p className="text-[13px] text-[#444] leading-snug mb-1 max-w-[180px] line-clamp-2">
               {(todayMenu as any)?.dinner || "Not set"}
             </p>
-            <small className="text-[#999] text-[11px]">{format(new Date(), "EEEE")}</small>
+            <small className="text-muted-foreground text-[11px]">{format(new Date(), "EEEE")}</small>
           </div>
-          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-[#ddd] shrink-0 overflow-hidden">
+          <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
             <img
               src={getFoodImage((todayMenu as any)?.dinner || "", 1)}
               alt="dinner"
@@ -223,8 +223,8 @@ async function NoMessView() {
       {/* Header */}
       <div className="flex items-center gap-3 pt-5 pb-2">
         <div>
-          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Create / Join Mess</h1>
-          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Get started with your mess</p>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Create / Join Mess</h1>
+          <p className="text-[13px] md:text-[15px] text-muted-foreground">Get started with your mess</p>
         </div>
       </div>
 
@@ -254,7 +254,7 @@ async function NoMessView() {
       </div>
 
       {/* Message */}
-      <p className="text-center text-[15px] font-semibold text-[#333] px-6 mb-7">
+      <p className="text-center text-[15px] font-semibold text-foreground px-6 mb-7">
         You are not part of any mess yet.
       </p>
 
@@ -263,7 +263,7 @@ async function NoMessView() {
         <CreateMessDialog />
         <Link
           href="/dashboard/join-mess"
-          className="w-full bg-white text-[#5b3fd6] border-[1.6px] border-[#d9d3f7] rounded-2xl py-4 text-[15.5px] font-bold flex items-center justify-center gap-2.5"
+          className="w-full bg-card text-primary border-[1.6px] border-[#d9d3f7] rounded-2xl py-4 text-[15.5px] font-bold flex items-center justify-center gap-2.5"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.8" />

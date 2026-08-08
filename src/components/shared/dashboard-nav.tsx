@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MessSwitcher } from "@/components/shared/mess-switcher";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { popup } from "@/lib/popup";
 import type { AccessibleMess } from "@/lib/server-utils";
 import {
@@ -119,7 +120,7 @@ export function DashboardNav({
                   <div className="relative">
                     <link.icon className="h-4 w-4" />
                     {link.href === "/notifications" && unreadCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 bg-[#6a4fd8] text-white text-[9px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1 leading-none">
+                      <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1 leading-none">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
@@ -163,7 +164,7 @@ export function DashboardNav({
               <span className="flex items-center gap-1.5">
                 {link.label}
                 {link.href === "/notifications" && unreadCount > 0 && (
-                  <span className="bg-[#6a4fd8] text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
+                  <span className="bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}
@@ -173,6 +174,7 @@ export function DashboardNav({
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          {mounted && <ThemeToggle />}
           {mess && membership && (
             <span className="hidden sm:inline text-xs text-muted-foreground capitalize">
               {membership.role}

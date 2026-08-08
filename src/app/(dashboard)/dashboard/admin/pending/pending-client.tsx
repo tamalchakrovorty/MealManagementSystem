@@ -87,7 +87,7 @@ export function PendingClient({
       items: leaveRequests,
       renderItem: (r) => (
         <>
-          <div className="w-8 h-8 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
             {r.avatar_url ? (
               <img src={r.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
             ) : (
@@ -95,8 +95,8 @@ export function PendingClient({
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold text-[#333] truncate">{r.name || "Unknown"}</p>
-            <p className="text-[10px] text-[#999]">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
+            <p className="text-[13px] font-semibold text-foreground truncate">{r.name || "Unknown"}</p>
+            <p className="text-[10px] text-muted-foreground">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
           </div>
         </>
       ),
@@ -107,12 +107,12 @@ export function PendingClient({
       items: joinRequests,
       renderItem: (r) => (
         <>
-          <div className="w-8 h-8 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
             {r.name?.charAt(0)?.toUpperCase() || "?"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold text-[#333] truncate">{r.name || "Unknown"}</p>
-            <p className="text-[10px] text-[#999]">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
+            <p className="text-[13px] font-semibold text-foreground truncate">{r.name || "Unknown"}</p>
+            <p className="text-[10px] text-muted-foreground">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
           </div>
         </>
       ),
@@ -126,7 +126,7 @@ export function PendingClient({
         const assignedDate = typeof rawDate === "string" ? rawDate.split("T")[0] : format(rawDate, "yyyy-MM-dd");
         return (
           <>
-            <div className="w-8 h-8 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
               {r.avatar_url ? (
                 <img src={r.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
               ) : (
@@ -134,8 +134,8 @@ export function PendingClient({
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-semibold text-[#333] truncate">{r.name || "Unknown"}</p>
-              <p className="text-[10px] text-[#999]">Assigned {assignedDate}</p>
+              <p className="text-[13px] font-semibold text-foreground truncate">{r.name || "Unknown"}</p>
+              <p className="text-[10px] text-muted-foreground">Assigned {assignedDate}</p>
             </div>
           </>
         );
@@ -147,12 +147,12 @@ export function PendingClient({
       items: mealOffRequests,
       renderItem: (r) => (
         <>
-          <div className="w-8 h-8 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
             {r.name?.charAt(0)?.toUpperCase() || "?"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold text-[#333] truncate">{r.name || "Unknown"}</p>
-            <p className="text-[10px] text-[#999]">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
+            <p className="text-[13px] font-semibold text-foreground truncate">{r.name || "Unknown"}</p>
+            <p className="text-[10px] text-muted-foreground">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
           </div>
         </>
       ),
@@ -163,12 +163,12 @@ export function PendingClient({
       items: guestMealRequests,
       renderItem: (r) => (
         <>
-          <div className="w-8 h-8 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
             {r.name?.charAt(0)?.toUpperCase() || "?"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold text-[#333] truncate">{r.name || "Unknown"}</p>
-            <p className="text-[10px] text-[#999]">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
+            <p className="text-[13px] font-semibold text-foreground truncate">{r.name || "Unknown"}</p>
+            <p className="text-[10px] text-muted-foreground">{format(new Date(r.created_at), "d MMM, h:mm a")}</p>
           </div>
         </>
       ),
@@ -185,7 +185,7 @@ export function PendingClient({
             <p className="text-[13px] font-semibold text-[#e5484d]">
               {format(dateObj, "EEE, d MMM yyyy")}
             </p>
-            <p className="text-[10px] text-[#999]">No meals entered for this day</p>
+            <p className="text-[10px] text-muted-foreground">No meals entered for this day</p>
           </div>
         );
       },
@@ -196,14 +196,14 @@ export function PendingClient({
 
   if (visibleSections.length === 0) {
     return (
-      <div className="bg-white rounded-[18px] p-8 md:p-10 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+      <div className="bg-card rounded-[18px] p-8 md:p-10 text-center shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border">
         <div className="w-12 h-12 rounded-full bg-[#d7f2e9] flex items-center justify-center mx-auto mb-2">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M12 3L14 9L20 9L15.5 13L17.5 19L12 15.5L6.5 19L8.5 13L4 9L10 9L12 3Z" stroke="#1fae70" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-[#333]">All clear!</p>
-        <p className="text-xs text-[#999] mt-1">No pending items right now.</p>
+        <p className="text-sm font-semibold text-foreground">All clear!</p>
+        <p className="text-xs text-muted-foreground mt-1">No pending items right now.</p>
       </div>
     );
   }
@@ -213,13 +213,13 @@ export function PendingClient({
       {visibleSections.map((section) => {
         const meta = SECTION_META[section.key];
         return (
-          <div key={section.key} className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <div key={section.key} className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 md:w-10 md:h-10 rounded-[10px] flex items-center justify-center" style={{ background: meta.bg, color: meta.color }}>
                   {meta.icon}
                 </div>
-                <span className="text-[14px] md:text-[15px] font-bold text-[#333]">{section.title}</span>
+                <span className="text-[14px] md:text-[15px] font-bold text-foreground">{section.title}</span>
               </div>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: meta.bg, color: meta.color }}>
                 {section.items.length}
@@ -227,12 +227,12 @@ export function PendingClient({
             </div>
             <div className="space-y-2.5 mb-3">
               {section.items.slice(0, 5).map((item: any, i: number) => (
-                <div key={item.id || i} className="flex items-center gap-2.5 border-b border-[#f0f0f5] pb-2.5 last:border-0 last:pb-0">
+                <div key={item.id || i} className="flex items-center gap-2.5 border-b border-border pb-2.5 last:border-0 last:pb-0">
                   {section.renderItem(item)}
                 </div>
               ))}
               {section.items.length > 5 && (
-                <p className="text-[11px] text-[#999] text-center">
+                <p className="text-[11px] text-muted-foreground text-center">
                   + {section.items.length - 5} more
                 </p>
               )}

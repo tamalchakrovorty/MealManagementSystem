@@ -150,15 +150,15 @@ export default async function StockViewPage() {
         <div className="flex items-center gap-3 pt-5 pb-2">
           <Link
             href="/dashboard/user/views"
-            className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
+            className="w-[46px] h-[46px] min-w-[46px] bg-card rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1e2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-foreground">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Freezer Stock</h1>
-            <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Check available items</p>
+            <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Freezer Stock</h1>
+            <p className="text-[13px] md:text-[15px] text-muted-foreground">Check available items</p>
           </div>
         </div>
 
@@ -171,7 +171,7 @@ export default async function StockViewPage() {
               return (
                 <div
                   key={stock.id}
-                  className="bg-white rounded-[18px] p-4 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+                  className="bg-card rounded-[18px] p-4 flex items-center justify-between shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
                 >
                   <div className="flex items-center gap-3.5">
                     <div
@@ -182,7 +182,7 @@ export default async function StockViewPage() {
                     </div>
                     <div>
                       <div className="text-[14px] md:text-[15px] font-bold text-[#1a1a1a] mb-1">{stock.item}</div>
-                      <div className="text-[12px] md:text-[13px] text-[#777]">{Number(stock.quantity).toFixed(2)} {stock.unit}</div>
+                      <div className="text-[12px] md:text-[13px] text-muted-foreground">{Number(stock.quantity).toFixed(2)} {stock.unit}</div>
                     </div>
                   </div>
                   <span className={`text-[11px] md:text-xs font-bold px-3.5 py-1.5 rounded-full ${status.cls}`}>
@@ -192,15 +192,15 @@ export default async function StockViewPage() {
               );
             })
           ) : (
-            <div className="col-span-full bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
-                  <rect x="3" y="8" width="14" height="12" rx="2" stroke="#8b8fa3" strokeWidth="2" />
-                  <path d="M8 13H12M8 16H12" stroke="#8b8fa3" strokeWidth="1.6" strokeLinecap="round" />
+            <div className="col-span-full bg-card rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+                  <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <rect x="3" y="8" width="14" height="12" rx="2" stroke="currentColor" strokeWidth="2" />
+                  <path d="M8 13H12M8 16H12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                 </svg>
               </div>
-              <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">No stock items</p>
+              <p className="text-[14px] md:text-[16px] text-muted-foreground">No stock items</p>
             </div>
           )}
         </div>

@@ -9,8 +9,8 @@ type TabType = "all" | "personal" | "calendar";
 
 const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactNode }> = {
   announcement: {
-    bg: "bg-[#ece9fe]",
-    color: "text-[#6a4fd8]",
+    bg: "bg-primary/10",
+    color: "text-primary",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
         <path d="M12 2C10.34 2 9 3.34 9 5V5.29C6.5 6.14 5 8.42 5 11V16L3 18V19H21V18L19 16V11C19 8.42 17.5 6.14 15 5.29V5C15 3.34 13.66 2 12 2Z" stroke="currentColor" strokeWidth="1.8" />
@@ -18,8 +18,8 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
     ),
   },
   group_notice: {
-    bg: "bg-[#d7e6fb]",
-    color: "text-[#2f6fed]",
+    bg: "bg-primary/10",
+    color: "text-primary",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
         <circle cx="9" cy="7" r="3" stroke="currentColor" strokeWidth="1.8" />
@@ -30,7 +30,7 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
     ),
   },
   personal_notice: {
-    bg: "bg-[#d6f3e4]",
+    bg: "bg-[#1fae70]/10",
     color: "text-[#1fae70]",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -40,7 +40,7 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
     ),
   },
   event: {
-    bg: "bg-[#fff2df]",
+    bg: "bg-[#d98a1c]/10",
     color: "text-[#d98a1c]",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -61,7 +61,7 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
     ),
   },
   meal_request_accepted: {
-    bg: "bg-[#d6f3e4]",
+    bg: "bg-[#1fae70]/10",
     color: "text-[#1fae70]",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -71,7 +71,7 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
     ),
   },
   guest_meal_accepted: {
-    bg: "bg-[#d6f3e4]",
+    bg: "bg-[#1fae70]/10",
     color: "text-[#1fae70]",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -92,7 +92,7 @@ const TYPE_STYLE: Record<string, { bg: string; color: string; icon: React.ReactN
     ),
   },
   removed: {
-    bg: "bg-[#fadada]",
+    bg: "bg-destructive/10",
     color: "text-[#e5484d]",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -196,14 +196,14 @@ export function NotificationsClient({
   return (
     <div className="space-y-4">
       {/* Tabs */}
-      <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex">
+      <div className="bg-muted rounded-[14px] p-1.5 flex">
         {(["all", "personal", "calendar"] as TabType[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => handleTabChange(t)}
             className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[15px] font-bold transition-all capitalize ${
-              tab === t ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
+              tab === t ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             {t}
@@ -222,7 +222,7 @@ export function NotificationsClient({
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
                 {negativeUsers.map((u) => (
-                  <div key={u.id} className="bg-white rounded-2xl p-2.5 md:p-3 flex flex-col items-center gap-1.5 text-center relative shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+                  <div key={u.id} className="bg-card rounded-2xl p-2.5 md:p-3 flex flex-col items-center gap-1.5 text-center relative shadow-[0_8px_24px_rgba(0,0,0,.04)]">
                     {u.status !== "active" && (
                       <div
                         className="absolute text-white text-[10px] font-bold leading-none z-10"
@@ -244,15 +244,15 @@ export function NotificationsClient({
                       </div>
                     )}
                     {u.avatar_url ? (
-                      <img src={u.avatar_url} alt={u.name} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover bg-[#ddd]" />
+                      <img src={u.avatar_url} alt={u.name} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover bg-muted" />
                     ) : (
-                      <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white">
+                      <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
                         {u.name.charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-[12px] md:text-[13px] font-semibold text-[#333] truncate">{u.name}</p>
-                      <span className="text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">
+                      <p className="text-[12px] md:text-[13px] font-semibold text-foreground truncate">{u.name}</p>
+                      <span className="text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-destructive/10 text-[#e5484d]">
                         Negative Balance
                       </span>
                     </div>
@@ -262,14 +262,14 @@ export function NotificationsClient({
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#e3faf0] flex items-center justify-center mx-auto mb-2">
+            <div className="bg-card rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#1fae70]/10 flex items-center justify-center mx-auto mb-2">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                   <path d="M12 3L14 9L20 9L15.5 13L17.5 19L12 15.5L6.5 19L8.5 13L4 9L10 9L12 3Z" stroke="#1fae70" strokeWidth="1.8" strokeLinejoin="round" />
                 </svg>
               </div>
-              <p className="text-sm md:text-[15px] font-semibold text-[#333]">All balances are settled</p>
-              <p className="text-xs md:text-[13px] text-[#999] mt-1">No member has a negative balance right now.</p>
+              <p className="text-sm md:text-[15px] font-semibold text-foreground">All balances are settled</p>
+              <p className="text-xs md:text-[13px] text-muted-foreground mt-1">No member has a negative balance right now.</p>
             </div>
           )}
 
@@ -281,7 +281,7 @@ export function NotificationsClient({
                 type="button"
                 onClick={() => setFilter(f)}
                 className={`px-4 md:px-5 py-1.5 md:py-2 rounded-full text-[12px] md:text-[13px] font-semibold transition-all capitalize ${
-                  filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
+                  filter === f ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                 }`}
               >
                 {f === "unseen" ? "Unseen" : "All"}
@@ -294,50 +294,50 @@ export function NotificationsClient({
             <div className="space-y-3">
               {filteredAllGroups.map((group) => (
                 <div key={group.label}>
-                  <p className="text-[11px] md:text-[12px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
+                  <p className="text-[11px] md:text-[12px] font-bold tracking-wider text-muted-foreground px-1 mb-1.5">{group.label}</p>
                   <div className="space-y-2">
                     {group.items.map((notif: any) => {
                       const style = getTypeStyle(notif.type);
                       const isUnread = !notif.read_at;
                       return (
-                        <div key={notif.id} className="bg-white rounded-2xl p-3.5 md:p-4 flex items-center gap-3 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+                        <div key={notif.id} className="bg-card rounded-2xl p-3.5 md:p-4 flex items-center gap-3 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
                           <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${style.bg} ${style.color}`}>
                             {style.icon}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-[13.5px] md:text-[15px] font-semibold text-[#333] leading-snug">{notif.message}</p>
+                            <p className="text-[13.5px] md:text-[15px] font-semibold text-foreground leading-snug">{notif.message}</p>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <p className="text-[10px] md:text-[11px] text-[#999]">
+                              <p className="text-[10px] md:text-[11px] text-muted-foreground">
                                 {formatNotifTime(new Date(notif.edited_at || notif.created_at))}
                               </p>
                               {notif.edited_at && (
-                                <span className="text-[9px] text-[#6a4fd8] font-semibold bg-[#ece9fe] px-1.5 py-0.5 rounded-full">
+                                <span className="text-[9px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-full">
                                   edited
                                 </span>
                               )}
                               {notif.type === "group_notice" && notif.recipient_names && (
-                                <span className="text-[9px] text-[#2f6fed] font-semibold bg-[#d7e6fb] px-1.5 py-0.5 rounded-full">
+                                <span className="text-[9px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-full">
                                   GROUP
                                 </span>
                               )}
                               {notif.type === "announcement" && (
-                                <span className="text-[9px] text-[#6a4fd8] font-semibold bg-[#ece9fe] px-1.5 py-0.5 rounded-full">
+                                <span className="text-[9px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-full">
                                   ANNOUNCEMENT
                                 </span>
                               )}
                               {notif.type === "event" && (
-                                <span className="text-[9px] text-[#d98a1c] font-semibold bg-[#fff2df] px-1.5 py-0.5 rounded-full">
+                                <span className="text-[9px] text-[#d98a1c] font-semibold bg-[#d98a1c]/10 px-1.5 py-0.5 rounded-full">
                                   EVENT
                                 </span>
                               )}
                               {notif.type === "event" && eventMap.get(notif.message)?.description && (
-                                <p className="text-[11px] text-[#666] mt-1">
+                                <p className="text-[11px] text-muted-foreground mt-1">
                                   {eventMap.get(notif.message)?.description}
                                 </p>
                               )}
                             </div>
                           </div>
-                          {isUnread && <span className="w-2 h-2 rounded-full bg-[#6a4fd8] shrink-0" />}
+                          {isUnread && <span className="w-2 h-2 rounded-full bg-primary shrink-0" />}
                         </div>
                       );
                     })}
@@ -346,8 +346,8 @@ export function NotificationsClient({
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-              <p className="text-sm md:text-[15px] text-[#999]">No notifications yet</p>
+            <div className="bg-card rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+              <p className="text-sm md:text-[15px] text-muted-foreground">No notifications yet</p>
             </div>
           )}
         </>
@@ -363,7 +363,7 @@ export function NotificationsClient({
                 type="button"
                 onClick={() => setFilter(f)}
                 className={`px-4 md:px-5 py-1.5 md:py-2 rounded-full text-[12px] md:text-[13px] font-semibold transition-all capitalize ${
-                  filter === f ? "bg-[#6a4fd8] text-white" : "bg-[#f4f4fb] text-[#8b8fa3]"
+                  filter === f ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                 }`}
               >
                 {f === "unseen" ? "Unseen" : "All"}
@@ -375,7 +375,7 @@ export function NotificationsClient({
           <div className="space-y-3">
             {filteredPersonalGroups.map((group) => (
               <div key={group.label}>
-                <p className="text-[11px] md:text-[12px] font-bold tracking-wider text-[#8b8fa3] px-1 mb-1.5">{group.label}</p>
+                <p className="text-[11px] md:text-[12px] font-bold tracking-wider text-muted-foreground px-1 mb-1.5">{group.label}</p>
                 <div className="space-y-2">
                   {group.items.map((notif: any) => {
                     const style = getTypeStyle(notif.type);
@@ -386,29 +386,29 @@ export function NotificationsClient({
                     }
 
                     return (
-                      <div key={notif.id} className="bg-white rounded-2xl p-3.5 md:p-4 flex items-center gap-3 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+                      <div key={notif.id} className="bg-card rounded-2xl p-3.5 md:p-4 flex items-center gap-3 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
                         <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${style.bg} ${style.color}`}>
                           {style.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[13.5px] md:text-[15px] font-semibold text-[#333] leading-snug">{displayMessage}</p>
+                          <p className="text-[13.5px] md:text-[15px] font-semibold text-foreground leading-snug">{displayMessage}</p>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <p className="text-[10px] text-[#999]">
+                            <p className="text-[10px] text-muted-foreground">
                               {formatNotifTime(new Date(notif.edited_at || notif.created_at))}
                             </p>
                             {notif.edited_at && (
-                              <span className="text-[9px] text-[#6a4fd8] font-semibold bg-[#ece9fe] px-1.5 py-0.5 rounded-full">
+                              <span className="text-[9px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-full">
                                 edited
                               </span>
                             )}
                             {notif.type === "group_notice" && (
-                              <span className="text-[9px] text-[#2f6fed] font-semibold bg-[#d7e6fb] px-1.5 py-0.5 rounded-full">
+                              <span className="text-[9px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-full">
                                 GROUP
                               </span>
                             )}
                           </div>
                         </div>
-                        {!notif.read_at && <span className="w-2 h-2 rounded-full bg-[#6a4fd8] shrink-0" />}
+                        {!notif.read_at && <span className="w-2 h-2 rounded-full bg-primary shrink-0" />}
                       </div>
                     );
                   })}
@@ -417,15 +417,15 @@ export function NotificationsClient({
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
-            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#ece9fe] flex items-center justify-center mx-auto mb-2">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="9" stroke="#6a4fd8" strokeWidth="1.8" />
-                <path d="M12 8V12L15 14" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" />
+          <div className="bg-card rounded-2xl p-8 md:p-10 text-center shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-primary">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M12 8V12L15 14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
-            <p className="text-sm md:text-[15px] font-semibold text-[#333]">No personal notifications</p>
-            <p className="text-xs md:text-[13px] text-[#999] mt-1">Bazar duties and admin notices for you will appear here.</p>
+            <p className="text-sm md:text-[15px] font-semibold text-foreground">No personal notifications</p>
+            <p className="text-xs md:text-[13px] text-muted-foreground mt-1">Bazar duties and admin notices for you will appear here.</p>
           </div>
         )}
         </>

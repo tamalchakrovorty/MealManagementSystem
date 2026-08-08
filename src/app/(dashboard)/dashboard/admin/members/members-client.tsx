@@ -66,13 +66,13 @@ export function MembersListClient({
   for (const r of leaveRequests) leaveMap.set(r.user_id, r);
 
   const roleBadge = (role: string) => {
-    if (role === "manager") return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ece9fe] text-[#6a4fd8]">Manager</span>;
+    if (role === "manager") return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">Manager</span>;
     if (role === "moderator") return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#dbeafe] text-[#2563eb]">Moderator</span>;
-    return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f0f0f5] text-[#8b8fa3]">Member</span>;
+    return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">Member</span>;
   };
 
   const Avatar = ({ member, size }: { member: Member; size: string }) => (
-    <div className={`${size} rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white shrink-0 overflow-hidden`}>
+    <div className={`${size} rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 overflow-hidden`}>
       {member.avatar_url ? (
         <img src={member.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
       ) : (
@@ -153,12 +153,12 @@ export function MembersListClient({
             type="button"
             onClick={() => setActiveTab(tab.key)}
             className={`flex-1 py-2.5 rounded-xl text-[12px] font-semibold transition-colors ${
-              activeTab === tab.key ? "bg-[#6a4fd8] text-white" : "text-[#6a4fd8]"
+              activeTab === tab.key ? "bg-primary text-primary-foreground" : "text-primary"
             }`}
           >
             {tab.label}
             {tab.count > 0 && (
-              <span className={`ml-1.5 text-[13px] font-bold ${activeTab === tab.key ? "text-white/80" : "text-[#6a4fd8]/60"}`}>
+              <span className={`ml-1.5 text-[13px] font-bold ${activeTab === tab.key ? "text-white/80" : "text-primary/60"}`}>
                 {tab.count}
               </span>
             )}
@@ -168,13 +168,13 @@ export function MembersListClient({
 
       {/* Current Members */}
       {activeTab === "current" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
-          <p className="text-sm text-[#999] mb-3">{members.length} active members</p>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <p className="text-sm text-muted-foreground mb-3">{members.length} active members</p>
           <div className="space-y-3">
             {members.map((m) => {
               const leaveReq = leaveMap.get(m.user_id);
               return (
-                <div key={m.user_id} className="border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                <div key={m.user_id} className="border-b border-border pb-3 last:border-0 last:pb-0">
                   <button
                     type="button"
                     onClick={() => setSelectedMember(m)}
@@ -183,16 +183,16 @@ export function MembersListClient({
                     <Avatar member={m} size="w-11 h-11" />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-semibold text-[#333] truncate">{m.name || "Unknown"}</span>
+                        <span className="text-sm font-semibold text-foreground truncate">{m.name || "Unknown"}</span>
                         {roleBadge(m.role)}
                 {leaveReq && isManager && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ede9fe] text-[#6a4fd8]">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ede9fe] text-primary">
                           Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
                         </span>
                       )}
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        {m.phone && <span className="text-xs text-[#999]">{m.phone}</span>}
+                        {m.phone && <span className="text-xs text-muted-foreground">{m.phone}</span>}
                         <span className="text-xs text-[#bbb]">Joined {format(new Date(m.joined_at), "d MMM yyyy")}</span>
                       </div>
                     </div>
@@ -216,10 +216,10 @@ export function MembersListClient({
                   {leaveReq && isManager && (
                     <div className="mt-2.5 pl-14 rounded-xl p-3" style={{ background: "rgba(106, 79, 216, 0.08)" }}>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[12px] font-bold text-[#6a4fd8]">
+                        <span className="text-[12px] font-bold text-primary">
                           Leave Request · ৳ {balanceOf(leaveReq).toFixed(0)}
                         </span>
-                        <span className="text-[11px] text-[#6a4fd8]/60">
+                        <span className="text-[11px] text-primary/60">
                           {format(new Date(leaveReq.created_at), "d MMM, h:mm a")}
                         </span>
                       </div>
@@ -252,20 +252,20 @@ export function MembersListClient({
 
       {/* Left Members */}
       {activeTab === "left" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
-          <p className="text-sm text-[#999] mb-3">{leftMembers.length} members who left</p>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <p className="text-sm text-muted-foreground mb-3">{leftMembers.length} members who left</p>
           {leftMembers.length === 0 ? (
             <p className="text-sm text-[#bbb] text-center py-6">No members have left yet.</p>
           ) : (
             <div className="space-y-3">
               {leftMembers.map((m) => (
-                <div key={m.user_id} className="flex items-center gap-3 border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                <div key={m.user_id} className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0">
                   <Avatar member={m} size="w-10 h-10" />
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-semibold text-[#333] truncate block">{m.name || "Unknown"}</span>
+                    <span className="text-sm font-semibold text-foreground truncate block">{m.name || "Unknown"}</span>
                     <span className="text-xs text-[#bbb]">Left {m.joined_at ? format(new Date(m.joined_at), "d MMM yyyy") : "—"}</span>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f0f0f5] text-[#8b8fa3]">Left</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">Left</span>
                 </div>
               ))}
             </div>
@@ -275,17 +275,17 @@ export function MembersListClient({
 
       {/* Removed Members */}
       {activeTab === "removed" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
-          <p className="text-sm text-[#999] mb-3">{removedMembers.length} removed members</p>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <p className="text-sm text-muted-foreground mb-3">{removedMembers.length} removed members</p>
           {removedMembers.length === 0 ? (
             <p className="text-sm text-[#bbb] text-center py-6">No members have been removed.</p>
           ) : (
             <div className="space-y-3">
               {removedMembers.map((m) => (
-                <div key={m.user_id} className="flex items-center gap-3 border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
+                <div key={m.user_id} className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0">
                   <Avatar member={m} size="w-10 h-10" />
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-semibold text-[#333] truncate block">{m.name || "Unknown"}</span>
+                    <span className="text-sm font-semibold text-foreground truncate block">{m.name || "Unknown"}</span>
                     <span className="text-xs text-[#bbb]">Removed {m.joined_at ? format(new Date(m.joined_at), "d MMM yyyy") : "—"}</span>
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">Removed</span>
@@ -298,15 +298,15 @@ export function MembersListClient({
 
       {/* Rejected Leave Requests */}
       {activeTab === "rejected" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
-          <p className="text-sm text-[#999] mb-3">{rejectedLeaveRequests.length} rejected leave requests</p>
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <p className="text-sm text-muted-foreground mb-3">{rejectedLeaveRequests.length} rejected leave requests</p>
           {rejectedLeaveRequests.length === 0 ? (
             <p className="text-sm text-[#bbb] text-center py-6">No rejected leave requests.</p>
           ) : (
             <div className="space-y-3">
               {rejectedLeaveRequests.map((r) => (
-                <div key={r.id} className="flex items-center gap-3 border-b border-[#f0f0f5] pb-3 last:border-0 last:pb-0">
-                  <div className="w-10 h-10 rounded-full bg-[#6a4fd8] flex items-center justify-center text-sm font-bold text-white shrink-0 overflow-hidden">
+                <div key={r.id} className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0">
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-primary-foreground shrink-0 overflow-hidden">
                     {r.avatar_url ? (
                       <img src={r.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                     ) : (
@@ -314,7 +314,7 @@ export function MembersListClient({
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-semibold text-[#333] truncate block">{r.name || "Unknown"}</span>
+                    <span className="text-sm font-semibold text-foreground truncate block">{r.name || "Unknown"}</span>
                     <span className="text-xs text-[#bbb]">{r.updated_at ? format(new Date(r.updated_at), "d MMM yyyy") : "—"}</span>
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#fadada] text-[#e5484d]">Rejected</span>
@@ -332,7 +332,7 @@ export function MembersListClient({
             <>
               <DialogHeader>
                 <div className="flex flex-col items-center gap-3 py-2">
-                  <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center text-2xl font-bold text-white bg-[#6a4fd8]">
+                  <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center text-2xl font-bold text-primary-foreground bg-primary">
                     {selectedMember.avatar_url ? (
                       <img src={selectedMember.avatar_url} alt="" className="w-full h-full object-cover" />
                     ) : (
@@ -340,7 +340,7 @@ export function MembersListClient({
                     )}
                   </div>
                   <div className="text-center">
-                    <DialogTitle className="text-[17px] font-bold text-[#333]">{selectedMember.name || "Unknown"}</DialogTitle>
+                    <DialogTitle className="text-[17px] font-bold text-foreground">{selectedMember.name || "Unknown"}</DialogTitle>
                     <div className="flex justify-center mt-1.5">{roleBadge(selectedMember.role)}</div>
                   </div>
                 </div>
@@ -348,30 +348,30 @@ export function MembersListClient({
 
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-[#999]">Phone</span>
-                  <span className="font-semibold text-[#333]">{selectedMember.phone || "—"}</span>
+                  <span className="text-muted-foreground">Phone</span>
+                  <span className="font-semibold text-foreground">{selectedMember.phone || "—"}</span>
                 </div>
                 <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-[#999]">Joined</span>
-                  <span className="font-semibold text-[#333]">{format(new Date(selectedMember.joined_at), "d MMM yyyy")}</span>
+                  <span className="text-muted-foreground">Joined</span>
+                  <span className="font-semibold text-foreground">{format(new Date(selectedMember.joined_at), "d MMM yyyy")}</span>
                 </div>
                 <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-[#999]">Total Meals</span>
-                  <span className="font-semibold text-[#333]">{stats ? stats.meals.toFixed(1) : "—"}</span>
+                  <span className="text-muted-foreground">Total Meals</span>
+                  <span className="font-semibold text-foreground">{stats ? stats.meals.toFixed(1) : "—"}</span>
                 </div>
                 <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-[#999]">Total Deposit</span>
-                  <span className="font-semibold text-[#333]">৳ {stats ? stats.deposits.toFixed(0) : "—"}</span>
+                  <span className="text-muted-foreground">Total Deposit</span>
+                  <span className="font-semibold text-foreground">৳ {stats ? stats.deposits.toFixed(0) : "—"}</span>
                 </div>
                 <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-[#999]">Balance</span>
+                  <span className="text-muted-foreground">Balance</span>
                   <span className={`font-bold ${stats && stats.balance < 0 ? "text-[#e5484d]" : "text-[#1fae70]"}`}>
                     ৳ {stats ? stats.balance.toFixed(0) : "—"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-[#999]">Meal Rate</span>
-                  <span className="font-semibold text-[#333]">৳ {mealRate.toFixed(0)} / meal</span>
+                  <span className="text-muted-foreground">Meal Rate</span>
+                  <span className="font-semibold text-foreground">৳ {mealRate.toFixed(0)} / meal</span>
                 </div>
                 {selectedLeaveReq && isManager && (
                   <div className="mt-3 rounded-xl bg-[#fbe9c9] p-3">
@@ -408,10 +408,10 @@ export function MembersListClient({
       <Dialog open={!!pendingAction} onOpenChange={(open) => { if (!open && !loading) setPendingAction(null); }}>
         <DialogContent className="max-w-sm rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="text-[15px] font-bold text-[#333]">
+            <DialogTitle className="text-[15px] font-bold text-foreground">
               {pendingAction?.type === "approve" ? "Accept Leave Request?" : "Reject Leave Request?"}
             </DialogTitle>
-            <DialogDescription className="text-[13px] text-[#666]">
+            <DialogDescription className="text-[13px] text-muted-foreground">
               {pendingAction?.type === "approve"
                 ? `Are you sure you want to accept ${pendingAction?.req.name || "this member"}'s request to leave the mess? They will be removed from the member list.`
                 : `Are you sure you want to reject ${pendingAction?.req.name || "this member"}'s leave request?`}
@@ -436,8 +436,8 @@ export function MembersListClient({
       <Dialog open={!!memberToRemove} onOpenChange={(open) => { if (!open && !loading) setMemberToRemove(null); }}>
         <DialogContent className="max-w-sm rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="text-[15px] font-bold text-[#333]">Remove Member?</DialogTitle>
-            <DialogDescription className="text-[13px] text-[#666]">
+            <DialogTitle className="text-[15px] font-bold text-foreground">Remove Member?</DialogTitle>
+            <DialogDescription className="text-[13px] text-muted-foreground">
               Are you sure you want to remove <strong>{memberToRemove?.name || "this member"}</strong> from the mess? They will lose access immediately. All their data will be preserved.
             </DialogDescription>
           </DialogHeader>

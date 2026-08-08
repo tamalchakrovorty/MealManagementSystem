@@ -21,7 +21,7 @@ const COLORS = {
 const avatarPastels = [
   "bg-[#E8F8F0] text-[#18B875]",
   "bg-[#FEF3C7] text-[#F59E0B]",
-  "bg-[#EDE9FE] text-[#6A4FD8]",
+  "bg-primary/10 text-primary",
   "bg-[#DBEAFE] text-[#2F80ED]",
   "bg-[#FCE7F3] text-[#EC4899]",
   "bg-[#CCFBF1] text-[#14B8A6]",
@@ -57,7 +57,7 @@ function SegmentedControl({
   onChange: (key: TabType) => void;
 }) {
   return (
-    <div className="bg-white rounded-[16px] p-[5px] flex shadow-[0_2px_12px_rgba(106,79,216,0.08)]">
+    <div className="bg-card rounded-[16px] p-[5px] flex shadow-[0_2px_12px_rgba(106,79,216,0.08)]">
       {tabs.map((t) => (
         <button
           key={t.key}
@@ -65,8 +65,8 @@ function SegmentedControl({
           onClick={() => onChange(t.key)}
           className={`flex-1 py-3 md:py-2.5 rounded-[12px] text-[13px] md:text-[14px] font-bold transition-all duration-200 ${
             active === t.key
-              ? "bg-[#6A4FD8] text-white shadow-[0_4px_12px_rgba(106,79,216,0.3)]"
-              : "text-[#8b8fa3] hover:text-[#6A4FD8]"
+              ? "bg-primary text-primary-foreground shadow-[0_4px_12px_rgba(106,79,216,0.3)]"
+              : "text-muted-foreground hover:text-primary"
           }`}
         >
           {t.label}
@@ -90,15 +90,15 @@ function SummaryCard({
   subtitle?: string;
 }) {
   return (
-    <div className="bg-white rounded-[24px] p-4 md:p-5 shadow-[0_10px_30px_rgba(0,0,0,.06)] hover:-translate-y-[3px] transition-all duration-300">
+    <div className="bg-card rounded-[24px] p-4 md:p-5 shadow-[0_10px_30px_rgba(0,0,0,.06)] hover:-translate-y-[3px] transition-all duration-300">
       <div className="w-[40px] h-[40px] md:w-[44px] md:h-[44px] rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: `${color}18` }}>
         {icon}
       </div>
-      <p className="text-[11px] md:text-[13px] font-semibold text-[#8b8fa3] mb-0.5">{label}</p>
+      <p className="text-[11px] md:text-[13px] font-semibold text-muted-foreground mb-0.5">{label}</p>
       <p className="text-[20px] md:text-[24px] font-extrabold" style={{ color }}>
         ৳{amount.toFixed(0)}
       </p>
-      {subtitle && <p className="text-[10px] md:text-[11px] text-[#b0b3c5] mt-0.5">{subtitle}</p>}
+      {subtitle && <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">{subtitle}</p>}
     </div>
   );
 }
@@ -123,22 +123,22 @@ function TransactionRow({
   const time = format(new Date(createdAt), "h:mm a");
 
   return (
-    <div className="flex items-center gap-3 py-3 md:py-3.5 px-1 md:px-2 rounded-xl md:hover:bg-[#f8f8fc] md:transition-colors group">
+    <div className="flex items-center gap-3 py-3 md:py-3.5 px-1 md:px-2 rounded-xl md:hover:bg-muted md:transition-colors group">
       <Avatar name={name} avatarUrl={avatarUrl} />
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <p className="text-[14px] md:text-[15px] font-semibold text-[#1e2130] truncate">{name}</p>
+          <p className="text-[14px] md:text-[15px] font-semibold text-foreground truncate">{name}</p>
           <span className="text-[10px] md:text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ backgroundColor: bgColor, color }}>
             {type === "deposit" ? "Deposit" : "Expense"}
           </span>
         </div>
-        {notes && <p className="text-[11px] md:text-[12px] text-[#8b8fa3] truncate mt-0.5">{notes}</p>}
+        {notes && <p className="text-[11px] md:text-[12px] text-muted-foreground truncate mt-0.5">{notes}</p>}
       </div>
       <div className="text-right shrink-0">
         <p className="text-[14px] md:text-[15px] font-bold" style={{ color }}>
           {type === "deposit" ? "+" : "-"}৳{amount.toFixed(0)}
         </p>
-        <p className="text-[10px] md:text-[11px] text-[#b0b3c5] mt-0.5">{time}</p>
+        <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">{time}</p>
       </div>
     </div>
   );
@@ -167,11 +167,11 @@ function DateGroup({
   else dateLabel = format(date, "EEEE");
 
   return (
-    <div className="bg-white rounded-[24px] p-5 md:p-6 shadow-[0_10px_30px_rgba(0,0,0,.06)]">
+    <div className="bg-card rounded-[24px] p-5 md:p-6 shadow-[0_10px_30px_rgba(0,0,0,.06)]">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-[16px] md:text-[18px] font-bold text-[#1e2130]">{dateLabel}</p>
-          <p className="text-[12px] md:text-[13px] text-[#8b8fa3]">{format(date, "d MMMM yyyy")}</p>
+          <p className="text-[16px] md:text-[18px] font-bold text-foreground">{dateLabel}</p>
+          <p className="text-[12px] md:text-[13px] text-muted-foreground">{format(date, "d MMMM yyyy")}</p>
         </div>
         <div className="flex items-center gap-2">
           {depCount > 0 && (
@@ -186,7 +186,7 @@ function DateGroup({
           )}
         </div>
       </div>
-      <div className="divide-y divide-[#f0f0f5]">
+      <div className="divide-y divide-border">
         {dayDeposits.map((dep: any) => (
           <TransactionRow
             key={dep.id}
@@ -249,9 +249,9 @@ function StatsSidebar({
 
   return (
     <div className="space-y-4 md:sticky md:top-24">
-      <h3 className="text-[15px] md:text-[17px] font-bold text-[#1e2130]">Monthly Summary</h3>
+      <h3 className="text-[15px] md:text-[17px] font-bold text-foreground">Monthly Summary</h3>
 
-      <div className="bg-white rounded-[24px] p-5 shadow-[0_10px_30px_rgba(0,0,0,.06)] space-y-4">
+      <div className="bg-card rounded-[24px] p-5 shadow-[0_10px_30px_rgba(0,0,0,.06)] space-y-4">
         <div className="flex items-center gap-3">
           <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS.depositBg }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -259,13 +259,13 @@ function StatsSidebar({
             </svg>
           </div>
           <div>
-            <p className="text-[11px] md:text-[12px] font-semibold text-[#8b8fa3]">Top Depositor</p>
-            <p className="text-[14px] md:text-[15px] font-bold text-[#1e2130]">{topDepositor.name}</p>
+            <p className="text-[11px] md:text-[12px] font-semibold text-muted-foreground">Top Depositor</p>
+            <p className="text-[14px] md:text-[15px] font-bold text-foreground">{topDepositor.name}</p>
             <p className="text-[13px] md:text-[14px] font-extrabold" style={{ color: COLORS.deposit }}>৳{topDepositor.total.toLocaleString()}</p>
           </div>
         </div>
 
-        <div className="border-t border-[#f0f0f5]" />
+        <div className="border-t border-border" />
 
         <div className="flex items-center gap-3">
           <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS.expenseBg }}>
@@ -276,13 +276,13 @@ function StatsSidebar({
             </svg>
           </div>
           <div>
-            <p className="text-[11px] md:text-[12px] font-semibold text-[#8b8fa3]">Highest Expense</p>
-            <p className="text-[14px] md:text-[15px] font-bold text-[#1e2130]">{highestExpense.name}</p>
+            <p className="text-[11px] md:text-[12px] font-semibold text-muted-foreground">Highest Expense</p>
+            <p className="text-[14px] md:text-[15px] font-bold text-foreground">{highestExpense.name}</p>
             <p className="text-[13px] md:text-[14px] font-extrabold" style={{ color: COLORS.expense }}>৳{highestExpense.amount.toLocaleString()}</p>
           </div>
         </div>
 
-        <div className="border-t border-[#f0f0f5]" />
+        <div className="border-t border-border" />
 
         <div className="flex items-center gap-3">
           <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: COLORS.primaryBg }}>
@@ -291,13 +291,13 @@ function StatsSidebar({
             </svg>
           </div>
           <div>
-            <p className="text-[11px] md:text-[12px] font-semibold text-[#8b8fa3]">Average Deposit</p>
-            <p className="text-[13px] md:text-[14px] font-semibold text-[#8b8fa3]">{uniqueDepositors} member{uniqueDepositors !== 1 ? "s" : ""}</p>
-            <p className="text-[14px] md:text-[15px] font-bold text-[#1e2130]">৳{avgDeposit.toLocaleString()}</p>
+            <p className="text-[11px] md:text-[12px] font-semibold text-muted-foreground">Average Deposit</p>
+            <p className="text-[13px] md:text-[14px] font-semibold text-muted-foreground">{uniqueDepositors} member{uniqueDepositors !== 1 ? "s" : ""}</p>
+            <p className="text-[14px] md:text-[15px] font-bold text-foreground">৳{avgDeposit.toLocaleString()}</p>
           </div>
         </div>
 
-        <div className="border-t border-[#f0f0f5]" />
+        <div className="border-t border-border" />
 
         <div className="flex items-center gap-3">
           <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: net >= 0 ? COLORS.depositBg : "#FEE2E2" }}>
@@ -308,7 +308,7 @@ function StatsSidebar({
             </svg>
           </div>
           <div>
-            <p className="text-[11px] md:text-[12px] font-semibold text-[#8b8fa3]">Net Balance</p>
+            <p className="text-[11px] md:text-[12px] font-semibold text-muted-foreground">Net Balance</p>
             <p className="text-[14px] md:text-[15px] font-bold" style={{ color: net >= 0 ? COLORS.deposit : COLORS.danger }}>
               {net >= 0 ? "+" : "-"}৳{Math.abs(net).toLocaleString()}
             </p>
@@ -321,7 +321,7 @@ function StatsSidebar({
 
 function EmptyState() {
   return (
-    <div className="bg-white rounded-[24px] p-10 md:p-12 shadow-[0_10px_30px_rgba(0,0,0,.06)] text-center">
+    <div className="bg-card rounded-[24px] p-10 md:p-12 shadow-[0_10px_30px_rgba(0,0,0,.06)] text-center">
       <div className="w-[72px] h-[72px] rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: COLORS.primaryBg }}>
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
           <path d="M21 12V22H3V12" stroke={COLORS.primary} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -329,8 +329,8 @@ function EmptyState() {
           <path d="M9 21V14H15V21" stroke={COLORS.primary} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-      <p className="text-[16px] md:text-[18px] font-bold text-[#1e2130] mb-1">No transactions this month</p>
-      <p className="text-[13px] md:text-[14px] text-[#8b8fa3]">Choose another month to view activity</p>
+      <p className="text-[16px] md:text-[18px] font-bold text-foreground mb-1">No transactions this month</p>
+      <p className="text-[13px] md:text-[14px] text-muted-foreground">Choose another month to view activity</p>
     </div>
   );
 }
@@ -338,13 +338,13 @@ function EmptyState() {
 function MonthPickerInline({ currentMonth }: { currentMonth: string }) {
   return (
     <Suspense fallback={
-      <div className="flex items-center gap-2.5 bg-white rounded-[14px] px-4 py-3 shadow-[0_2px_6px_rgba(30,30,60,0.06)]">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#6a4fd8] shrink-0">
+      <div className="flex items-center gap-2.5 bg-card rounded-[14px] px-4 py-3 shadow-[0_2px_6px_rgba(30,30,60,0.06)]">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-primary shrink-0">
           <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" />
           <path d="M3 10H21" stroke="currentColor" strokeWidth="1.8" />
           <path d="M8 2V6M16 2V6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
-        <span className="text-[14px] font-semibold text-[#1e2130]">{currentMonth}</span>
+        <span className="text-[14px] font-semibold text-foreground">{currentMonth}</span>
       </div>
     }>
       <MonthPickerInner currentMonth={currentMonth} />
@@ -374,23 +374,23 @@ function MonthPickerInner({ currentMonth }: { currentMonth: string }) {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-white rounded-[14px] px-3 py-2 shadow-[0_2px_6px_rgba(30,30,60,0.06)]">
-      <button onClick={() => navigate("prev")} className="w-9 h-9 rounded-full bg-[#f4f4fb] hover:bg-[#ece9fe] flex items-center justify-center transition-colors" type="button">
+    <div className="flex items-center gap-3 bg-card rounded-[14px] px-3 py-2 shadow-[0_2px_6px_rgba(30,30,60,0.06)]">
+      <button onClick={() => navigate("prev")} className="w-9 h-9 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-          <path d="M15 6L9 12L15 18" stroke="#6a4fd8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
       <div className="flex items-center gap-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#6a4fd8] shrink-0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-primary shrink-0">
           <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" />
           <path d="M3 10H21" stroke="currentColor" strokeWidth="1.8" />
           <path d="M8 2V6M16 2V6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
-        <span className="text-[14px] font-semibold text-[#1e2130] min-w-[100px] text-center">{displayLabel}</span>
+        <span className="text-[14px] font-semibold text-foreground min-w-[100px] text-center">{displayLabel}</span>
       </div>
-      <button onClick={() => navigate("next")} className="w-9 h-9 rounded-full bg-[#f4f4fb] hover:bg-[#ece9fe] flex items-center justify-center transition-colors" type="button">
+      <button onClick={() => navigate("next")} className="w-9 h-9 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-          <path d="M9 6L15 12L9 18" stroke="#6a4fd8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
     </div>
@@ -445,15 +445,15 @@ export function DepositsViewClient({
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/user/views"
-            className="w-[46px] h-[46px] min-w-[46px] bg-white rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
+            className="w-[46px] h-[46px] min-w-[46px] bg-card rounded-[14px] flex items-center justify-center shadow-[0_2px_6px_rgba(30,30,60,0.06)]"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1e2130" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-foreground">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-[22px] md:text-[32px] font-extrabold text-[#1e2130] leading-tight">Deposits & Expenses</h1>
-            <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Track all deposits and bazar expenses</p>
+            <h1 className="text-[22px] md:text-[32px] font-extrabold text-foreground leading-tight">Deposits & Expenses</h1>
+            <p className="text-[13px] md:text-[15px] text-muted-foreground">Track all deposits and bazar expenses</p>
           </div>
         </div>
         <div className="hidden md:block">

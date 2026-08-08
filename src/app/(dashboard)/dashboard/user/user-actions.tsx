@@ -196,9 +196,9 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
           <div className="flex justify-center mb-2">
             <button type="button" onClick={handleAvatarClick} className="relative group">
               {preview ? (
-                <img src={preview} alt="Avatar" className="w-20 h-20 rounded-full object-cover bg-[#ddd]" />
+                <img src={preview} alt="Avatar" className="w-20 h-20 rounded-full object-cover bg-muted" />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-[#6a4fd8] flex items-center justify-center text-2xl font-bold text-white">
+                <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-2xl font-bold text-primary-foreground">
                   {name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
               )}
@@ -225,17 +225,17 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
 
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#666] mb-1.5">Name</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Name</label>
               <input value={name} onChange={(e) => setName(e.target.value)} required
-                className="w-full border border-[#e3e0f5] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6a4fd8] transition-colors" />
+                className="w-full border border-border rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#666] mb-1.5">Phone</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Phone</label>
               <input value={phone} onChange={(e) => setPhone(e.target.value)}
-                className="w-full border border-[#e3e0f5] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6a4fd8] transition-colors" />
+                className="w-full border border-border rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors" />
             </div>
             <button type="submit" disabled={loading || uploading}
-              className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 text-sm font-bold disabled:opacity-60">
+              className="w-full bg-primary text-primary-foreground rounded-xl py-3 text-sm font-bold disabled:opacity-60">
               {loading ? "Saving..." : "Save Changes"}
             </button>
           </form>
@@ -269,30 +269,30 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
           </div>
 
           <div className="text-center px-5 mb-4">
-            <h2 className="text-[19px] font-bold text-[#1B1B23] mb-1">Create a new password</h2>
-            <p className="text-[13.5px] text-[#8A8A9E]">Choose a strong password to keep your account secure.</p>
+            <h2 className="text-[19px] font-bold text-foreground mb-1">Create a new password</h2>
+            <p className="text-[13.5px] text-muted-foreground">Choose a strong password to keep your account secure.</p>
           </div>
 
           <div className="px-5 space-y-3 pb-5">
             {/* Current Password */}
-            <div className="bg-[#F7F7FB] rounded-[18px] p-4 flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+            <div className="bg-muted rounded-[18px] p-4 flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                   <rect x="4" y="9" width="12" height="8" rx="2" stroke="currentColor" strokeWidth="1.6" />
                   <path d="M6.5 9V6.5C6.5 4.6 8 3 10 3C12 3 13.5 4.6 13.5 6.5V9" stroke="currentColor" strokeWidth="1.6" />
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[13.5px] font-semibold text-[#1B1B23] mb-2">Current Password</p>
+                <p className="text-[13.5px] font-semibold text-foreground mb-2">Current Password</p>
                 <div className="flex items-center justify-between">
                   <input
                     type={showCurrent ? "text" : "password"}
                     placeholder="Enter current password"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="flex-1 bg-transparent outline-none text-[15px] text-[#1B1B23] placeholder:text-[#B3B3C2] pr-2"
+                    className="flex-1 bg-transparent outline-none text-[15px] text-foreground placeholder:text-muted-foreground pr-2"
                   />
-                  <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="text-[#8A8A9E] shrink-0">
+                  <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="text-muted-foreground shrink-0">
                     {showCurrent ? (
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M1.5 10C1.5 10 4.5 4 10 4C15.5 4 18.5 10 18.5 10C18.5 10 15.5 16 10 16C4.5 16 1.5 10 1.5 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -311,8 +311,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
             </div>
 
             {/* New Password */}
-            <div className="bg-[#F7F7FB] rounded-[18px] p-4 flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+            <div className="bg-muted rounded-[18px] p-4 flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                   <rect x="4" y="9" width="12" height="8" rx="2" stroke="currentColor" strokeWidth="1.6" />
                   <path d="M6.5 9V6.5C6.5 4.6 8 3 10 3C12 3 13.5 4.6 13.5 6.5V9" stroke="currentColor" strokeWidth="1.6" />
@@ -320,8 +320,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[13.5px] font-semibold text-[#1B1B23]">New Password</p>
-                  <button type="button" onClick={() => setShowNew(!showNew)} className="text-[#8A8A9E] shrink-0">
+                  <p className="text-[13.5px] font-semibold text-foreground">New Password</p>
+                  <button type="button" onClick={() => setShowNew(!showNew)} className="text-muted-foreground shrink-0">
                     {showNew ? (
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M1.5 10C1.5 10 4.5 4 10 4C15.5 4 18.5 10 18.5 10C18.5 10 15.5 16 10 16C4.5 16 1.5 10 1.5 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -341,25 +341,25 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
                   placeholder="Enter new password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full bg-transparent outline-none text-[15px] text-[#1B1B23] placeholder:text-[#B3B3C2] mb-2"
+                  className="w-full bg-transparent outline-none text-[15px] text-foreground placeholder:text-muted-foreground mb-2"
                 />
                 {newPassword.length > 0 && (
                   <div className="flex items-center gap-2.5 mt-1">
-                    <div className="flex-1 h-[5px] bg-[#ECECF4] rounded-[3px] overflow-hidden">
+                    <div className="flex-1 h-[5px] bg-muted rounded-[3px] overflow-hidden">
                       <div className="h-full rounded-[3px] transition-all duration-300" style={{ width: `${(pwScore / 4) * 100}%`, background: pwColor }} />
                     </div>
                     <span className="text-[12px] font-bold shrink-0" style={{ color: pwColor }}>{pwLabel}</span>
                   </div>
                 )}
                 {newPassword.length > 0 && (
-                  <p className="text-[12px] text-[#8A8A9E] mt-2 leading-snug">Use 8+ characters with a mix of letters, numbers and symbols.</p>
+                  <p className="text-[12px] text-muted-foreground mt-2 leading-snug">Use 8+ characters with a mix of letters, numbers and symbols.</p>
                 )}
               </div>
             </div>
 
             {/* Confirm New Password */}
-            <div className="bg-[#F7F7FB] rounded-[18px] p-4 flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+            <div className="bg-muted rounded-[18px] p-4 flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                   <rect x="4" y="9" width="12" height="8" rx="2" stroke="currentColor" strokeWidth="1.6" />
                   <path d="M6.5 9V6.5C6.5 4.6 8 3 10 3C12 3 13.5 4.6 13.5 6.5V9" stroke="currentColor" strokeWidth="1.6" />
@@ -367,8 +367,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[13.5px] font-semibold text-[#1B1B23]">Confirm New Password</p>
-                  <button type="button" onClick={() => setShowConfirmNew(!showConfirmNew)} className="text-[#8A8A9E] shrink-0">
+                  <p className="text-[13.5px] font-semibold text-foreground">Confirm New Password</p>
+                  <button type="button" onClick={() => setShowConfirmNew(!showConfirmNew)} className="text-muted-foreground shrink-0">
                     {showConfirmNew ? (
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M1.5 10C1.5 10 4.5 4 10 4C15.5 4 18.5 10 18.5 10C18.5 10 15.5 16 10 16C4.5 16 1.5 10 1.5 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -388,14 +388,14 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
                   placeholder="Confirm new password"
                   value={confirmNew}
                   onChange={(e) => setConfirmNew(e.target.value)}
-                  className="w-full bg-transparent outline-none text-[15px] text-[#1B1B23] placeholder:text-[#B3B3C2]"
+                  className="w-full bg-transparent outline-none text-[15px] text-foreground placeholder:text-muted-foreground"
                 />
               </div>
             </div>
 
             {/* Requirements */}
-            <div className="bg-[#F7F7FB] rounded-[18px] p-4">
-              <p className="text-[14px] font-bold text-[#1B1B23] mb-2.5">Password must contain:</p>
+            <div className="bg-muted rounded-[18px] p-4">
+              <p className="text-[14px] font-bold text-foreground mb-2.5">Password must contain:</p>
               <ul className="space-y-2.5">
                 {[
                   { label: "At least 8 characters", met: hasMinLen },
@@ -403,7 +403,7 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
                   { label: "One lowercase letter", met: hasLower },
                   { label: "One number or symbol", met: hasNumberOrSymbol },
                 ].map((req) => (
-                  <li key={req.label} className="flex items-center gap-2 text-[13px] text-[#1B1B23]">
+                  <li key={req.label} className="flex items-center gap-2 text-[13px] text-foreground">
                     {req.met ? (
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
                         <path d="M2 8.5L6 12.5L14 3.5" stroke="#3CB878" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -446,7 +446,7 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
                 setNewPassword("");
                 setConfirmNew("");
               }}
-              className="block w-full text-center text-[15px] font-bold text-[#6C5DD3] pb-1"
+              className="block w-full text-center text-[15px] font-bold text-primary pb-1"
             >
               Cancel
             </button>
@@ -465,8 +465,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
           <div className="space-y-4">
             {/* Scope */}
             <div>
-              <p className="text-xs font-semibold text-[#666] mb-2">Data</p>
-              <div className="flex rounded-full bg-[#f2f1fb] p-1">
+              <p className="text-xs font-semibold text-muted-foreground mb-2">Data</p>
+              <div className="flex rounded-full bg-muted p-1">
                 {([
                   { key: "my", label: "My Log" },
                   { key: "full", label: "Full Mess Log" },
@@ -476,7 +476,7 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
                     type="button"
                     onClick={() => setDlScope(opt.key)}
                     className={`flex-1 py-2 rounded-full text-[13px] font-semibold transition-colors ${
-                      dlScope === opt.key ? "bg-[#6a4fd8] text-white" : "text-[#6a4fd8]"
+                      dlScope === opt.key ? "bg-primary text-primary-foreground" : "text-primary"
                     }`}
                   >
                     {opt.label}
@@ -487,8 +487,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
 
             {/* Period */}
             <div>
-              <p className="text-xs font-semibold text-[#666] mb-2">Period</p>
-              <div className="flex rounded-full bg-[#f2f1fb] p-1">
+              <p className="text-xs font-semibold text-muted-foreground mb-2">Period</p>
+              <div className="flex rounded-full bg-muted p-1">
                 {([
                   { key: "single", label: "Single Month" },
                   { key: "range", label: "Range" },
@@ -498,7 +498,7 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
                     type="button"
                     onClick={() => setDlPeriod(opt.key)}
                     className={`flex-1 py-2 rounded-full text-[13px] font-semibold transition-colors ${
-                      dlPeriod === opt.key ? "bg-[#6a4fd8] text-white" : "text-[#6a4fd8]"
+                      dlPeriod === opt.key ? "bg-primary text-primary-foreground" : "text-primary"
                     }`}
                   >
                     {opt.label}
@@ -510,23 +510,23 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
             {/* Month pickers */}
             {dlPeriod === "single" ? (
               <div>
-                <p className="text-xs font-semibold text-[#666] mb-2">Month</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">Month</p>
                 <MonthPickerField label="Month" value={dlMonth} onChange={setDlMonth} />
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <p className="text-xs font-semibold text-[#666] mb-2">From</p>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">From</p>
                   <MonthPickerField label="From" value={dlStart} onChange={setDlStart} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-[#666] mb-2">To</p>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">To</p>
                   <MonthPickerField label="To" value={dlEnd} onChange={setDlEnd} />
                 </div>
               </div>
             )}
 
-            <p className="text-[12px] text-[#8a8a9e]">
+            <p className="text-[12px] text-muted-foreground">
               {dlPeriod === "range" && dlStart !== dlEnd
                 ? "Multiple months will be downloaded as a ZIP file containing one Excel file per month."
                 : "A single Excel file with Summary, Meals, Guest Meals, Deposits, Expenses and Menu sheets will be downloaded."}
@@ -573,59 +573,59 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
             {/* Update Profile */}
             <button
               onClick={() => { setSettingsOpen(false); setEditOpen(true); }}
-              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+              className="w-full bg-muted rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-primary/10 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <User size={18} />
               </div>
               <div>
-                <p className="text-[14px] font-semibold text-[#1B1B23]">Update Profile</p>
-                <p className="text-[12px] text-[#8A8A9E]">Change your avatar, name, and phone</p>
+                <p className="text-[14px] font-semibold text-foreground">Update Profile</p>
+                <p className="text-[12px] text-muted-foreground">Change your avatar, name, and phone</p>
               </div>
             </button>
 
             {/* Change Password */}
             <button
               onClick={() => { setSettingsOpen(false); setChangeOpen(true); }}
-              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+              className="w-full bg-muted rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-primary/10 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <Lock size={18} />
               </div>
               <div>
-                <p className="text-[14px] font-semibold text-[#1B1B23]">Change Password</p>
-                <p className="text-[12px] text-[#8A8A9E]">Update your account password</p>
+                <p className="text-[14px] font-semibold text-foreground">Change Password</p>
+                <p className="text-[12px] text-muted-foreground">Update your account password</p>
               </div>
             </button>
 
             {/* Download Log */}
             <button
               onClick={() => { setSettingsOpen(false); setDownloadOpen(true); }}
-              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+              className="w-full bg-muted rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-primary/10 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <Download size={18} />
               </div>
               <div>
-                <p className="text-[14px] font-semibold text-[#1B1B23]">Download Log</p>
-                <p className="text-[12px] text-[#8A8A9E]">Export mess data as Excel</p>
+                <p className="text-[14px] font-semibold text-foreground">Download Log</p>
+                <p className="text-[12px] text-muted-foreground">Export mess data as Excel</p>
               </div>
             </button>
 
             {/* Leave Mess */}
             <button
               onClick={() => { setSettingsOpen(false); handleLeaveMess(); }}
-              className="w-full bg-[#F7F7FB] rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-[#EDEBFA] transition-colors"
+              className="w-full bg-muted rounded-[18px] p-4 flex items-center gap-3.5 text-left hover:bg-primary/10 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full bg-[#EDEBFA] flex items-center justify-center shrink-0 text-[#6C5DD3]">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
                   <path d="M12 8V12L14.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
               </div>
               <div>
-                <p className="text-[14px] font-semibold text-[#1B1B23]">Leave Mess</p>
-                <p className="text-[12px] text-[#8A8A9E]">Exit the current mess</p>
+                <p className="text-[14px] font-semibold text-foreground">Leave Mess</p>
+                <p className="text-[12px] text-muted-foreground">Exit the current mess</p>
               </div>
             </button>
 
@@ -652,14 +652,14 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
 
       {/* Quick Actions Section */}
       <div className="space-y-3">
-        <p className="text-[12px] md:text-[13px] font-semibold text-[#8b8fa3] uppercase tracking-wide px-1">Quick Actions</p>
+        <p className="text-[12px] md:text-[13px] font-semibold text-muted-foreground uppercase tracking-wide px-1">Quick Actions</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {/* Request Guest Meal */}
           <Link
             href="/dashboard/user/guest-meal"
-            className="bg-white rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300"
+            className="bg-card rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300"
           >
-            <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+            <div className="w-[22px] h-[22px] flex items-center justify-center text-primary">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" />
@@ -674,8 +674,8 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
           <Dialog open={mealOffOpen} onOpenChange={setMealOffOpen}>
             <DialogTrigger
               render={
-                <button className="bg-white rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
-                  <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+                <button className="bg-card rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300">
+                  <div className="w-[22px] h-[22px] flex items-center justify-center text-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
                       <path d="M12 8V12L14.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -698,9 +698,9 @@ export function UserActions({ profile, messId }: { profile: any; messId: string 
           {/* Settings */}
           <button
             onClick={() => setSettingsOpen(true)}
-            className="bg-white rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300"
+            className="bg-card rounded-[18px] p-4 flex items-center gap-3.5 w-full text-left shadow-[0_2px_10px_rgba(0,0,0,0.03)] md:hover:-translate-y-[3px] md:transition-all md:duration-300"
           >
-            <div className="w-[22px] h-[22px] flex items-center justify-center text-[#6a4fd8]">
+            <div className="w-[22px] h-[22px] flex items-center justify-center text-primary">
               <Settings size={20} />
             </div>
             <span className="text-[14.5px] md:text-[15px] font-semibold">Settings</span>

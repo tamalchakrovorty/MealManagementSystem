@@ -127,24 +127,24 @@ export function DatePickerField({ value, onChange, min, max, className }: DatePi
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 text-sm text-left outline-none focus:border-[#6a4fd8] transition-colors bg-white ${className || ""}`}
+        className={`w-full border border-border rounded-xl px-3 py-2.5 text-sm text-left outline-none focus:border-primary transition-colors bg-card ${className || ""}`}
       >
-        <span className={value ? "text-[#333]" : "text-[#aaa]"}>{display}</span>
+        <span className={value ? "text-foreground" : "text-[#aaa]"}>{display}</span>
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-1 bg-white rounded-xl border border-[#e3e0f5] shadow-lg p-3 w-[min(280px,calc(100vw-2rem))]">
+        <div className="absolute z-50 mt-1 bg-card rounded-xl border border-border shadow-lg p-3 w-[min(280px,calc(100vw-2rem))]">
           {/* Header */}
           <div className="flex items-center justify-between mb-2">
             <button type="button" onClick={prevMonth}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-[#666] hover:bg-[#f4f4fb]">
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-muted">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path d="M15 5L8 12L15 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-            <span className="text-[13px] font-bold text-[#333]">{MONTHS[viewMonth]} {viewYear}</span>
+            <span className="text-[13px] font-bold text-foreground">{MONTHS[viewMonth]} {viewYear}</span>
             <button type="button" onClick={nextMonth}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-[#666] hover:bg-[#f4f4fb]">
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-muted">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -154,7 +154,7 @@ export function DatePickerField({ value, onChange, min, max, className }: DatePi
           {/* Weekday headers */}
           <div className="grid grid-cols-7 mb-1">
             {WEEKDAYS.map((d) => (
-              <div key={d} className="text-center text-[10px] font-bold text-[#8b8fa3] py-1">{d}</div>
+              <div key={d} className="text-center text-[10px] font-bold text-muted-foreground py-1">{d}</div>
             ))}
           </div>
 
@@ -171,7 +171,7 @@ export function DatePickerField({ value, onChange, min, max, className }: DatePi
                   onClick={() => selectDay(cell)}
                   disabled={disabled}
                   className={`w-full aspect-square rounded-lg flex items-center justify-center text-[12px] font-semibold transition-all
-                    ${selected ? "bg-[#6a4fd8] text-white" : todayMatch ? "bg-[#ece9fe] text-[#6a4fd8] font-bold" : cell.current ? "text-[#333] hover:bg-[#f4f4fb]" : "text-[#ccc]"}
+                    ${selected ? "bg-primary text-primary-foreground" : todayMatch ? "bg-primary/10 text-primary font-bold" : cell.current ? "text-foreground hover:bg-muted" : "text-[#ccc]"}
                     ${disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer"}
                   `}
                 >

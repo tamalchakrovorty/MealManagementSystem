@@ -8,6 +8,15 @@ import { popup } from "@/lib/popup";
 import { AdminStats } from "./admin-stats";
 import { MonthPickerField } from "../user/month-picker-field";
 
+interface MemberInfo {
+  user_id: string;
+  name: string;
+  avatar_url: string | null;
+  balance: number;
+  amount?: number;
+  status?: string;
+}
+
 interface Props {
   mess: any;
   membership: any;
@@ -17,6 +26,11 @@ interface Props {
   pendingMealCount: number;
   pendingGuestCount: number;
   contactCount: number;
+  availableCash: number;
+  managerShouldCollect: number;
+  totalEstimatedCollection: number;
+  negativeBalanceMembers: MemberInfo[];
+  estimatedCollectionMembers: MemberInfo[];
 }
 
 interface Tile {
@@ -37,6 +51,11 @@ export function AdminDashboardClient({
   pendingMealCount,
   pendingGuestCount,
   contactCount,
+  availableCash,
+  managerShouldCollect,
+  totalEstimatedCollection,
+  negativeBalanceMembers,
+  estimatedCollectionMembers,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [downloadOpen, setDownloadOpen] = useState(false);
@@ -45,6 +64,8 @@ export function AdminDashboardClient({
   const [dlMonth, setDlMonth] = useState(() => format(new Date(), "yyyy-MM"));
   const [dlStart, setDlStart] = useState(() => format(new Date(), "yyyy-MM"));
   const [dlEnd, setDlEnd] = useState(() => format(new Date(), "yyyy-MM"));
+  const [negativeBalanceOpen, setNegativeBalanceOpen] = useState(false);
+  const [estimatedCollectionOpen, setEstimatedCollectionOpen] = useState(false);
 
   const handleDownloadLog = async () => {
     const start = dlPeriod === "single" ? dlMonth : dlStart;
@@ -91,7 +112,7 @@ export function AdminDashboardClient({
       id: "notices",
       label: "Announcements",
       href: "/dashboard/admin/announcements",
-      bg: "bg-[#ece9fb]",
+      bg: "bg-primary/10",
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <path d="M3 11L18 5V19L3 13V11Z" stroke="#6a4fd8" strokeWidth="1.8" strokeLinejoin="round" />
@@ -184,7 +205,7 @@ export function AdminDashboardClient({
       id: "members",
       label: "Assign Bazar Duty",
       href: "/dashboard/admin/assign-bazar",
-      bg: "bg-[#ece9fb]",
+      bg: "bg-primary/10",
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="8" r="3" stroke="#6a4fd8" strokeWidth="1.8" />
@@ -210,7 +231,7 @@ export function AdminDashboardClient({
       id: "mess-code",
       label: "Mess Code",
       href: "/dashboard/admin/mess-code",
-      bg: "bg-[#dde3f7]",
+      bg: "bg-primary/10",
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <rect x="3" y="3" width="6" height="6" rx="1" stroke="#3a4fb0" strokeWidth="1.7" />
@@ -224,7 +245,7 @@ export function AdminDashboardClient({
       id: "join-requests",
       label: "Join Requests",
       href: "/dashboard/admin/requests/join",
-      bg: "bg-[#ece9fb]",
+      bg: "bg-primary/10",
       badge: pendingJoinCount > 0 ? String(pendingJoinCount) : undefined,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -238,7 +259,7 @@ export function AdminDashboardClient({
       id: "download-log",
       label: "Download Log",
       href: "#",
-      bg: "bg-[#ece9fb]",
+      bg: "bg-primary/10",
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <path d="M12 3V15M12 15L8 11M12 15L16 11" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -253,8 +274,8 @@ export function AdminDashboardClient({
       {/* Header */}
       <div className="flex items-center justify-between px-1 pt-2">
         <div>
-          <h1 className="text-[22px] md:text-[28px] font-extrabold text-[#1e2130] leading-tight">Admin Dashboard</h1>
-          <p className="text-[13px] md:text-[15px] text-[#8b8fa3]">Overview of your mess management system</p>
+          <h1 className="text-[22px] md:text-[28px] font-extrabold text-foreground leading-tight">Admin Dashboard</h1>
+          <p className="text-[13px] md:text-[15px] text-muted-foreground">Overview of your mess management system</p>
         </div>
       </div>
 
@@ -265,8 +286,174 @@ export function AdminDashboardClient({
         contactCount={contactCount}
       />
 
+      {/* Financial Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        {/* Manager's Bazar Balance */}
+        <div className="bg-card rounded-[18px] md:rounded-[20px] p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-border">
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center ${availableCash >= 0 ? "bg-[#d7f2e9]" : "bg-[#fbe9d3]"}`}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke={availableCash >= 0 ? "#1fae70" : "#d98a1c"} strokeWidth="1.8" />
+                <path d="M12 6V18M9 8.5C9 7.67 10.34 7 12 7C13.66 7 15 7.67 15 8.5C15 9.33 13.66 10 12 10C10.34 10 9 10.67 9 11.5C9 12.33 10.34 13 12 13C13.66 13 15 13.67 15 14.5C15 15.33 13.66 16 12 16" stroke={availableCash >= 0 ? "#1fae70" : "#d98a1c"} strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold">Manager&apos;s Bazar Balance</p>
+              <p className={`text-[20px] md:text-[24px] font-extrabold ${availableCash >= 0 ? "text-[#1fae70]" : "text-[#d98a1c]"}`}>
+                ৳{availableCash.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Amount to Collect — clickable */}
+        <button
+          type="button"
+          onClick={() => setNegativeBalanceOpen(true)}
+          className="bg-card rounded-[18px] md:rounded-[20px] p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-border text-left cursor-pointer transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-primary/40"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#fbe9d3] flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15" stroke="#d98a1c" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M9 5C9 3.9 9.9 3 11 3H13C14.1 3 15 3.9 15 5C15 6.1 14.1 7 13 7H11C9.9 7 9 6.1 9 5Z" stroke="#d98a1c" strokeWidth="1.8" />
+                <path d="M9 12H15M9 16H12" stroke="#d98a1c" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold">Amount to Collect</p>
+              <p className="text-[20px] md:text-[24px] font-extrabold text-[#d98a1c]">
+                ৳{managerShouldCollect.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </p>
+              <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">Click to view details</p>
+            </div>
+          </div>
+        </button>
+
+        {/* Estimated Collection — clickable */}
+        <button
+          type="button"
+          onClick={() => setEstimatedCollectionOpen(true)}
+          className="bg-card rounded-[18px] md:rounded-[20px] p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-border text-left cursor-pointer transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-primary/40"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#fbe9d3] flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="16" rx="2" stroke="#d98a1c" strokeWidth="1.8" />
+                <path d="M3 8H21" stroke="#d98a1c" strokeWidth="1.8" />
+                <path d="M7 4V2M17 4V2" stroke="#d98a1c" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M8 12H11M8 16H14" stroke="#d98a1c" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold">Estimated Collection</p>
+              <p className="text-[20px] md:text-[24px] font-extrabold text-[#d98a1c]">
+                ৳{totalEstimatedCollection.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </p>
+              <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">Click to view details</p>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      {/* Negative Balance Dialog */}
+      <Dialog open={negativeBalanceOpen} onOpenChange={setNegativeBalanceOpen}>
+        <DialogContent className="max-w-sm md:max-w-md max-h-[85dvh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Members with Negative Balance</DialogTitle>
+            <DialogDescription>Members who currently owe money to the mess.</DialogDescription>
+          </DialogHeader>
+          {negativeBalanceMembers.length > 0 ? (
+            <div className="space-y-3 mt-2">
+              {negativeBalanceMembers.map((m) => (
+                <div key={m.user_id} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
+                  {m.avatar_url ? (
+                    <img src={m.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover bg-muted shrink-0" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
+                      {m.name?.charAt(0)?.toUpperCase() || "?"}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-foreground truncate">
+                      {m.name}
+                      {m.status === "left" && (
+                        <span className="ml-1.5 text-[10px] font-bold bg-[#e5484d] text-white px-1.5 py-0.5 rounded align-middle">Left</span>
+                      )}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">Negative Balance</p>
+                  </div>
+                  <p className="text-[15px] font-bold text-[#e5484d] shrink-0">
+                    −৳{Math.abs(m.balance!).toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-8">Everyone is settled up.<br />No members currently have a negative balance.</p>
+          )}
+          {negativeBalanceMembers.length > 0 && (
+            <div className="flex items-center justify-between pt-3 mt-2 border-t border-border">
+              <p className="text-[13px] font-semibold text-muted-foreground">Total to Collect</p>
+              <p className="text-[18px] font-extrabold text-[#d98a1c]">
+                ৳{managerShouldCollect.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Estimated Collection Dialog */}
+      <Dialog open={estimatedCollectionOpen} onOpenChange={setEstimatedCollectionOpen}>
+        <DialogContent className="max-w-sm md:max-w-md max-h-[85dvh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Estimated Collection</DialogTitle>
+            <DialogDescription>Members who need to deposit additional money for the remaining days.</DialogDescription>
+          </DialogHeader>
+          {estimatedCollectionMembers.length > 0 ? (
+            <div className="space-y-3 mt-2">
+              {estimatedCollectionMembers.map((m) => (
+                <div key={m.user_id} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
+                  {m.avatar_url ? (
+                    <img src={m.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover bg-muted shrink-0" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
+                      {m.name?.charAt(0)?.toUpperCase() || "?"}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-foreground truncate">
+                      {m.name}
+                      {m.status === "left" && (
+                        <span className="ml-1.5 text-[10px] font-bold bg-[#e5484d] text-white px-1.5 py-0.5 rounded align-middle">Left</span>
+                      )}
+                    </p>
+                    <p className={`text-[11px] ${m.balance < 0 ? "text-[#e5484d]" : "text-muted-foreground"}`}>
+                      Balance: {m.balance < 0 ? "−" : ""}৳{Math.abs(m.balance).toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                    </p>
+                  </div>
+                  <p className="text-[15px] font-bold text-[#d98a1c] shrink-0">
+                    ৳{m.amount!.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-8">No additional collection required.</p>
+          )}
+          {estimatedCollectionMembers.length > 0 && (
+            <div className="flex items-center justify-between pt-3 mt-2 border-t border-border">
+              <p className="text-[13px] font-semibold text-muted-foreground">Total Estimated Collection</p>
+              <p className="text-[18px] font-extrabold text-[#d98a1c]">
+                ৳{totalEstimatedCollection.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Tile Grid */}
-      <div className="bg-white rounded-[18px] md:rounded-[20px] p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+      <div className="bg-card rounded-[18px] md:rounded-[20px] p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-border">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {tiles.map((tile) => (
             <Link
@@ -280,10 +467,10 @@ export function AdminDashboardClient({
               }}
             >
               <div
-                className="bg-white rounded-[18px] md:rounded-[20px] p-4 md:p-5 pb-3.5 md:pb-4 flex flex-col items-center gap-2.5 md:gap-3 text-center relative cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+                className="bg-card rounded-[18px] md:rounded-[20px] p-4 md:p-5 pb-3.5 md:pb-4 flex flex-col items-center gap-2.5 md:gap-3 text-center relative cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
               >
                 {tile.badge && (
-                  <span className="absolute top-2.5 right-2.5 md:top-3 md:right-3 bg-[#6a4fd8] text-white text-[8.5px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-lg">
+                  <span className="absolute top-2.5 right-2.5 md:top-3 md:right-3 bg-primary text-primary-foreground text-[8.5px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-lg">
                     {tile.badge}
                   </span>
                 )}
@@ -308,8 +495,8 @@ export function AdminDashboardClient({
           <div className="space-y-4">
             {/* Period */}
             <div>
-              <p className="text-xs font-semibold text-[#666] mb-2">Period</p>
-              <div className="flex rounded-full bg-[#f2f1fb] p-1">
+              <p className="text-xs font-semibold text-muted-foreground mb-2">Period</p>
+              <div className="flex rounded-full bg-muted p-1">
                 {([
                   { key: "single", label: "Single Month" },
                   { key: "range", label: "Range" },
@@ -319,7 +506,7 @@ export function AdminDashboardClient({
                     type="button"
                     onClick={() => setDlPeriod(opt.key)}
                     className={`flex-1 py-2 rounded-full text-[13px] font-semibold transition-colors ${
-                      dlPeriod === opt.key ? "bg-[#6a4fd8] text-white" : "text-[#6a4fd8]"
+                      dlPeriod === opt.key ? "bg-primary text-primary-foreground" : "text-primary"
                     }`}
                   >
                     {opt.label}
@@ -331,23 +518,23 @@ export function AdminDashboardClient({
             {/* Month pickers */}
             {dlPeriod === "single" ? (
               <div>
-                <p className="text-xs font-semibold text-[#666] mb-2">Month</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">Month</p>
                 <MonthPickerField label="Month" value={dlMonth} onChange={setDlMonth} />
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <p className="text-xs font-semibold text-[#666] mb-2">From</p>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">From</p>
                   <MonthPickerField label="From" value={dlStart} onChange={setDlStart} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-[#666] mb-2">To</p>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">To</p>
                   <MonthPickerField label="To" value={dlEnd} onChange={setDlEnd} />
                 </div>
               </div>
             )}
 
-            <p className="text-[12px] text-[#8a8a9e]">
+            <p className="text-[12px] text-muted-foreground">
               {dlPeriod === "range" && dlStart !== dlEnd
                 ? "Multiple months will be downloaded as a ZIP file containing one Excel file per month."
                 : "A single Excel file with Summary, Meals, Guest Meals, Deposits, Expenses and Menu sheets will be downloaded."}
@@ -357,11 +544,11 @@ export function AdminDashboardClient({
               type="button"
               onClick={handleDownloadLog}
               disabled={loading}
-              className="w-full bg-[#6a4fd8] text-white rounded-[16px] py-[14px] text-[15px] font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:-translate-y-0.5 hover:bg-[#5a42c0]"
+              className="w-full bg-primary text-primary-foreground rounded-[16px] py-[14px] text-[15px] font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:-translate-y-0.5 hover:bg-primary"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                   Preparing...
                 </>
               ) : (

@@ -10,9 +10,9 @@ const SETTLE_DELAY = 200;
 const itemClass = (dist: number) =>
   `h-[44px] flex items-center justify-center transition-all duration-150 ${
     dist === 0
-      ? "text-[23px] font-bold text-[#6a4fd8]"
+      ? "text-[23px] font-bold text-primary"
       : dist === 1
-        ? "text-[21px] text-[#8b8fa3] opacity-[0.65]"
+        ? "text-[21px] text-muted-foreground opacity-[0.65]"
         : "text-[21px] text-[#c9c9d4] opacity-[0.4]"
   }`;
 
@@ -128,7 +128,7 @@ function WheelCol({ items, index, onIndexChange, label }: WheelColProps) {
       tabIndex={0}
       role="listbox"
       aria-label={label}
-      className="relative w-[100px] h-[220px] overflow-y-scroll cursor-grab active:cursor-grabbing select-none rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6a4fd8]/40"
+      className="relative w-[100px] h-[220px] overflow-y-scroll cursor-grab active:cursor-grabbing select-none rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",
@@ -175,17 +175,17 @@ export function MonthWheelPicker({ value, onChange }: MonthWheelPickerProps) {
   return (
     <div>
       <div
-        className="relative flex justify-center gap-8 h-[220px] rounded-[16px] bg-[#f7f7fb] overflow-hidden"
+        className="relative flex justify-center gap-8 h-[220px] rounded-[16px] bg-muted overflow-hidden"
         style={{
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%)",
           maskImage: "linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%)",
         }}
       >
-        <div className="absolute top-1/2 left-3 right-3 h-[44px] -translate-y-1/2 border-t border-b border-[#e3e0f5] pointer-events-none" />
+        <div className="absolute top-1/2 left-3 right-3 h-[44px] -translate-y-1/2 border-t border-b border-border pointer-events-none" />
         <WheelCol items={MONTHS} index={monthIndex} onIndexChange={(m) => emit(yearIndex, m)} label="Month" />
         <WheelCol items={years} index={yearIndex} onIndexChange={(y) => emit(y, monthIndex)} label="Year" />
       </div>
-      <p className="text-center text-[11px] text-[#b3b3c2] mt-2">Use arrow keys on desktop</p>
+      <p className="text-center text-[11px] text-muted-foreground mt-2">Use arrow keys on desktop</p>
     </div>
   );
 }

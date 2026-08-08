@@ -71,20 +71,20 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
 
   return (
     <div className="space-y-4 max-w-md mx-auto">
-      <div className="bg-white rounded-2xl p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
+      <div className="bg-card rounded-2xl p-4 shadow-[0_8px_24px_rgba(0,0,0,.04)]">
         <div className="flex items-center justify-between mb-4">
-          <button type="button" onClick={() => setMonth(addMonths(month, -1))} className="w-8 h-8 rounded-lg flex items-center justify-center text-[#666] hover:bg-[#f4f4fb] transition-colors">
+          <button type="button" onClick={() => setMonth(addMonths(month, -1))} className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           <span className="text-[15px] md:text-[17px] font-bold capitalize">{format(month, "MMMM yyyy")}</span>
-          <button type="button" onClick={() => setMonth(addMonths(month, 1))} className="w-8 h-8 rounded-lg flex items-center justify-center text-[#666] hover:bg-[#f4f4fb] transition-colors">
+          <button type="button" onClick={() => setMonth(addMonths(month, 1))} className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
         </div>
 
         <div className="grid grid-cols-7 mb-2">
           {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
-            <div key={d} className="text-center text-[10px] md:text-[12px] font-bold text-[#8b8fa3] py-1">{d}</div>
+            <div key={d} className="text-center text-[10px] md:text-[12px] font-bold text-muted-foreground py-1">{d}</div>
           ))}
         </div>
 
@@ -103,14 +103,14 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
             let cellBg = "";
             let cellText = "";
             if (selected) {
-              cellBg = "bg-[#6a4fd8]";
-              cellText = "text-white font-bold";
+              cellBg = "bg-primary";
+              cellText = "text-primary-foreground font-bold";
             } else if (today && !hasItems) {
-              cellBg = "bg-[#ece9fe]";
-              cellText = "text-[#6a4fd8] font-bold";
+              cellBg = "bg-primary/10";
+              cellText = "text-primary font-bold";
             } else if (hasAc) {
               cellBg = "bg-[#ede9fe] border border-[#6a4fd844]";
-              cellText = "text-[#6a4fd8]";
+              cellText = "text-primary";
             } else if (hasEv && hasBz) {
               cellBg = "bg-gradient-to-br from-[#fff2df] to-[#fdeccb] border border-[#c8790b44]";
               cellText = "text-[#c8790b]";
@@ -121,8 +121,8 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
               cellBg = "bg-[#fff2df] border border-[#d98a1c44]";
               cellText = "text-[#d98a1c]";
             } else if (inMonth) {
-              cellBg = "hover:bg-[#f4f4fb]";
-              cellText = "text-[#333]";
+              cellBg = "hover:bg-muted";
+              cellText = "text-foreground";
             } else {
               cellText = "text-[#ccc]";
             }
@@ -144,22 +144,22 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
           })}
         </div>
 
-        <div className="flex flex-wrap gap-3 mt-4 pt-3 border-t border-[#f0f0f5]">
+        <div className="flex flex-wrap gap-3 mt-4 pt-3 border-t border-border">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-md bg-[#ece9fe] border border-[#6a4fd844]" />
-            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">📅 Today</span>
+            <span className="w-3 h-3 rounded-md bg-primary/10 border border-[#6a4fd844]" />
+            <span className="text-[10px] md:text-[12px] font-semibold text-muted-foreground">📅 Today</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-md bg-[#fff2df] border border-[#d98a1c44]" />
-            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">📅 Event</span>
+            <span className="w-3 h-3 rounded-md bg-[#d98a1c]/10 border border-[#d98a1c44]" />
+            <span className="text-[10px] md:text-[12px] font-semibold text-muted-foreground">📅 Event</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-md bg-[#fdeccb] border border-[#c8790b44]" />
-            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">🛒 Bazar Duty</span>
+            <span className="text-[10px] md:text-[12px] font-semibold text-muted-foreground">🛒 Bazar Duty</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-md bg-[#ede9fe] border border-[#6a4fd844]" />
-            <span className="text-[10px] md:text-[12px] font-semibold text-[#666]">👤 Activity</span>
+            <span className="text-[10px] md:text-[12px] font-semibold text-muted-foreground">👤 Activity</span>
           </div>
         </div>
       </div>
@@ -167,7 +167,7 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
       <Dialog open={!!selectedDay} onOpenChange={(open) => { if (!open) setSelectedDay(null); }}>
         <DialogContent className="max-w-sm rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="text-[15px] font-bold text-[#333]">
+            <DialogTitle className="text-[15px] font-bold text-foreground">
               {selectedDay ? format(selectedDay, "EEEE, d MMM") : ""}
             </DialogTitle>
           </DialogHeader>
@@ -179,7 +179,7 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
                     <span className="text-[16px] leading-none mt-0.5">🛒</span>
                     <div className="flex-1 min-w-0">
                       <span className="text-[10px] font-bold" style={{ color: BAZAR_COLOR }}>Bazar Duty</span>
-                      <p className="text-[13px] font-semibold text-[#333] mt-0.5 leading-snug">{item.user_name}</p>
+                      <p className="text-[13px] font-semibold text-foreground mt-0.5 leading-snug">{item.user_name}</p>
                     </div>
                   </div>
                 ) : item._kind === "activity" ? (
@@ -187,7 +187,7 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
                     <span className="text-[16px] leading-none mt-0.5">👤</span>
                     <div className="flex-1 min-w-0">
                       <span className="text-[10px] font-bold" style={{ color: ACTIVITY_COLOR }}>{item.label}</span>
-                      <p className="text-[13px] font-semibold text-[#333] mt-0.5 leading-snug">{item.message}</p>
+                      <p className="text-[13px] font-semibold text-foreground mt-0.5 leading-snug">{item.message}</p>
                     </div>
                   </div>
                 ) : (
@@ -196,17 +196,17 @@ export function CalendarView({ events, bazarDuties, activityLogs }: { events: an
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-[10px] font-bold" style={{ color: EVENT_COLOR }}>Event</span>
-                        {item.author_name && <span className="text-[10px] text-[#999]">by {item.author_name}</span>}
+                        {item.author_name && <span className="text-[10px] text-muted-foreground">by {item.author_name}</span>}
                       </div>
-                      <p className="text-[13px] font-semibold text-[#333] mt-0.5 leading-snug">{item.title}</p>
-                      {item.description && <p className="text-[11px] text-[#666] mt-0.5">{item.description}</p>}
+                      <p className="text-[13px] font-semibold text-foreground mt-0.5 leading-snug">{item.title}</p>
+                      {item.description && <p className="text-[11px] text-muted-foreground mt-0.5">{item.description}</p>}
                     </div>
                   </div>
                 )
               )}
             </div>
           ) : (
-            <p className="text-sm text-[#999] text-center py-4">No events on this day</p>
+            <p className="text-sm text-muted-foreground text-center py-4">No events on this day</p>
           )}
         </DialogContent>
       </Dialog>

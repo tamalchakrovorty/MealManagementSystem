@@ -100,7 +100,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
 
   const categoryColor = (cat: string) => {
     const colors: Record<string, string> = {
-      Manager: "bg-[#ece9fb] text-[#6a4fd8]",
+      Manager: "bg-primary/10 text-primary",
       Owner: "bg-[#dbeafe] text-[#2563eb]",
       Electrician: "bg-[#fef3c7] text-[#d97706]",
       Plumber: "bg-[#d1fae5] text-[#059669]",
@@ -112,19 +112,19 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
       Police: "bg-[#dbeafe] text-[#1d4ed8]",
       "Fire Service": "bg-[#fee2e2] text-[#dc2626]",
     };
-    return colors[cat] || "bg-[#f0f0f5] text-[#666]";
+    return colors[cat] || "bg-muted text-muted-foreground";
   };
 
   return (
     <>
       {/* Mobile: Tab toggle */}
       <div className="md:hidden">
-        <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex gap-1 mb-4">
+        <div className="bg-muted rounded-[14px] p-1.5 flex gap-1 mb-4">
           <button
             type="button"
             onClick={() => setTab("add")}
             className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all ${
-              tab === "add" ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
+              tab === "add" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             Add Contact
@@ -133,14 +133,14 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
             type="button"
             onClick={() => setTab("list")}
             className={`flex-1 py-2.5 rounded-[10px] text-[13px] font-bold transition-all ${
-              tab === "list" ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
+              tab === "list" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             All Contacts
           </button>
         </div>
         {tab === "add" ? (
-          <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+          <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border">
             <h3 className="text-[15px] md:text-[17px] font-bold mb-3 md:mb-4">{editingId ? "Edit Contact" : "Add Contact"}</h3>
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="flex flex-col gap-2 md:flex-row">
@@ -149,21 +149,21 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="flex-1 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                  className="flex-1 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
                 />
                 <input
                   placeholder="Phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   required
-                  className="flex-1 md:w-36 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                  className="flex-1 md:w-36 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
                 />
               </div>
               <div className="flex flex-col gap-2 md:flex-row">
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="flex-1 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors bg-white"
+                  className="flex-1 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors bg-card"
                 >
                   {CATEGORIES.map((c) => (
                     <option key={c} value={c}>{c}</option>
@@ -175,7 +175,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                     value={customCategory}
                     onChange={(e) => setCustomCategory(e.target.value)}
                     required
-                    className="flex-1 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                    className="flex-1 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
                   />
                 )}
               </div>
@@ -183,13 +183,13 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                 placeholder="Description (optional)"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                className="w-full border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
               />
               <div className="flex gap-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 bg-[#5b3fd6] text-white rounded-xl py-2.5 md:py-3 text-sm font-bold disabled:opacity-60 transition-colors hover:bg-[#4a32c0]"
+                  className="flex-1 bg-primary text-primary-foreground rounded-xl py-2.5 md:py-3 text-sm font-bold disabled:opacity-60 transition-colors hover:bg-primary"
                 >
                   {editingId ? "Update" : "Add"}
                 </button>
@@ -197,7 +197,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="px-4 py-2.5 md:py-3 rounded-xl text-sm font-bold border border-[#e3e0f5] text-[#777] hover:bg-[#f4f4fb] transition-colors"
+                    className="px-4 py-2.5 md:py-3 rounded-xl text-sm font-bold border border-input text-muted-foreground hover:bg-muted transition-colors"
                   >
                     Cancel
                   </button>
@@ -206,15 +206,15 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
             </form>
           </div>
         ) : (
-          <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+          <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border">
             <h3 className="text-[15px] md:text-[17px] font-bold mb-3 md:mb-4">All Contacts</h3>
             {contacts.length > 0 ? (
               <div className="space-y-2">
                 {contacts.map((contact: Record<string, string>) => (
-                  <div key={contact.id} className="py-3 border-b border-[#f0f0f5] last:border-0">
+                  <div key={contact.id} className="py-3 border-b border-border last:border-0">
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-sm md:text-[15px] font-semibold text-[#333] truncate">{contact.name}</span>
+                        <span className="text-sm md:text-[15px] font-semibold text-foreground truncate">{contact.name}</span>
                         <span className={`text-[10px] md:text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${categoryColor(contact.category)}`}>
                           {contact.category}
                         </span>
@@ -222,20 +222,20 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                       <div className="flex gap-1 shrink-0">
                         <button
                           onClick={() => handleEdit(contact)}
-                          className="w-8 h-8 rounded-lg bg-[#f4f4fb] flex items-center justify-center hover:bg-[#ece9fe] transition-colors"
+                          className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/10 transition-colors"
                         >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="#666" strokeWidth="2" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#666" strokeWidth="2" strokeLinecap="round"/></svg>
-                        </button>
-                        <button
-                          onClick={() => handleDelete(contact.id)}
-                          className="w-8 h-8 rounded-lg bg-[#fadada] flex items-center justify-center hover:bg-[#f8d0d0] transition-colors"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="#e5484d" strokeWidth="2" strokeLinecap="round"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-muted-foreground"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(contact.id)}
+                        className="w-8 h-8 rounded-lg bg-[#fadada] flex items-center justify-center hover:bg-[#f8d0d0] transition-colors"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="#e5484d" strokeWidth="2" strokeLinecap="round"/></svg>
                         </button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 text-xs md:text-[13px] text-[#999]">
-                      <a href={`tel:${contact.phone}`} className="font-semibold text-[#6a4fd8] hover:underline">{contact.phone}</a>
+                    <div className="flex items-center gap-2 text-xs md:text-[13px] text-muted-foreground">
+                      <a href={`tel:${contact.phone}`} className="font-semibold text-primary hover:underline">{contact.phone}</a>
                       {contact.description && <span className="text-[#bbb]">|</span>}
                       {contact.description && <span className="truncate">{contact.description}</span>}
                     </div>
@@ -244,13 +244,13 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
               </div>
             ) : (
               <div className="text-center py-8">
-                <div className="w-12 h-12 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect x="5" y="2" width="14" height="20" rx="2" stroke="#8b8fa3" strokeWidth="2" />
-                    <path d="M9 10H15M9 14H13" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+                    <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" strokeWidth="2" />
+                    <path d="M9 10H15M9 14H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 </div>
-                <p className="text-[14px] text-[#8b8fa3]">No contacts added yet</p>
+                <p className="text-[14px] text-muted-foreground">No contacts added yet</p>
               </div>
             )}
           </div>
@@ -259,7 +259,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
 
       {/* Desktop: Side by side */}
       <div className="hidden md:grid md:grid-cols-[1fr_1.5fr] md:gap-5">
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border">
           <h3 className="text-[15px] md:text-[17px] font-bold mb-3 md:mb-4">{editingId ? "Edit Contact" : "Add Contact"}</h3>
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="flex flex-col gap-2 md:flex-row">
@@ -268,21 +268,21 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="flex-1 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                className="flex-1 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
               />
               <input
                 placeholder="Phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
-                className="flex-1 md:w-36 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                className="flex-1 md:w-36 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
               />
             </div>
             <div className="flex flex-col gap-2 md:flex-row">
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="flex-1 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors bg-white"
+                className="flex-1 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors bg-card"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -294,7 +294,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                   value={customCategory}
                   onChange={(e) => setCustomCategory(e.target.value)}
                   required
-                  className="flex-1 border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                  className="flex-1 border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
                 />
               )}
             </div>
@@ -302,13 +302,13 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
               placeholder="Description (optional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full border border-[#e3e0f5] rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+              className="w-full border border-input rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-primary transition-colors"
             />
             <div className="flex gap-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-[#5b3fd6] text-white rounded-xl py-2.5 md:py-3 text-sm font-bold disabled:opacity-60 transition-colors hover:bg-[#4a32c0]"
+                className="flex-1 bg-primary text-primary-foreground rounded-xl py-2.5 md:py-3 text-sm font-bold disabled:opacity-60 transition-colors hover:bg-primary"
               >
                 {editingId ? "Update" : "Add"}
               </button>
@@ -316,7 +316,7 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-2.5 md:py-3 rounded-xl text-sm font-bold border border-[#e3e0f5] text-[#777] hover:bg-[#f4f4fb] transition-colors"
+                  className="px-4 py-2.5 md:py-3 rounded-xl text-sm font-bold border border-input text-muted-foreground hover:bg-muted transition-colors"
                 >
                   Cancel
                 </button>
@@ -325,15 +325,15 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
           </form>
         </div>
 
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5]">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border">
           <h3 className="text-[15px] md:text-[17px] font-bold mb-3 md:mb-4">All Contacts</h3>
           {contacts.length > 0 ? (
             <div className="space-y-2">
               {contacts.map((contact: Record<string, string>) => (
-                <div key={contact.id} className="py-3 border-b border-[#f0f0f5] last:border-0">
+                <div key={contact.id} className="py-3 border-b border-border last:border-0">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-sm md:text-[15px] font-semibold text-[#333] truncate">{contact.name}</span>
+                      <span className="text-sm md:text-[15px] font-semibold text-foreground truncate">{contact.name}</span>
                       <span className={`text-[10px] md:text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${categoryColor(contact.category)}`}>
                         {contact.category}
                       </span>
@@ -341,9 +341,9 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                     <div className="flex gap-1 shrink-0">
                       <button
                         onClick={() => handleEdit(contact)}
-                        className="w-8 h-8 rounded-lg bg-[#f4f4fb] flex items-center justify-center hover:bg-[#ece9fe] transition-colors"
+                        className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/10 transition-colors"
                       >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="#666" strokeWidth="2" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#666" strokeWidth="2" strokeLinecap="round"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-muted-foreground"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                       </button>
                       <button
                         onClick={() => handleDelete(contact.id)}
@@ -353,8 +353,8 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
                       </button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-xs md:text-[13px] text-[#999]">
-                    <a href={`tel:${contact.phone}`} className="font-semibold text-[#6a4fd8] hover:underline">{contact.phone}</a>
+                  <div className="flex items-center gap-2 text-xs md:text-[13px] text-muted-foreground">
+                    <a href={`tel:${contact.phone}`} className="font-semibold text-primary hover:underline">{contact.phone}</a>
                     {contact.description && <span className="text-[#bbb]">|</span>}
                     {contact.description && <span className="truncate">{contact.description}</span>}
                   </div>
@@ -362,14 +362,14 @@ export function ContactsTab({ messId, contacts }: { messId: string; contacts: Re
               ))}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <div className="w-12 h-12 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <rect x="5" y="2" width="14" height="20" rx="2" stroke="#8b8fa3" strokeWidth="2" />
-                  <path d="M9 10H15M9 14H13" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+              <div className="text-center py-8">
+              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+                  <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" strokeWidth="2" />
+                  <path d="M9 10H15M9 14H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </div>
-              <p className="text-[14px] text-[#8b8fa3]">No contacts added yet</p>
+              <p className="text-[14px] text-muted-foreground">No contacts added yet</p>
             </div>
           )}
         </div>

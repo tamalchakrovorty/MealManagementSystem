@@ -56,11 +56,11 @@ export function RequestsTab({
   const renderList = (items: any[], label: string, color: string, onApprove?: (id: string, userId: string) => void) => {
     const pendingCount = items?.filter((r: any) => r.status === "pending").length || 0;
     return (
-      <div className="bg-white rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+      <div className="bg-card rounded-2xl p-4" style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-[15px] font-bold">{label}</h3>
           {pendingCount > 0 && (
-            <span className="bg-[#2f6fed] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{pendingCount}</span>
+            <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full">{pendingCount}</span>
           )}
         </div>
         {items && items.length > 0 ? (
@@ -83,10 +83,10 @@ export function RequestsTab({
               const dinnerBadge = isMealOff ? getMealOptionBadge(details?.dinner || "on") : null;
 
               return (
-                <div key={req.id} className="py-2.5 border-b border-[#f0f0f5] last:border-0">
+                <div key={req.id} className="py-2.5 border-b border-border last:border-0">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[#333] truncate">{isMealOff ? (req.name || "Unknown") : guestNames}</p>
+                      <p className="text-sm font-semibold text-foreground truncate">{isMealOff ? (req.name || "Unknown") : guestNames}</p>
                       {isMealOff && (lunchBadge || dinnerBadge) && (
                         <div className="flex gap-2 mt-1.5">
                           {lunchBadge && (
@@ -108,7 +108,7 @@ export function RequestsTab({
                             const gDinnerBadge = g.dinner > 0 ? getGuestMealBadge(g.dinner_type || "full") : null;
                             return (
                               <div key={i} className="flex items-center gap-2">
-                                <p className="text-xs font-semibold text-[#333]">{g.name}:</p>
+                                <p className="text-xs font-semibold text-foreground">{g.name}:</p>
                                 <div className="flex gap-1">
                                   {gLunchBadge && (
                                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: gLunchBadge.color, background: gLunchBadge.bg }}>
@@ -125,13 +125,13 @@ export function RequestsTab({
                             );
                           })}
                           {sharedMembers.length > 0 && (
-                            <p className="text-xs text-[#6a4fd8] font-medium">
+                            <p className="text-xs text-primary font-medium">
                               Shared with: {sharedMembers.map((id: string) => getMemberName(id)).join(", ")}
                             </p>
                           )}
                         </div>
                       ) : null}
-                      <p className="text-xs text-[#999] mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {details?.dates?.length
                           ? `${format(new Date(details.dates[0]), "d MMM")} – ${format(new Date(details.dates[details.dates.length - 1]), "d MMM, yyyy")}`
                           : details?.date
@@ -163,7 +163,7 @@ export function RequestsTab({
             })}
           </div>
         ) : (
-          <p className="text-sm text-[#999] text-center py-4">No requests</p>
+          <p className="text-sm text-muted-foreground text-center py-4">No requests</p>
         )}
       </div>
     );

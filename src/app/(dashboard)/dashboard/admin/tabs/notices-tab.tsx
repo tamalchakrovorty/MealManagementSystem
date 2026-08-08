@@ -211,11 +211,11 @@ export function NoticesTab({
       <button
         type="button"
         onClick={() => handleModeChange(mode === "post" ? "view" : "post")}
-        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] md:text-sm font-semibold border border-[#ECEEF5] bg-white shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-[#f4f4fb] transition-colors"
+        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] md:text-sm font-semibold border border-border bg-card shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-muted transition-colors"
       >
         {mode === "post" ? (
           <>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4fd8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-primary" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
@@ -223,7 +223,7 @@ export function NoticesTab({
           </>
         ) : (
           <>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4fd8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-primary" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
             </svg>
@@ -233,14 +233,14 @@ export function NoticesTab({
       </button>
 
       {/* Tabs */}
-      <div className="bg-[#f4f4fb] rounded-[14px] p-1.5 flex overflow-x-auto gap-1 scrollbar-hide md:justify-center">
+      <div className="bg-muted rounded-[14px] p-1.5 flex overflow-x-auto gap-1 scrollbar-hide md:justify-center">
         {(["post", "group", "individual", "event"] as TabType[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => handleTabChange(t)}
             className={`shrink-0 px-3 py-2.5 rounded-[10px] text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap ${
-              tab === t ? "bg-[#6a4fd8] text-white shadow-sm" : "text-[#8b8fa3]"
+              tab === t ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             {t === "post" && "Announcement"}
@@ -253,7 +253,7 @@ export function NoticesTab({
 
       {/* POST MODE */}
       {mode === "post" && tab === "post" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Post an Announcement</h3>
           <form onSubmit={(e) => { e.preventDefault(); handleSubmit("all"); }} className="space-y-3">
             <textarea
@@ -262,12 +262,12 @@ export function NoticesTab({
               onChange={(e) => setMessage(e.target.value)}
               required
               rows={3}
-              className="w-full border border-[#e3e0f5] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors resize-none"
+              className="w-full border border-input rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none"
             />
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 text-sm font-bold disabled:opacity-60"
+              className="w-full bg-primary text-primary-foreground rounded-xl py-3 text-sm font-bold disabled:opacity-60"
             >
               {loading ? "Posting..." : "Post Announcement"}
             </button>
@@ -276,43 +276,43 @@ export function NoticesTab({
       )}
 
       {mode === "post" && tab === "group" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Group Notice</h3>
           <textarea
             placeholder="Write your notice here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={3}
-            className="w-full border border-[#e3e0f5] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors resize-none mb-3"
+            className="w-full border border-input rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none mb-3"
           />
 
-          <div className="border border-[#e3e0f5] rounded-xl overflow-hidden">
-            <label className="flex items-center gap-3 px-3 py-2.5 bg-[#f8f8fc] border-b border-[#e3e0f5] cursor-pointer">
+          <div className="border border-input rounded-xl overflow-hidden">
+            <label className="flex items-center gap-3 px-3 py-2.5 bg-muted border-b border-input cursor-pointer">
               <input
                 type="checkbox"
                 checked={selectedIds.size === members.length && members.length > 0}
                 onChange={toggleAll}
                 className="w-4 h-4 rounded accent-[#6a4fd8]"
               />
-              <span className="text-sm font-semibold text-[#333]">Select All ({members.length})</span>
+              <span className="text-sm font-semibold text-foreground">Select All ({members.length})</span>
             </label>
             <div className="max-h-[240px] overflow-y-auto grid grid-cols-1 md:grid-cols-2">
               {members.map((m) => (
-                <label key={m.user_id} className="flex items-center gap-3 px-3 py-2.5 border-b border-[#f0f0f5] last:border-0 cursor-pointer">
+                <label key={m.user_id} className="flex items-center gap-3 px-3 py-2.5 border-b border-border last:border-0 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={selectedIds.has(m.user_id)}
                     onChange={() => toggleSelect(m.user_id)}
                     className="w-4 h-4 rounded accent-[#6a4fd8]"
                   />
-                  <div className="w-7 h-7 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
                     {m.avatar_url ? (
                       <img src={m.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                     ) : (
                       m.name?.charAt(0)?.toUpperCase() || "?"
                     )}
                   </div>
-                  <span className="text-sm text-[#333]">{m.name || "Unknown"}</span>
+                  <span className="text-sm text-foreground">{m.name || "Unknown"}</span>
                 </label>
               ))}
             </div>
@@ -321,7 +321,7 @@ export function NoticesTab({
           <button
             onClick={() => handleSubmit("group", Array.from(selectedIds))}
             disabled={loading || selectedIds.size === 0 || !message.trim()}
-            className="w-full mt-3 bg-[#5b3fd6] text-white rounded-xl py-3 text-sm font-bold disabled:opacity-60"
+            className="w-full mt-3 bg-primary text-primary-foreground rounded-xl py-3 text-sm font-bold disabled:opacity-60"
           >
             {loading ? "Posting..." : `Post to Selected (${selectedIds.size})`}
           </button>
@@ -329,31 +329,31 @@ export function NoticesTab({
       )}
 
       {mode === "post" && tab === "individual" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Individual Notice</h3>
           <textarea
             placeholder="Write your notice here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={3}
-            className="w-full border border-[#e3e0f5] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors resize-none mb-3"
+            className="w-full border border-input rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none mb-3"
           />
 
           {selectedSingle ? (
-            <div className="flex items-center justify-between bg-[#ece9fe] rounded-xl px-3 py-2.5 mb-3">
+            <div className="flex items-center justify-between bg-primary/10 rounded-xl px-3 py-2.5 mb-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
                   {members.find((m) => m.user_id === selectedSingle)?.avatar_url ? (
                     <img src={members.find((m) => m.user_id === selectedSingle)!.avatar_url!} alt="" className="w-full h-full rounded-full object-cover" />
                   ) : (
                     members.find((m) => m.user_id === selectedSingle)?.name?.charAt(0)?.toUpperCase() || "?"
                   )}
                 </div>
-                <span className="text-sm font-semibold text-[#333]">
+                <span className="text-sm font-semibold text-foreground">
                   {members.find((m) => m.user_id === selectedSingle)?.name || "Unknown"}
                 </span>
               </div>
-              <button type="button" onClick={() => setSelectedSingle(null)} className="text-xs text-[#6a4fd8] font-bold">
+              <button type="button" onClick={() => setSelectedSingle(null)} className="text-xs text-primary font-bold">
                 Change
               </button>
             </div>
@@ -364,27 +364,27 @@ export function NoticesTab({
                 placeholder="Search member..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full border border-[#e3e0f5] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6a4fd8] transition-colors mb-2"
+                className="w-full border border-input rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors mb-2"
               />
-              <div className="border border-[#e3e0f5] rounded-xl overflow-hidden max-h-[200px] overflow-y-auto grid grid-cols-1 md:grid-cols-2">
+              <div className="border border-input rounded-xl overflow-hidden max-h-[200px] overflow-y-auto grid grid-cols-1 md:grid-cols-2">
                 {filteredMembers.length === 0 ? (
-                  <p className="text-xs text-[#999] text-center py-3">No members found</p>
+                  <p className="text-xs text-muted-foreground text-center py-3">No members found</p>
                 ) : (
                   filteredMembers.map((m) => (
                     <button
                       key={m.user_id}
                       type="button"
                       onClick={() => { setSelectedSingle(m.user_id); setSearchQuery(""); }}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 border-b border-[#f0f0f5] last:border-0 hover:bg-[#f8f8fc] transition-colors text-left"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 border-b border-border last:border-0 hover:bg-muted transition-colors text-left"
                     >
-                      <div className="w-7 h-7 rounded-full bg-[#6a4fd8] flex items-center justify-center text-xs font-bold text-white shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground shrink-0">
                         {m.avatar_url ? (
                           <img src={m.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
                         ) : (
                           m.name?.charAt(0)?.toUpperCase() || "?"
                         )}
                       </div>
-                      <span className="text-sm text-[#333]">{m.name || "Unknown"}</span>
+                      <span className="text-sm text-foreground">{m.name || "Unknown"}</span>
                     </button>
                   ))
                 )}
@@ -395,7 +395,7 @@ export function NoticesTab({
           <button
             onClick={() => handleSubmit("individual", selectedSingle ? [selectedSingle] : undefined)}
             disabled={loading || !selectedSingle || !message.trim()}
-            className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 text-sm font-bold disabled:opacity-60"
+            className="w-full bg-primary text-primary-foreground rounded-xl py-3 text-sm font-bold disabled:opacity-60"
           >
             {loading ? "Posting..." : `Post to ${selectedSingle ? members.find((m) => m.user_id === selectedSingle)?.name || "Member" : "..."}`}
           </button>
@@ -403,38 +403,38 @@ export function NoticesTab({
       )}
 
       {mode === "post" && tab === "event" && (
-        <div className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <h3 className="text-[15px] font-bold mb-3">Create Event</h3>
           <form onSubmit={handleEventSubmit} className="space-y-3">
             <div>
-              <label className="block text-xs font-semibold text-[#666] mb-1.5">Event Title</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Event Title</label>
               <input
                 type="text"
                 placeholder="e.g. Mess Meeting"
                 value={eventTitle}
                 onChange={(e) => setEventTitle(e.target.value)}
                 required
-                className="w-full border border-[#e3e0f5] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[#6a4fd8] transition-colors"
+                className="w-full border border-input rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#666] mb-1.5">Date</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Date</label>
               <DatePickerField value={eventDate} onChange={setEventDate} className="w-full" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#666] mb-1.5">Description (optional)</label>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Description (optional)</label>
               <textarea
                 placeholder="What is this event about?"
                 value={eventDescription}
                 onChange={(e) => setEventDescription(e.target.value)}
                 rows={3}
-                className="w-full border border-[#e3e0f5] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#6a4fd8] transition-colors resize-none"
+                className="w-full border border-input rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none"
               />
             </div>
             <button
               type="submit"
               disabled={eventLoading}
-              className="w-full bg-[#5b3fd6] text-white rounded-xl py-3 text-sm font-bold disabled:opacity-60"
+              className="w-full bg-primary text-primary-foreground rounded-xl py-3 text-sm font-bold disabled:opacity-60"
             >
               {eventLoading ? "Creating..." : "Create Event"}
             </button>
@@ -449,36 +449,36 @@ export function NoticesTab({
             events.map((event: any) => (
               <div
                 key={event.id}
-                className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+                className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-[12px] bg-[#ece9fe] flex items-center justify-center shrink-0">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <rect x="3" y="4" width="18" height="18" rx="2" stroke="#6a4fd8" strokeWidth="1.8" />
-                      <path d="M16 2v4M8 2v4M3 10h18" stroke="#6a4fd8" strokeWidth="1.8" strokeLinecap="round" />
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-[12px] bg-primary/10 flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-primary">
+                      <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                      <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[14px] md:text-[15px] font-bold text-[#1e2130] mb-1">{event.title}</p>
-                    <p className="text-[12px] md:text-[13px] text-[#8b8fa3]">
+                    <p className="text-[14px] md:text-[15px] font-bold text-foreground mb-1">{event.title}</p>
+                    <p className="text-[12px] md:text-[13px] text-muted-foreground">
                       {format(new Date(event.event_date), "EEE, d MMM yyyy")}
                     </p>
                     {event.description && (
-                      <p className="text-[13px] md:text-[14px] text-[#555] mt-2 leading-relaxed">{event.description}</p>
+                      <p className="text-[13px] md:text-[14px] text-muted-foreground mt-2 leading-relaxed">{event.description}</p>
                     )}
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="#8b8fa3" strokeWidth="2" />
-                  <path d="M16 2v4M8 2v4M3 10h18" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
+            <div className="bg-card rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </div>
-              <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">No events yet</p>
+              <p className="text-[14px] md:text-[16px] text-muted-foreground">No events yet</p>
             </div>
           )}
         </div>
@@ -491,7 +491,7 @@ export function NoticesTab({
             viewNotices.map((notice: any) => (
               <div
                 key={notice.id}
-                className="bg-white rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#ECEEF5] transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+                className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
               >
                 {editingNoticeId === notice.id ? (
                   <div className="space-y-3">
@@ -499,21 +499,21 @@ export function NoticesTab({
                       value={editingMessage}
                       onChange={(e) => setEditingMessage(e.target.value)}
                       rows={3}
-                      className="w-full border border-[#6a4fd8] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#5b3fd6] transition-colors resize-none"
+                      className="w-full border border-primary rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none"
                       autoFocus
                     />
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEditNotice(notice.id)}
                         disabled={editLoading || !editingMessage.trim()}
-                        className="px-4 py-2 bg-[#5b3fd6] text-white rounded-xl text-xs font-bold disabled:opacity-60"
+                        className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-xs font-bold disabled:opacity-60"
                       >
                         {editLoading ? "Saving..." : "Save"}
                       </button>
                       <button
                         onClick={cancelEditing}
                         disabled={editLoading}
-                        className="px-4 py-2 bg-[#f4f4fb] text-[#666] rounded-xl text-xs font-bold disabled:opacity-60"
+                        className="px-4 py-2 bg-muted text-muted-foreground rounded-xl text-xs font-bold disabled:opacity-60"
                       >
                         Cancel
                       </button>
@@ -521,14 +521,14 @@ export function NoticesTab({
                   </div>
                 ) : (
                   <>
-                    <p className="text-[14px] md:text-[15px] text-[#1e2130] leading-relaxed mb-3">{notice.message}</p>
-                    <div className="flex items-center justify-between gap-2 pt-3 border-t border-[#f0f0f5]">
+                    <p className="text-[14px] md:text-[15px] text-foreground leading-relaxed mb-3">{notice.message}</p>
+                    <div className="flex items-center justify-between gap-2 pt-3 border-t border-border">
                       <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-[11px] md:text-[12px] text-[#8b8fa3] truncate">
+                        <span className="text-[11px] md:text-[12px] text-muted-foreground truncate">
                           {notice.author_name} · {format(new Date(notice.created_at), "d MMM, yyyy")}
                         </span>
                         {notice.edited_at && (
-                          <span className="text-[10px] text-[#6a4fd8] font-semibold bg-[#ece9fe] px-1.5 py-0.5 rounded-full shrink-0">
+                          <span className="text-[10px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-full shrink-0">
                             edited
                           </span>
                         )}
@@ -536,7 +536,7 @@ export function NoticesTab({
                       <div className="flex items-center gap-1 shrink-0">
                         <button
                           onClick={() => startEditing(notice)}
-                          className="px-3 py-1.5 text-[11px] md:text-[12px] font-semibold text-[#6a4fd8] bg-[#f4f4fb] rounded-lg hover:bg-[#ece9fe] transition-colors"
+                          className="px-3 py-1.5 text-[11px] md:text-[12px] font-semibold text-primary bg-muted rounded-lg hover:bg-primary/10 transition-colors"
                         >
                           Edit
                         </button>
@@ -554,15 +554,15 @@ export function NoticesTab({
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#f4f4fb] flex items-center justify-center mx-auto mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="#8b8fa3" strokeWidth="2" strokeLinecap="round" />
-                  <rect x="3" y="8" width="14" height="12" rx="2" stroke="#8b8fa3" strokeWidth="2" />
-                  <path d="M8 13H12M8 16H12" stroke="#8b8fa3" strokeWidth="1.6" strokeLinecap="round" />
+            <div className="bg-card rounded-[18px] p-8 md:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-center">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+                  <path d="M18 8C18 5.79 16.21 4 14 4C12.5 4 11.2 4.8 10.5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <rect x="3" y="8" width="14" height="12" rx="2" stroke="currentColor" strokeWidth="2" />
+                  <path d="M8 13H12M8 16H12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                 </svg>
               </div>
-              <p className="text-[14px] md:text-[16px] text-[#8b8fa3]">
+              <p className="text-[14px] md:text-[16px] text-muted-foreground">
                 {tab === "post" && "No announcements yet"}
                 {tab === "group" && "No group notices yet"}
                 {tab === "individual" && "No individual notices yet"}
