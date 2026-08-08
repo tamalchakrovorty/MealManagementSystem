@@ -133,8 +133,8 @@ export default async function ReportViewPage({
       totalMeals: t.meals,
       totalGuestMeals: t.guestMeals,
       totalDeposit: t.deposit,
-      totalExpense: t.meals * mealRate,
-      balance: t.deposit - t.meals * mealRate,
+      totalExpense: (t.meals + t.guestMeals) * mealRate,
+      balance: t.deposit - (t.meals + t.guestMeals) * mealRate,
     };
   });
 
@@ -229,9 +229,10 @@ export default async function ReportViewPage({
         <div className="bg-card mt-2 rounded-[20px] p-5 pb-1 shadow-[0_2px_10px_rgba(30,30,60,0.05)]">
           <div className="overflow-x-auto">
           {/* Table Header */}
-          <div className="grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr] text-[10px] md:text-[12px] font-bold tracking-wider pb-3 border-b border-border">
+          <div className="grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr_1fr] text-[10px] md:text-[12px] font-bold tracking-wider pb-3 border-b border-border">
             <span className="text-muted-foreground">NAME</span>
             <span className="text-center text-primary bg-primary/10 rounded-lg py-1 border-r border-border">MEALS</span>
+            <span className="text-center text-[#7c6cf6] bg-[#ece9fe] rounded-lg py-1 border-r border-border">GUEST</span>
             <span className="text-center text-[#2f80ed] bg-[#e4f1ff] rounded-lg py-1 border-r border-border">DEPOSIT</span>
             <span className="text-center text-[#d98a1c] bg-[#fff2df] rounded-lg py-1 border-r border-border">EXPENSE</span>
             <span className="text-center text-[#12b76a] bg-[#e0f7e9] rounded-lg py-1">BALANCE</span>
@@ -243,7 +244,7 @@ export default async function ReportViewPage({
               const color = badgeColors[i % badgeColors.length];
               const initial = r.name.charAt(0).toUpperCase();
               return (
-                <div key={r.name} className="grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr] items-center py-3.5 md:py-4 border-b border-border last:border-0">
+                <div key={r.name} className="grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr_1fr] items-center py-3.5 md:py-4 border-b border-border last:border-0">
                   <div className="flex items-center gap-3 min-w-0 pr-2">
                     {r.avatarUrl ? (
                       <img src={r.avatarUrl} alt={r.name} className="w-[38px] h-[38px] rounded-full object-cover shrink-0 bg-muted" />
@@ -255,6 +256,7 @@ export default async function ReportViewPage({
                     <span className="text-[14px] md:text-[15px] font-semibold text-foreground truncate">{r.name}</span>
                   </div>
                   <span className="text-center text-[13px] md:text-[14px] font-semibold text-primary bg-primary/10/60 rounded-lg py-2 border-r border-border">{r.totalMeals.toFixed(1)}</span>
+                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#7c6cf6] bg-[#ece9fe]/60 rounded-lg py-2 border-r border-border">{r.totalGuestMeals.toFixed(1)}</span>
                   <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#2f80ed] bg-[#e4f1ff]/60 rounded-lg py-2 border-r border-border">৳{r.totalDeposit.toFixed(0)}</span>
                   <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#d98a1c] bg-[#fff2df]/60 rounded-lg py-2 border-r border-border">৳{r.totalExpense.toFixed(0)}</span>
                   <span className={`text-center text-[13px] md:text-[14px] font-bold rounded-lg py-2 ${r.balance < 0 ? "text-[#f0396b] bg-[#ffe9ee]/60" : "text-[#12b76a] bg-[#e0f7e9]/60"}`}>
