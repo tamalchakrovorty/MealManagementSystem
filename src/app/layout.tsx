@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "Digitize your shared mess operations",
   icons: {
     icon: "/favicon.ico",
-    apple: "/icon.png",
+    apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
   themeColor: "#5b3fd6",
