@@ -92,7 +92,7 @@ export default async function HomepagePage() {
         </div>
         {latestNotice ? (
           <>
-            <p className="text-[14px] md:text-[15px] leading-relaxed mb-4 text-white/92 line-clamp-3 md:line-clamp-none">
+            <p className="text-[14px] md:text-[15px] leading-relaxed mb-4 text-white/92 line-clamp-3 md:line-clamp-none whitespace-pre-line">
               {(latestNotice as any).message}
             </p>
             <div className="flex justify-between items-end">

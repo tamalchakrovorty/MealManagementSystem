@@ -521,7 +521,7 @@ export function NoticesTab({
                   </div>
                 ) : (
                   <>
-                    <p className="text-[14px] md:text-[15px] text-foreground leading-relaxed mb-3">{notice.message}</p>
+                    <p className="text-[14px] md:text-[15px] text-foreground leading-relaxed mb-3 whitespace-pre-line">{notice.message}</p>
                     <div className="flex items-center justify-between gap-2 pt-3 border-t border-border">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-[11px] md:text-[12px] text-muted-foreground truncate">
