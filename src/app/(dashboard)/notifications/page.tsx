@@ -4,7 +4,6 @@ import Link from "next/link";
 import { query } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
-import { invalidateTag } from "@/lib/server-cache";
 import { NotificationsClient } from "./notifications-client";
 
 export const dynamic = "force-dynamic";
@@ -100,7 +99,6 @@ export default async function NotificationsPage() {
     "UPDATE notifications SET read_at = NOW() WHERE user_id = $1 AND mess_id = $2 AND read_at IS NULL",
     [user.id, messId]
   );
-  invalidateTag("notifications");
 
   const negativeUsers: NegativeUser[] = [];
   const totalExpenses = expenseData.reduce((s: number, e: any) => s + Number(e.amount), 0);
