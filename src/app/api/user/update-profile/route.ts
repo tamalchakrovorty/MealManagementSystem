@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { invalidateTags } from "@/lib/server-cache";
 
 export async function POST(request: Request) {
   const user = await getSessionUser();
@@ -11,6 +12,8 @@ export async function POST(request: Request) {
 
   await queryOne("UPDATE profiles SET name = $1, phone = $2, avatar_url = $3 WHERE id = $4", [name, phone || null, avatar_url || null, user.id]);
   await queryOne("UPDATE users SET name = $1, phone = $2, avatar_url = $3 WHERE id = $4", [name, phone || null, avatar_url || null, user.id]);
+
+  invalidateTags(["profile"]);
 
   return NextResponse.json({ success: true });
 }

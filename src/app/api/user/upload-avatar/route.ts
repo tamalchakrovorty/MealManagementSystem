@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth";
 import { query } from "@/lib/db";
+import { invalidateTags } from "@/lib/server-cache";
 
 const MAX_SIZE = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
   const dataUrl = `data:${file.type};base64,${base64}`;
 
   await query("UPDATE profiles SET avatar_url = $1 WHERE id = $2", [dataUrl, user.id]);
+  invalidateTags(["profile"]);
 
   return NextResponse.json({ url: dataUrl });
 }
