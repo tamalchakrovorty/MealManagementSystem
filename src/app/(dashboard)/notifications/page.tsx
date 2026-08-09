@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 import Link from "next/link";
 import { query } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
@@ -99,6 +100,7 @@ export default async function NotificationsPage() {
     "UPDATE notifications SET read_at = NOW() WHERE user_id = $1 AND mess_id = $2 AND read_at IS NULL",
     [user.id, messId]
   );
+  revalidateTag("notifications");
 
   const negativeUsers: NegativeUser[] = [];
   const totalExpenses = expenseData.reduce((s: number, e: any) => s + Number(e.amount), 0);

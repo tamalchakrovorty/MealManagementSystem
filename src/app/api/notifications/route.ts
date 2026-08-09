@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { query, queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
@@ -40,6 +41,8 @@ export async function PUT(request: Request) {
       [user.id, (membership as any).mess_id]
     );
   }
+
+  revalidateTag("notifications");
 
   return NextResponse.json({ success: true });
 }

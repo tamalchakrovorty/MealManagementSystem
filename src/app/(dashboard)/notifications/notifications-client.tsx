@@ -174,6 +174,7 @@ export function NotificationsClient({
   const personalGroups = groupByDate(personalNotifications);
   const allGroups = groupByDate(
     notifications.filter((n) =>
+      n.type === "join_accepted" ||
       n.type === "announcement" ||
       n.type === "assigned_bazar" ||
       n.type === "event" ||
