@@ -36,13 +36,10 @@ export default async function AdminDashboardPage() {
       queryOne(`SELECT COUNT(*)::int AS count FROM requests WHERE mess_id = $1 AND type = 'leave' AND status = 'pending'`, [messId]),
       queryOne(`SELECT COUNT(*)::int AS count FROM bazar_duties WHERE mess_id = $1 AND status = 'pending' AND assigned_date < CURRENT_DATE`, [messId]),
       queryOne(
-        `SELECT COUNT(*)::int AS count FROM generate_series(
-           CURRENT_DATE - INTERVAL '7 days',
-           CURRENT_DATE - 1,
-           '1 day'
-         ) AS d(day)
+        `SELECT COUNT(*)::int AS count
+         FROM generate_series(1, 7) AS d(days_ago)
          WHERE NOT EXISTS (
-           SELECT 1 FROM meal_entries me WHERE me.mess_id = $1 AND me.date = d.day::date
+           SELECT 1 FROM meal_entries me WHERE me.mess_id = $1 AND me.date = (CURRENT_DATE - d.days_ago)::date
          )`,
         [messId]
       ),
