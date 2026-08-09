@@ -183,7 +183,7 @@ export default async function StockViewPage() {
                       <img src={img} alt={stock.item} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <div className="text-[14px] md:text-[15px] font-bold text-[#1a1a1a] mb-1">{stock.item}</div>
+                      <div className="text-[14px] md:text-[15px] font-bold text-foreground mb-1">{stock.item}</div>
                       <div className="text-[12px] md:text-[13px] text-muted-foreground">{Number(stock.quantity).toFixed(2)} {stock.unit}</div>
                     </div>
                   </div>

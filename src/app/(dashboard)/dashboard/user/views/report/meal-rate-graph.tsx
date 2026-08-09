@@ -33,7 +33,7 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
         onClick={() => setOpen(true)}
         className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)] text-left cursor-pointer hover:-translate-y-[3px] hover:shadow-[0_4px_12px_rgba(30,30,60,0.1)] transition-all duration-300"
       >
-        <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#fff2df] flex items-center justify-center mb-3">
+        <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#fff2df] dark:bg-[#4a3520] flex items-center justify-center mb-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M3 20L8 14L12 16L16 10L21 4" stroke="#f2a03d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M15 4H21V10" stroke="#f2a03d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -79,7 +79,7 @@ export function MealRateGraph({ data, monthLabel, mealRate }: { data: DayData[];
             </div>
 
             {data.length > 0 ? (
-              <div className="bg-[#fafafe] rounded-[16px] p-4 md:p-5 pt-5 md:pt-6 pb-3">
+              <div className="bg-[#fafafe] dark:bg-[#252535] rounded-[16px] p-4 md:p-5 pt-5 md:pt-6 pb-3">
                 <div className="relative">
                   <svg
                     viewBox={`0 0 ${chartWidth} ${chartHeight}`}

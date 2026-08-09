@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { query, queryOne } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
+import { invalidateTag } from "@/lib/server-cache";
 
 export async function GET() {
   const user = await getSessionUser();
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
     );
   }
 
-  revalidateTag("notifications");
+  invalidateTag("notifications");
 
   return NextResponse.json({ success: true });
 }

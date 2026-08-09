@@ -222,7 +222,7 @@ export function JoinMessClient() {
                 <circle cx="12" cy="7.5" r="1.3" fill="#fff" />
               </svg>
             </div>
-            <p className="text-[13px] text-[#444] leading-relaxed font-medium">
+            <p className="text-[13px] text-muted-foreground leading-relaxed font-medium">
               Ask your manager for the mess code.
             </p>
           </div>

@@ -6,9 +6,9 @@ import { format } from "date-fns";
 
 const badgeColors = [
   { bg: "bg-primary/10", text: "text-primary" },
-  { bg: "bg-[#e3faf0]", text: "text-[#1bbf7e]" },
-  { bg: "bg-[#fff2df]", text: "text-[#f2a03d]" },
-  { bg: "bg-[#e4f1ff]", text: "text-[#3fa6ec]" },
+  { bg: "bg-[#e3faf0] dark:bg-[#1a3d2a]", text: "text-[#1bbf7e] dark:text-[#4dd99a]" },
+  { bg: "bg-[#fff2df] dark:bg-[#4a3520]", text: "text-[#f2a03d] dark:text-[#f0b060]" },
+  { bg: "bg-[#e4f1ff] dark:bg-[#1e3456]", text: "text-[#3fa6ec] dark:text-[#6baaff]" },
 ];
 
 type TabType = "my" | "members";
@@ -159,8 +159,8 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                     <div className="min-w-[420px]">
                       <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] text-[10px] md:text-[12px] font-bold tracking-wider pb-2.5 border-b border-border">
                         <span className="text-muted-foreground">NAME</span>
-                        <span className="text-center text-[#1bbf7e] bg-[#e3faf0] rounded-lg py-1 border-r border-border">LUNCH</span>
-                        <span className="text-center text-[#d98a1c] bg-[#fff2df] rounded-lg py-1 border-r border-border">DINNER</span>
+                        <span className="text-center text-[#1bbf7e] dark:text-[#4dd99a] bg-[#e3faf0] dark:bg-[#1a3d2a] rounded-lg py-1 border-r border-border">LUNCH</span>
+                        <span className="text-center text-[#d98a1c] dark:text-[#f0b060] bg-[#fff2df] dark:bg-[#4a3520] rounded-lg py-1 border-r border-border">DINNER</span>
                         <span className="text-center text-primary bg-primary/10 rounded-lg py-1 border-r border-border">GUEST</span>
                         <span className="text-center text-foreground bg-muted rounded-lg py-1">TOTAL</span>
                       </div>
@@ -178,8 +178,8 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                               )}
                               <span className="text-[12px] md:text-[14px] font-semibold text-foreground truncate">{row.name}</span>
                             </div>
-                            <span className="text-center text-[12px] md:text-[14px] font-bold text-[#1bbf7e] bg-[#e3faf0]/60 rounded-md py-1.5 border-r border-border">{row.lunch.toFixed(1)}</span>
-                            <span className="text-center text-[12px] md:text-[14px] font-bold text-[#d98a1c] bg-[#fff2df]/60 rounded-md py-1.5 border-r border-border">{row.dinner.toFixed(1)}</span>
+                            <span className="text-center text-[12px] md:text-[14px] font-bold text-[#1bbf7e] dark:text-[#4dd99a] bg-[#e3faf0]/60 dark:bg-[#1a3d2a]/60 rounded-md py-1.5 border-r border-border">{row.lunch.toFixed(1)}</span>
+                            <span className="text-center text-[12px] md:text-[14px] font-bold text-[#d98a1c] dark:text-[#f0b060] bg-[#fff2df]/60 dark:bg-[#4a3520]/60 rounded-md py-1.5 border-r border-border">{row.dinner.toFixed(1)}</span>
                             <span className="text-center text-[12px] md:text-[14px] font-bold text-primary bg-primary/10/60 rounded-md py-1.5 border-r border-border">{row.guest.toFixed(1)}</span>
                             <span className="text-center text-[12px] md:text-[14px] font-extrabold text-foreground bg-muted/60 rounded-md py-1.5">{row.total.toFixed(1)}</span>
                           </div>

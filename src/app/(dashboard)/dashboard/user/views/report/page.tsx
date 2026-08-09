@@ -11,9 +11,9 @@ export const dynamic = "force-dynamic";
 
 const badgeColors = [
   { bg: "bg-primary/10", text: "text-primary" },
-  { bg: "bg-[#e3faf0]", text: "text-[#1bbf7e]" },
-  { bg: "bg-[#fff2df]", text: "text-[#f2a03d]" },
-  { bg: "bg-[#e4f1ff]", text: "text-[#3fa6ec]" },
+  { bg: "bg-[#e3faf0] dark:bg-[#1a3d2a]", text: "text-[#1bbf7e] dark:text-[#4dd99a]" },
+  { bg: "bg-[#fff2df] dark:bg-[#4a3520]", text: "text-[#f2a03d] dark:text-[#f0b060]" },
+  { bg: "bg-[#e4f1ff] dark:bg-[#1e3456]", text: "text-[#3fa6ec] dark:text-[#6baaff]" },
 ];
 
 export default async function ReportViewPage({
@@ -180,7 +180,7 @@ export default async function ReportViewPage({
 
           {/* Total Meals */}
           <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#e3faf0] flex items-center justify-center mb-3">
+            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#e3faf0] dark:bg-[#1a3d2a] flex items-center justify-center mb-3">
               <img src="/icons/meal-utensils.svg" alt="" className="w-[36px] h-[36px]" />
             </div>
             <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold mb-1">Total Meals</p>
@@ -189,7 +189,7 @@ export default async function ReportViewPage({
 
           {/* Total Deposit */}
           <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#fff8e6] flex items-center justify-center mb-3">
+            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#fff8e6] dark:bg-[#4a3f1a] flex items-center justify-center mb-3">
               <img src="/icons/coin.svg" alt="" className="w-[32px] h-[32px]" />
             </div>
             <p className="text-[11px] md:text-[13px] text-muted-foreground font-semibold mb-1">Total Deposit</p>
@@ -198,7 +198,7 @@ export default async function ReportViewPage({
 
           {/* Total Expense */}
           <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#ffe9ee] flex items-center justify-center mb-3">
+            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#ffe9ee] dark:bg-[#4a2030] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <path d="M2 8.5C2 7.12 3.12 6 4.5 6H19.5C20.88 6 22 7.12 22 8.5V15.5C22 16.88 20.88 18 19.5 18H4.5C3.12 18 2 16.88 2 15.5V8.5Z" stroke="#f0396b" strokeWidth="1.8" />
                 <path d="M2 10H22" stroke="#f0396b" strokeWidth="1.8" />
@@ -211,7 +211,7 @@ export default async function ReportViewPage({
 
           {/* Available Bazar Balance */}
           <div className="bg-card rounded-[18px] p-4 md:p-5 shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
-            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#e0f7e9] flex items-center justify-center mb-3">
+            <div className="w-[38px] h-[38px] md:w-[42px] md:h-[42px] rounded-full bg-[#e0f7e9] dark:bg-[#1a3d2a] flex items-center justify-center mb-3">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="#12b76a" strokeWidth="1.8" />
                 <path d="M12 6V12L16 14" stroke="#12b76a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -233,11 +233,11 @@ export default async function ReportViewPage({
           {/* Table Header */}
           <div className="grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr_1fr] text-[10px] md:text-[12px] font-bold tracking-wider pb-3 border-b border-border">
             <span className="text-muted-foreground">NAME</span>
-            <span className="text-center text-primary bg-primary/10 rounded-lg py-1 border-r border-border">MEALS</span>
-            <span className="text-center text-[#7c6cf6] bg-[#ece9fe] rounded-lg py-1 border-r border-border">GUEST</span>
-            <span className="text-center text-[#2f80ed] bg-[#e4f1ff] rounded-lg py-1 border-r border-border">DEPOSIT</span>
-            <span className="text-center text-[#d98a1c] bg-[#fff2df] rounded-lg py-1 border-r border-border">EXPENSE</span>
-            <span className="text-center text-[#12b76a] bg-[#e0f7e9] rounded-lg py-1">BALANCE</span>
+            <span className="text-center text-primary bg-primary/10 dark:bg-primary/20 rounded-lg py-1 border-r border-border">MEALS</span>
+            <span className="text-center text-[#7c6cf6] dark:text-[#a89cff] bg-[#ece9fe] dark:bg-[#3d3566] rounded-lg py-1 border-r border-border">GUEST</span>
+            <span className="text-center text-[#2f80ed] dark:text-[#6baaff] bg-[#e4f1ff] dark:bg-[#1e3456] rounded-lg py-1 border-r border-border">DEPOSIT</span>
+            <span className="text-center text-[#d98a1c] dark:text-[#f0b060] bg-[#fff2df] dark:bg-[#4a3520] rounded-lg py-1 border-r border-border">EXPENSE</span>
+            <span className="text-center text-[#12b76a] dark:text-[#4dd99a] bg-[#e0f7e9] dark:bg-[#1a3d2a] rounded-lg py-1">BALANCE</span>
           </div>
 
           {/* Table Rows */}
@@ -257,11 +257,11 @@ export default async function ReportViewPage({
                     )}
                     <span className="text-[14px] md:text-[15px] font-semibold text-foreground truncate">{r.name}</span>
                   </div>
-                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-primary bg-primary/10/60 rounded-lg py-2 border-r border-border">{r.totalMeals.toFixed(1)}</span>
-                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#7c6cf6] bg-[#ece9fe]/60 rounded-lg py-2 border-r border-border">{r.totalGuestMeals.toFixed(1)}</span>
-                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#2f80ed] bg-[#e4f1ff]/60 rounded-lg py-2 border-r border-border">৳{r.totalDeposit.toFixed(0)}</span>
-                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#d98a1c] bg-[#fff2df]/60 rounded-lg py-2 border-r border-border">৳{r.totalExpense.toFixed(0)}</span>
-                  <span className={`text-center text-[13px] md:text-[14px] font-bold rounded-lg py-2 ${r.balance < 0 ? "text-[#f0396b] bg-[#ffe9ee]/60" : "text-[#12b76a] bg-[#e0f7e9]/60"}`}>
+                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-primary bg-primary/10/60 dark:bg-primary/20/60 rounded-lg py-2 border-r border-border">{r.totalMeals.toFixed(1)}</span>
+                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#7c6cf6] dark:text-[#a89cff] bg-[#ece9fe]/60 dark:bg-[#3d3566]/60 rounded-lg py-2 border-r border-border">{r.totalGuestMeals.toFixed(1)}</span>
+                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#2f80ed] dark:text-[#6baaff] bg-[#e4f1ff]/60 dark:bg-[#1e3456]/60 rounded-lg py-2 border-r border-border">৳{r.totalDeposit.toFixed(0)}</span>
+                  <span className="text-center text-[13px] md:text-[14px] font-semibold text-[#d98a1c] dark:text-[#f0b060] bg-[#fff2df]/60 dark:bg-[#4a3520]/60 rounded-lg py-2 border-r border-border">৳{r.totalExpense.toFixed(0)}</span>
+                  <span className={`text-center text-[13px] md:text-[14px] font-bold rounded-lg py-2 ${r.balance < 0 ? "text-[#f0396b] dark:text-[#ff6b8a] bg-[#ffe9ee]/60 dark:bg-[#4a2030]/60" : "text-[#12b76a] dark:text-[#4dd99a] bg-[#e0f7e9]/60 dark:bg-[#1a3d2a]/60"}`}>
                     ৳{r.balance.toFixed(0)}
                   </span>
                 </div>
