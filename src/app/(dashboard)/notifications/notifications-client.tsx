@@ -392,7 +392,7 @@ export function NotificationsClient({
                           {style.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[13.5px] md:text-[15px] font-semibold text-foreground leading-snug">{displayMessage}</p>
+                          <p className="text-[13.5px] md:text-[15px] font-semibold text-foreground leading-snug whitespace-pre-line">{displayMessage}</p>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <p className="text-[10px] text-muted-foreground">
                               {formatNotifTime(new Date(notif.edited_at || notif.created_at))}
