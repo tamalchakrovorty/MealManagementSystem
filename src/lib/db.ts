@@ -1,10 +1,24 @@
 import { Pool } from "pg";
+import { readFileSync } from "fs";
+import { join } from "path";
+
+const connectionString = process.env.DATABASE_URL || "";
+
+const sslConfig = /cockroachlabs\.cloud/.test(connectionString)
+  ? {
+      rejectUnauthorized: true,
+      ca: readFileSync(
+        process.env.SSL_CERT_PATH || join(process.cwd(), "certs", "root.crt")
+      ).toString(),
+    }
+  : undefined;
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
+  ssl: sslConfig,
 });
 
 export async function query<T = any>(text: string, params?: any[]): Promise<T[]> {
