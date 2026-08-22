@@ -1,11 +1,14 @@
 import type { NextConfig } from "next";
 
+const devOrigins = process.env.ALLOWED_DEV_ORIGINS
+  ? process.env.ALLOWED_DEV_ORIGINS.split(",").map((s) => s.trim())
+  : [];
+
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.0.113", "192.168.0.230"],
+  allowedDevOrigins: devOrigins,
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  cacheComponents: false,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { query } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
-import { format } from "date-fns";
 import { MonthPicker } from "../report/month-picker";
 import { MenuViewClient } from "./menu-view-client";
 

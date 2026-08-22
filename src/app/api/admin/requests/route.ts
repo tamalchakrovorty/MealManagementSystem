@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { query, queryOne, pool } from "@/lib/db";
-import { getSessionUser, requireMessMembership } from "@/lib/auth";
+import { requireMessMembership } from "@/lib/auth";
 
 export async function PUT(request: Request) {
   const { requestId, status } = await request.json();

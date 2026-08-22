@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { query, pool } from "@/lib/db";
-import { getSessionUser, requireMessMembership } from "@/lib/auth";
+import { requireMessMembership } from "@/lib/auth";
 import { invalidateTags } from "@/lib/server-cache";
 
 export async function GET(request: Request) {
@@ -14,7 +14,6 @@ export async function GET(request: Request) {
 
   const auth = await requireMessMembership(messId);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
-  const user = auth.user;
 
   const rows = await query(
     `SELECT user_id, slot, quantity FROM meal_entries
@@ -103,9 +102,8 @@ export async function POST(request: Request) {
 
     await client.query("COMMIT");
     invalidateTags(["members", "totals"]);
-  } catch (err: any) {
+  } catch {
     await client.query("ROLLBACK");
-    console.error("Failed to save meal entries:", err.message);
     return NextResponse.json({ error: "Failed to save entries" }, { status: 500 });
   } finally {
     client.release();

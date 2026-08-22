@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { query, queryOne } from "@/lib/db";
+import { query } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getSelectedMembership } from "@/lib/server-utils";
 import { DepositsViewClient } from "./deposits-view-client";

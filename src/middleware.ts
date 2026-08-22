@@ -4,7 +4,7 @@ import { verifySession } from "@/lib/auth";
 
 const publicRoutes = ["/login", "/register", "/find-account", "/update-password", "/auth/callback"];
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (publicRoutes.some((r) => pathname.startsWith(r))) {
