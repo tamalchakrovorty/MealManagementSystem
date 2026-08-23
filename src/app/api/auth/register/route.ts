@@ -14,6 +14,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
   }
 
+  if (phone) {
+    const existingPhone = await queryOne("SELECT id FROM users WHERE phone = $1", [phone]);
+    if (existingPhone) {
+      return NextResponse.json({ error: "An account with this phone number already exists" }, { status: 409 });
+    }
+  }
+
   const passwordHash = await hashPassword(password);
 
   const user = await queryOne<{ id: string; email: string; name: string }>(
