@@ -22,11 +22,14 @@ export function MealOffToggle({ messId }: { messId: string }) {
   const [startDate, setStartDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [endDate, setEndDate] = useState(() => format(addDays(new Date(), 6), "yyyy-MM-dd"));
 
+  const [breakfast, setBreakfast] = useState<MealOption>("on");
   const [lunch, setLunch] = useState<MealOption>("on");
   const [dinner, setDinner] = useState<MealOption>("on");
+  const [currentBreakfast, setCurrentBreakfast] = useState<MealOption>("on");
   const [currentLunch, setCurrentLunch] = useState<MealOption>("on");
   const [currentDinner, setCurrentDinner] = useState<MealOption>("on");
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(null);
+  const [pendingBreakfast, setPendingBreakfast] = useState<MealOption | null>(null);
   const [pendingLunch, setPendingLunch] = useState<MealOption | null>(null);
   const [pendingDinner, setPendingDinner] = useState<MealOption | null>(null);
   const [partOfCombined, setPartOfCombined] = useState(false);
@@ -35,7 +38,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
   const [fetching, setFetching] = useState(false);
 
   // Button enabled when selection differs from the current approved status
-  const hasChanges = lunch !== currentLunch || dinner !== currentDinner;
+  const hasChanges = breakfast !== currentBreakfast || lunch !== currentLunch || dinner !== currentDinner;
   const activeDate = duration === "one_time" ? date : startDate;
 
   useEffect(() => {
@@ -50,20 +53,26 @@ export function MealOffToggle({ messId }: { messId: string }) {
         });
         const data = await res.json();
         if (!cancelled) {
+          const cBreakfast = data.currentBreakfast || "on";
           const cLunch = data.currentLunch || "on";
           const cDinner = data.currentDinner || "on";
+          setCurrentBreakfast(cBreakfast);
           setCurrentLunch(cLunch);
           setCurrentDinner(cDinner);
 
           // If there is a pending request, show those values as the working selection
-          if (data.requestStatus === "pending" && data.pendingLunch != null) {
+          if (data.requestStatus === "pending" && data.pendingBreakfast != null) {
+            setBreakfast(data.pendingBreakfast);
             setLunch(data.pendingLunch);
             setDinner(data.pendingDinner);
+            setPendingBreakfast(data.pendingBreakfast);
             setPendingLunch(data.pendingLunch);
             setPendingDinner(data.pendingDinner);
           } else {
+            setBreakfast(cBreakfast);
             setLunch(cLunch);
             setDinner(cDinner);
+            setPendingBreakfast(null);
             setPendingLunch(null);
             setPendingDinner(null);
           }
@@ -88,7 +97,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
   const handleRequest = async () => {
     setLoading(true);
     try {
-      const body: Record<string, any> = { mess_id: messId, lunch, dinner };
+      const body: Record<string, any> = { mess_id: messId, breakfast, lunch, dinner };
       if (duration === "one_time") {
         body.date = date;
       } else {
@@ -114,6 +123,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
         return;
       }
       setRequestStatus("pending");
+      setPendingBreakfast(breakfast);
       setPendingLunch(lunch);
       setPendingDinner(dinner);
       setPartOfCombined(duration === "long_time");
@@ -124,18 +134,18 @@ export function MealOffToggle({ messId }: { messId: string }) {
     setLoading(false);
   };
 
-  const renderSlot = (slot: "lunch" | "dinner", value: MealOption) => {
-    const isCurrent = slot === "lunch" ? value === currentLunch : value === currentDinner;
+  const renderSlot = (slot: "breakfast" | "lunch" | "dinner", value: MealOption) => {
+    const isCurrent = slot === "breakfast" ? value === currentBreakfast : slot === "lunch" ? value === currentLunch : value === currentDinner;
     const isPending = requestStatus === "pending" && (
-      slot === "lunch" ? value === pendingLunch : value === pendingDinner
+      slot === "breakfast" ? value === pendingBreakfast : slot === "lunch" ? value === pendingLunch : value === pendingDinner
     );
     return (
       <div className={`rounded-[14px] md:rounded-[18px] p-3 md:p-4 border ${
-        slot === "lunch" ? "bg-lunch-bg border-lunch-border" : "bg-dinner-bg border-dinner-border"
+        slot === "breakfast" ? "bg-breakfast-bg border-breakfast-border" : slot === "lunch" ? "bg-lunch-bg border-lunch-border" : "bg-dinner-bg border-dinner-border"
       }`} style={{ borderWidth: "1.5px" }}>
         <div className="flex items-center gap-1.5 mb-2.5 md:mb-3">
-          <div className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full ${slot === "lunch" ? "bg-lunch" : "bg-dinner"}`} />
-          <h4 className={`text-[13px] md:text-[15px] font-bold capitalize ${slot === "lunch" ? "text-lunch" : "text-dinner"}`}>{slot}</h4>
+          <div className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full ${slot === "breakfast" ? "bg-breakfast" : slot === "lunch" ? "bg-lunch" : "bg-dinner"}`} />
+          <h4 className={`text-[13px] md:text-[15px] font-bold capitalize ${slot === "breakfast" ? "text-breakfast" : slot === "lunch" ? "text-lunch" : "text-dinner"}`}>{slot}</h4>
           {requestStatus === "pending" && isPending && !isCurrent && (
             <span className="text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded-full ml-auto bg-warning-bg text-warning">
               Pending
@@ -169,7 +179,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
               key={opt.value}
               type="button"
               disabled={fetching}
-              onClick={() => slot === "lunch" ? setLunch(opt.value) : setDinner(opt.value)}
+              onClick={() => slot === "breakfast" ? setBreakfast(opt.value) : slot === "lunch" ? setLunch(opt.value) : setDinner(opt.value)}
               className="py-2 md:py-2.5 rounded-lg md:rounded-xl text-[10px] md:text-[13px] font-bold transition-all disabled:opacity-50 leading-tight"
               style={{
                 background: value === opt.value ? opt.bg : "var(--card)",
@@ -263,6 +273,7 @@ export function MealOffToggle({ messId }: { messId: string }) {
         </div>
       ) : (
         <>
+          {renderSlot("breakfast", breakfast)}
           {renderSlot("lunch", lunch)}
           {renderSlot("dinner", dinner)}
           <button

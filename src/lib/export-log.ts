@@ -17,6 +17,7 @@ export interface ExportDay {
 
 export interface ExportMenuDay {
   date: string;
+  breakfast: string;
   lunch: string;
   dinner: string;
 }
@@ -265,11 +266,11 @@ function addSummarySheet(wb: ExcelJS.Workbook, params: BuildParams) {
 }
 
 function addMenuSheet(wb: ExcelJS.Workbook, params: BuildParams) {
-  const headers = ["Date", "Lunch", "Dinner"];
-  const numCols = 3;
+  const headers = ["Date", "Breakfast", "Lunch", "Dinner"];
+  const numCols = 4;
 
   const ws = wb.addWorksheet("Menu");
-  ws.columns = [{ width: 13 }, { width: 40 }, { width: 40 }];
+  ws.columns = [{ width: 13 }, { width: 40 }, { width: 40 }, { width: 40 }];
 
   addTitle(ws, `Mess Meal Management System — ${params.messName}`, numCols);
   addSubtitle(ws, `Menu — ${params.monthLabel}`, numCols);
@@ -284,7 +285,7 @@ function addMenuSheet(wb: ExcelJS.Workbook, params: BuildParams) {
   }
 
   for (const m of params.menus) {
-    const row = ws.addRow([m.date, m.lunch || "-", m.dinner || "-"]);
+    const row = ws.addRow([m.date, m.breakfast || "-", m.lunch || "-", m.dinner || "-"]);
     row.eachCell({ includeEmpty: true }, (cell, col) => {
       cell.border = BORDER;
       cell.font = { size: 11, color: { argb: "FF1E2130" } };

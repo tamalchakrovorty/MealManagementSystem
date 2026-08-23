@@ -21,13 +21,13 @@ export async function GET(request: Request) {
     [messId, date, isGuest === "true"]
   );
 
-  const meals: Record<string, { lunch: number; dinner: number }> = {};
+  const meals: Record<string, { breakfast: number; lunch: number; dinner: number }> = {};
   for (const r of rows as any[]) {
-    if (!meals[r.user_id]) meals[r.user_id] = { lunch: 0, dinner: 0 };
-    meals[r.user_id][r.slot as "lunch" | "dinner"] = Number(r.quantity);
+    if (!meals[r.user_id]) meals[r.user_id] = { breakfast: 0, lunch: 0, dinner: 0 };
+    meals[r.user_id][r.slot as "breakfast" | "lunch" | "dinner"] = Number(r.quantity);
   }
 
-  let mealOffData: Record<string, { lunch: string; dinner: string }> = {};
+  let mealOffData: Record<string, { breakfast: string; lunch: string; dinner: string }> = {};
   if (mealOffDate) {
     const offRows = await query(
       `SELECT user_id, details FROM requests
@@ -41,6 +41,7 @@ export async function GET(request: Request) {
     for (const r of offRows as any[]) {
       const details = typeof r.details === "string" ? JSON.parse(r.details) : r.details;
       mealOffData[r.user_id] = {
+        breakfast: details?.breakfast || "on",
         lunch: details?.lunch || "on",
         dinner: details?.dinner || "on",
       };

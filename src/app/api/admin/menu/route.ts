@@ -14,28 +14,28 @@ export async function GET(request: Request) {
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   const rows = await query(
-    `SELECT lunch, dinner FROM menus WHERE mess_id = $1 AND date = $2`,
+    `SELECT breakfast, lunch, dinner FROM menus WHERE mess_id = $1 AND date = $2`,
     [messId, date]
   );
 
-  const raw = (rows as any[])[0] || { lunch: "", dinner: "" };
-  const menu = { lunch_menu: raw.lunch || "", dinner_menu: raw.dinner || "" };
+  const raw = (rows as any[])[0] || { breakfast: "", lunch: "", dinner: "" };
+  const menu = { breakfast_menu: raw.breakfast || "", lunch_menu: raw.lunch || "", dinner_menu: raw.dinner || "" };
   return NextResponse.json({ menu });
 }
 
 export async function POST(request: Request) {
-  const { mess_id, date, lunch_menu, dinner_menu } = await request.json();
+  const { mess_id, date, breakfast_menu, lunch_menu, dinner_menu } = await request.json();
   if (!mess_id || !date) return NextResponse.json({ error: "mess_id and date required" }, { status: 400 });
 
   const auth = await requireMessMembership(mess_id);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   await query(
-    `INSERT INTO menus (mess_id, date, lunch, dinner)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO menus (mess_id, date, breakfast, lunch, dinner)
+     VALUES ($1, $2, $3, $4, $5)
      ON CONFLICT (mess_id, date)
-     DO UPDATE SET lunch = EXCLUDED.lunch, dinner = EXCLUDED.dinner`,
-    [mess_id, date, lunch_menu || "", dinner_menu || ""]
+     DO UPDATE SET breakfast = EXCLUDED.breakfast, lunch = EXCLUDED.lunch, dinner = EXCLUDED.dinner`,
+    [mess_id, date, breakfast_menu || "", lunch_menu || "", dinner_menu || ""]
   );
 
   invalidateTags(["menus"]);

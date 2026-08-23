@@ -7,12 +7,13 @@ import { getFoodImage } from "@/lib/food-images";
 interface Menu {
   id: string;
   date: string;
+  breakfast: string | null;
   lunch: string | null;
   dinner: string | null;
 }
 
 export function MenuViewClient({ menus }: { menus: Menu[] }) {
-  const [activeTab, setActiveTab] = useState<"lunch" | "dinner">("lunch");
+  const [activeTab, setActiveTab] = useState<"breakfast" | "lunch" | "dinner">("breakfast");
   const [dateSearch, setDateSearch] = useState("");
 
   const now = new Date();
@@ -32,7 +33,7 @@ export function MenuViewClient({ menus }: { menus: Menu[] }) {
       return {
         date: day,
         label: format(day, "dd MMM (EEE)"),
-        items: activeTab === "lunch" ? menu?.lunch : menu?.dinner,
+        items: activeTab === "breakfast" ? menu?.breakfast : activeTab === "lunch" ? menu?.lunch : menu?.dinner,
       };
     })
     .filter((item) => item.items && item.items.trim() !== "")
@@ -47,8 +48,16 @@ export function MenuViewClient({ menus }: { menus: Menu[] }) {
 
   return (
     <div className="space-y-4">
-      {/* Lunch/Dinner Toggle */}
+      {/* Breakfast/Lunch/Dinner Toggle */}
       <div className="bg-card rounded-[16px] p-1.5 flex shadow-[0_2px_8px_rgba(30,30,60,0.05)]">
+        <button
+          onClick={() => setActiveTab("breakfast")}
+          className={`flex-1 py-3 md:py-3.5 rounded-[12px] text-[13px] md:text-[15px] font-bold transition-all ${
+            activeTab === "breakfast" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
+          }`}
+        >
+          Breakfast
+        </button>
         <button
           onClick={() => setActiveTab("lunch")}
           className={`flex-1 py-3 md:py-3.5 rounded-[12px] text-[13px] md:text-[15px] font-bold transition-all ${

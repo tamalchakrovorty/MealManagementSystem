@@ -40,11 +40,11 @@ export async function POST(request: Request) {
     if (!g.name || !g.name.trim()) {
       return NextResponse.json({ error: "All guests must have a name" }, { status: 400 });
     }
-    if (!validQty.includes(g.lunch) || !validQty.includes(g.dinner)) {
+    if (!validQty.includes(g.breakfast) || !validQty.includes(g.lunch) || !validQty.includes(g.dinner)) {
       return NextResponse.json({ error: "Invalid meal quantity" }, { status: 400 });
     }
-    if (g.lunch === 0 && g.dinner === 0) {
-      return NextResponse.json({ error: `${g.name} must have at least one meal (lunch or dinner)` }, { status: 400 });
+    if (g.breakfast === 0 && g.lunch === 0 && g.dinner === 0) {
+      return NextResponse.json({ error: `${g.name} must have at least one meal (breakfast, lunch, or dinner)` }, { status: 400 });
     }
     if (!Array.isArray(g.shared_with)) {
       return NextResponse.json({ error: "Invalid shared_with data" }, { status: 400 });
@@ -70,6 +70,8 @@ export async function POST(request: Request) {
     dates: allDates,
     guests: guests.map((g: any) => ({
       name: g.name.trim(),
+      breakfast: g.breakfast,
+      breakfast_type: g.breakfast_type || "full",
       lunch: g.lunch,
       lunch_type: g.lunch_type || "full",
       dinner: g.dinner,

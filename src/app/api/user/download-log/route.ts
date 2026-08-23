@@ -122,7 +122,7 @@ export async function GET(request: Request) {
               [messId, monthStart, nextMonthStart]
             ),
         query(
-          `SELECT TO_CHAR(date, 'YYYY-MM-DD') AS date_str, lunch, dinner FROM menus
+          `SELECT TO_CHAR(date, 'YYYY-MM-DD') AS date_str, breakfast, lunch, dinner FROM menus
            WHERE mess_id = $1 AND date >= $2::date AND date < $3::date ORDER BY date ASC`,
           [messId, monthStart, nextMonthStart]
         ),
@@ -178,6 +178,7 @@ export async function GET(request: Request) {
     for (const m of menuRows) {
       allMenus.push({
         date: format(new Date(`${m.date_str}T00:00:00`), "dd MMM yyyy"),
+        breakfast: m.breakfast || "",
         lunch: m.lunch || "",
         dinner: m.dinner || "",
       });

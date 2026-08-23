@@ -6,7 +6,7 @@ export type RequestType = "meal_off" | "meal_on" | "guest_meal" | "join";
 
 export type RequestStatus = "pending" | "approved" | "rejected";
 
-export type MealSlot = "lunch" | "dinner";
+export type MealSlot = "breakfast" | "lunch" | "dinner";
 
 export interface Profile {
   id: string;
@@ -98,6 +98,7 @@ export interface Menu {
   id: string;
   mess_id: string;
   date: string;
+  breakfast: string | null;
   lunch: string | null;
   dinner: string | null;
 }

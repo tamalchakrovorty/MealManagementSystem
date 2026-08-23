@@ -143,12 +143,24 @@ export function GuestMealRequests({ requests, members }: { requests: any[]; memb
                 {guests.length > 0 && (
                   <div className="space-y-2 mb-3">
                     {guests.map((g: any, i: number) => {
+                      const breakfastBadge = g.breakfast > 0 ? getBadge(g.breakfast_type || "full") : null;
                       const lunchBadge = g.lunch > 0 ? getBadge(g.lunch_type || "full") : null;
                       const dinnerBadge = g.dinner > 0 ? getBadge(g.dinner_type || "full") : null;
                       return (
                         <div key={i} className="bg-muted/50 rounded-xl px-3 py-2.5 md:px-4 md:py-3">
                           <p className="text-[13px] font-semibold text-foreground mb-1.5">{g.name}</p>
                           <div className="flex gap-2">
+                            {breakfastBadge && (
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-[#6a4fd8]">B:</span>
+                                <span
+                                  className="text-[10px] font-bold px-1.5 py-0.5 rounded"
+                                  style={{ color: breakfastBadge.color, background: breakfastBadge.bg }}
+                                >
+                                  {breakfastBadge.label}
+                                </span>
+                              </div>
+                            )}
                             {lunchBadge && (
                               <div className="flex items-center gap-1.5">
                                 <span className="text-[10px] font-bold text-[#1bbf7e]">L:</span>

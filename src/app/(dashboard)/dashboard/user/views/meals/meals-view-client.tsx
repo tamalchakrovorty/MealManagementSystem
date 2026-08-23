@@ -93,11 +93,12 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
           <div className="space-y-3 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
             {filteredDates.map((dateKey) => {
               const dayEntries = entries.filter((e: any) => e.user_id === currentUserId && format(new Date(e.date), "yyyy-MM-dd") === dateKey);
-              let lunch = 0, dinner = 0, guest = 0;
+              let breakfast = 0, lunch = 0, dinner = 0, guest = 0;
               for (const e of dayEntries) {
                 const qty = Number(e.quantity);
                 const isGuest = e.is_guest === true || e.is_guest === "t" || e.is_guest === "true";
                 if (isGuest) guest += qty;
+                else if (e.slot === "breakfast") breakfast += qty;
                 else if (e.slot === "lunch") lunch += qty;
                 else dinner += qty;
               }
@@ -106,7 +107,11 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                   <p className="text-[12px] md:text-[14px] font-bold text-muted-foreground tracking-wider mb-3">
                     {format(new Date(dateKey), "EEE, d MMM yyyy")}
                   </p>
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-5 gap-2">
+                    <div className="text-center">
+                      <p className="text-[10px] md:text-[12px] font-bold text-muted-foreground mb-1">BREAKFAST</p>
+                      <p className="text-[15px] md:text-[18px] font-extrabold text-[#6a4fd8]">{breakfast.toFixed(1)}</p>
+                    </div>
                     <div className="text-center">
                       <p className="text-[10px] md:text-[12px] font-bold text-muted-foreground mb-1">LUNCH</p>
                       <p className="text-[15px] md:text-[18px] font-extrabold text-[#1bbf7e]">{lunch.toFixed(1)}</p>
@@ -121,7 +126,7 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                     </div>
                     <div className="text-center">
                       <p className="text-[10px] md:text-[12px] font-bold text-muted-foreground mb-1">TOTAL</p>
-                      <p className="text-[15px] md:text-[18px] font-extrabold text-foreground">{(lunch + dinner + guest).toFixed(1)}</p>
+                      <p className="text-[15px] md:text-[18px] font-extrabold text-foreground">{(breakfast + lunch + dinner + guest).toFixed(1)}</p>
                     </div>
                   </div>
                 </div>
@@ -132,20 +137,22 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
           <div className="space-y-3">
             {filteredDates.map((dateKey) => {
               const dayEntries = entries.filter((e: any) => e.user_id !== currentUserId && format(new Date(e.date), "yyyy-MM-dd") === dateKey);
-              const dayUserMap = new Map<string, { lunch: number; dinner: number; guest: number; avatar_url: string | null }>();
+              const dayUserMap = new Map<string, { breakfast: number; lunch: number; dinner: number; guest: number; avatar_url: string | null }>();
               for (const entry of dayEntries) {
                 const name = entry.member_name || "Unknown";
-                if (!dayUserMap.has(name)) dayUserMap.set(name, { lunch: 0, dinner: 0, guest: 0, avatar_url: entry.avatar_url || null });
+                if (!dayUserMap.has(name)) dayUserMap.set(name, { breakfast: 0, lunch: 0, dinner: 0, guest: 0, avatar_url: entry.avatar_url || null });
                 const slot = dayUserMap.get(name)!;
                 const qty = Number(entry.quantity);
                 const isGuest = entry.is_guest === true || entry.is_guest === "t" || entry.is_guest === "true";
                 if (isGuest) slot.guest += qty;
+                else if (entry.slot === "breakfast") slot.breakfast += qty;
                 else if (entry.slot === "lunch") slot.lunch += qty;
                 else slot.dinner += qty;
               }
               const dayData = Array.from(dayUserMap.entries()).map(([name, s]) => ({
-                name, ...s, total: s.lunch + s.dinner + s.guest,
+                name, ...s, total: s.breakfast + s.lunch + s.dinner + s.guest,
               }));
+              const dayBreakfast = dayData.reduce((s, r) => s + r.breakfast, 0);
               const dayLunch = dayData.reduce((s, r) => s + r.lunch, 0);
               const dayDinner = dayData.reduce((s, r) => s + r.dinner, 0);
               const dayGuest = dayData.reduce((s, r) => s + r.guest, 0);
@@ -157,8 +164,9 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                   </p>
                   <div className="overflow-x-auto -mx-4 px-4">
                     <div className="min-w-[420px]">
-                      <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] text-[10px] md:text-[12px] font-bold tracking-wider pb-2.5 border-b border-border">
+                      <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr_1fr] text-[10px] md:text-[12px] font-bold tracking-wider pb-2.5 border-b border-border">
                         <span className="text-muted-foreground">NAME</span>
+                        <span className="text-center text-[#6a4fd8] dark:text-[#8b7cf6] bg-[#f3f0fe] dark:bg-[#2a2050] rounded-lg py-1 border-r border-border">BREAKFAST</span>
                         <span className="text-center text-[#1bbf7e] dark:text-[#4dd99a] bg-[#e3faf0] dark:bg-[#1a3d2a] rounded-lg py-1 border-r border-border">LUNCH</span>
                         <span className="text-center text-[#d98a1c] dark:text-[#f0b060] bg-[#fff2df] dark:bg-[#4a3520] rounded-lg py-1 border-r border-border">DINNER</span>
                         <span className="text-center text-primary bg-primary/10 rounded-lg py-1 border-r border-border">GUEST</span>
@@ -167,7 +175,7 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                       {dayData.map((row, i) => {
                         const color = badgeColors[i % badgeColors.length];
                         return (
-                          <div key={row.name} className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] items-center py-2.5 border-b border-border last:border-0 md:hover:bg-muted md:transition-colors">
+                          <div key={row.name} className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr_1fr] items-center py-2.5 border-b border-border last:border-0 md:hover:bg-muted md:transition-colors">
                             <div className="flex items-center gap-2 min-w-0 pr-2">
                               {row.avatar_url ? (
                                 <img src={row.avatar_url} alt={row.name} className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] rounded-full object-cover shrink-0 bg-muted" />
@@ -178,6 +186,7 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                               )}
                               <span className="text-[12px] md:text-[14px] font-semibold text-foreground truncate">{row.name}</span>
                             </div>
+                            <span className="text-center text-[12px] md:text-[14px] font-bold text-[#6a4fd8] dark:text-[#8b7cf6] bg-[#f3f0fe]/60 dark:bg-[#2a2050]/60 rounded-md py-1.5 border-r border-border">{row.breakfast.toFixed(1)}</span>
                             <span className="text-center text-[12px] md:text-[14px] font-bold text-[#1bbf7e] dark:text-[#4dd99a] bg-[#e3faf0]/60 dark:bg-[#1a3d2a]/60 rounded-md py-1.5 border-r border-border">{row.lunch.toFixed(1)}</span>
                             <span className="text-center text-[12px] md:text-[14px] font-bold text-[#d98a1c] dark:text-[#f0b060] bg-[#fff2df]/60 dark:bg-[#4a3520]/60 rounded-md py-1.5 border-r border-border">{row.dinner.toFixed(1)}</span>
                             <span className="text-center text-[12px] md:text-[14px] font-bold text-primary bg-primary/10/60 rounded-md py-1.5 border-r border-border">{row.guest.toFixed(1)}</span>
@@ -185,12 +194,13 @@ export function MealsViewClient({ entries, currentUserId }: { entries: any[]; cu
                           </div>
                         );
                       })}
-                      <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] items-center pt-2.5 mt-1 border-t border-border">
+                      <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr_1fr] items-center pt-2.5 mt-1 border-t border-border">
                         <span className="text-[11px] md:text-[13px] font-extrabold text-foreground pl-1">TOTAL</span>
+                        <span className="text-center text-[12px] md:text-[14px] font-extrabold text-[#6a4fd8]">{dayBreakfast.toFixed(1)}</span>
                         <span className="text-center text-[12px] md:text-[14px] font-extrabold text-[#1bbf7e]">{dayLunch.toFixed(1)}</span>
                         <span className="text-center text-[12px] md:text-[14px] font-extrabold text-[#d98a1c]">{dayDinner.toFixed(1)}</span>
                         <span className="text-center text-[12px] md:text-[14px] font-extrabold text-primary">{dayGuest.toFixed(1)}</span>
-                        <span className="text-center text-[12px] md:text-[14px] font-extrabold text-foreground">{(dayLunch + dayDinner + dayGuest).toFixed(1)}</span>
+                        <span className="text-center text-[12px] md:text-[14px] font-extrabold text-foreground">{(dayBreakfast + dayLunch + dayDinner + dayGuest).toFixed(1)}</span>
                       </div>
                     </div>
                   </div>

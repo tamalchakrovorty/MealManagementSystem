@@ -42,16 +42,19 @@ export async function GET(request: Request) {
       ? (typeof pendingRow.details === "string" ? JSON.parse(pendingRow.details) : pendingRow.details)
       : null;
 
+    const currentBreakfast = approvedDetails?.breakfast || "on";
     const currentLunch = approvedDetails?.lunch || "on";
     const currentDinner = approvedDetails?.dinner || "on";
 
     const response: Record<string, any> = {
+      currentBreakfast,
       currentLunch,
       currentDinner,
     };
 
     if (pendingRow) {
       response.requestStatus = "pending";
+      response.pendingBreakfast = pendingDetails?.breakfast || "on";
       response.pendingLunch = pendingDetails?.lunch || "on";
       response.pendingDinner = pendingDetails?.dinner || "on";
       const isCombined = Array.isArray(pendingDetails?.dates) && pendingDetails.dates.length > 0;
@@ -71,7 +74,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { date, dates, mess_id, lunch, dinner } = await request.json();
+    const { date, dates, mess_id, breakfast, lunch, dinner } = await request.json();
 
     const allDates = dates?.length ? dates : date ? [date] : [];
     if (!allDates.length || !mess_id) {
@@ -83,6 +86,9 @@ export async function POST(request: Request) {
     const user = auth.user!;
 
     const validOptions = ["on", "off", "rice_only", "curry_only"];
+    if (breakfast && !validOptions.includes(breakfast)) {
+      return NextResponse.json({ error: "Invalid breakfast option" }, { status: 400 });
+    }
     if (lunch && !validOptions.includes(lunch)) {
       return NextResponse.json({ error: "Invalid lunch option" }, { status: 400 });
     }
@@ -109,7 +115,7 @@ export async function POST(request: Request) {
       await query(
         `INSERT INTO requests (mess_id, user_id, type, status, details)
          VALUES ($1, $2, 'meal_off', 'pending', $3)`,
-        [mess_id, user.id, JSON.stringify({ dates: allDates, lunch: lunch || "on", dinner: dinner || "on" })]
+        [mess_id, user.id, JSON.stringify({ dates: allDates, breakfast: breakfast || "on", lunch: lunch || "on", dinner: dinner || "on" })]
       );
     } else {
       // Individual requests for ≤ 3 days
@@ -117,7 +123,7 @@ export async function POST(request: Request) {
         await query(
           `INSERT INTO requests (mess_id, user_id, type, status, details)
            VALUES ($1, $2, 'meal_off', 'pending', $3)`,
-          [mess_id, user.id, JSON.stringify({ date: d, lunch: lunch || "on", dinner: dinner || "on" })]
+          [mess_id, user.id, JSON.stringify({ date: d, breakfast: breakfast || "on", lunch: lunch || "on", dinner: dinner || "on" })]
         );
       }
     }

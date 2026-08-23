@@ -1,26 +1,17 @@
 import { Pool, types } from "pg";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 types.setTypeParser(20, (v) => parseInt(v, 10));
 
 const connectionString = process.env.DATABASE_URL || "";
 
-const sslConfig = /cockroachlabs\.cloud/.test(connectionString)
-  ? {
-      rejectUnauthorized: true,
-      ca: readFileSync(
-        process.env.SSL_CERT_PATH || join(process.cwd(), "certs", "root.crt")
-      ).toString(),
-    }
-  : undefined;
-
 const pool = new Pool({
   connectionString,
-  max: 20,
+  max: 5,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
-  ssl: sslConfig,
+  connectionTimeoutMillis: 10000,
+  ssl: connectionString.includes("cockroachlabs.cloud")
+    ? { rejectUnauthorized: false }
+    : undefined,
 });
 
 export async function query<T = any>(text: string, params?: any[]): Promise<T[]> {

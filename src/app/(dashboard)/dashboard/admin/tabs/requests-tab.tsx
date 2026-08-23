@@ -73,12 +73,13 @@ export function RequestsTab({
                 ? details.guests.map((g: any) => g.name).join(", ")
                 : req.name || "Unknown";
               const totalMeals = isGuestMeal && details?.guests?.length
-                ? details.guests.reduce((sum: number, g: any) => sum + g.lunch + g.dinner, 0)
+                ? details.guests.reduce((sum: number, g: any) => sum + g.breakfast + g.lunch + g.dinner, 0)
                 : null;
               const sharedMembers = isGuestMeal && details?.guests?.some((g: any) => g.shared_with?.length > 0)
                 ? [...new Set<string>(details.guests.flatMap((g: any) => (g.shared_with || []) as string[]))]
                 : [];
 
+              const breakfastBadge = isMealOff ? getMealOptionBadge(details?.breakfast || "on") : null;
               const lunchBadge = isMealOff ? getMealOptionBadge(details?.lunch || "on") : null;
               const dinnerBadge = isMealOff ? getMealOptionBadge(details?.dinner || "on") : null;
 
@@ -87,8 +88,13 @@ export function RequestsTab({
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-foreground truncate">{isMealOff ? (req.name || "Unknown") : guestNames}</p>
-                      {isMealOff && (lunchBadge || dinnerBadge) && (
+                      {isMealOff && (breakfastBadge || lunchBadge || dinnerBadge) && (
                         <div className="flex gap-2 mt-1.5">
+                          {breakfastBadge && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: breakfastBadge.color, background: breakfastBadge.bg }}>
+                              Breakfast: {breakfastBadge.label}
+                            </span>
+                          )}
                           {lunchBadge && (
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ color: lunchBadge.color, background: lunchBadge.bg }}>
                               Lunch: {lunchBadge.label}
@@ -104,12 +110,18 @@ export function RequestsTab({
                       {isGuestMeal && details?.guests?.length > 0 ? (
                         <div className="mt-1 space-y-1">
                           {details.guests.map((g: any, i: number) => {
+                            const gBreakfastBadge = g.breakfast > 0 ? getGuestMealBadge(g.breakfast_type || "full") : null;
                             const gLunchBadge = g.lunch > 0 ? getGuestMealBadge(g.lunch_type || "full") : null;
                             const gDinnerBadge = g.dinner > 0 ? getGuestMealBadge(g.dinner_type || "full") : null;
                             return (
                               <div key={i} className="flex items-center gap-2">
                                 <p className="text-xs font-semibold text-foreground">{g.name}:</p>
                                 <div className="flex gap-1">
+                                  {gBreakfastBadge && (
+                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: gBreakfastBadge.color, background: gBreakfastBadge.bg }}>
+                                      B: {gBreakfastBadge.label}
+                                    </span>
+                                  )}
                                   {gLunchBadge && (
                                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: gLunchBadge.color, background: gLunchBadge.bg }}>
                                       L: {gLunchBadge.label}

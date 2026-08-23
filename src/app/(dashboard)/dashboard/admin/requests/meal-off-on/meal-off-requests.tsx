@@ -109,6 +109,7 @@ export function MealOffRequests({ requests }: { requests: any[] }) {
         <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
           {filtered.map((req: any) => {
             const details = typeof req.details === "string" ? JSON.parse(req.details) : req.details;
+            const breakfastBadge = MEAL_BADGES[details?.breakfast || "on"];
             const lunchBadge = MEAL_BADGES[details?.lunch || "on"];
             const dinnerBadge = MEAL_BADGES[details?.dinner || "on"];
             const statusStyle = STATUS_CONFIG[req.status] || STATUS_CONFIG.pending;
@@ -153,6 +154,15 @@ export function MealOffRequests({ requests }: { requests: any[] }) {
 
                 {/* Meal Options */}
                 <div className="flex gap-2 mb-3">
+                  <div className="flex-1 rounded-xl px-3 py-2 md:px-4 md:py-3" style={{ background: "#f5f0fe", border: "1px solid #e0dbf8" }}>
+                    <p className="text-[10px] font-bold text-[#6a4fd8] mb-1">BREAKFAST</p>
+                    <span
+                      className="text-[11px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ color: breakfastBadge.color, background: breakfastBadge.bg }}
+                    >
+                      {breakfastBadge.label}
+                    </span>
+                  </div>
                   <div className="flex-1 rounded-xl px-3 py-2 md:px-4 md:py-3" style={{ background: "#f0faf5", border: "1px solid #d5f5e5" }}>
                     <p className="text-[10px] font-bold text-[#1bbf7e] mb-1">LUNCH</p>
                     <span

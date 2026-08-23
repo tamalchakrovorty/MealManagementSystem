@@ -177,7 +177,7 @@ CREATE TABLE public.meal_entries (
     is_guest boolean DEFAULT false,
     created_at timestamp with time zone DEFAULT now(),
     CONSTRAINT meal_entries_quantity_check CHECK ((quantity >= (0)::numeric)),
-    CONSTRAINT meal_entries_slot_check CHECK ((slot = ANY (ARRAY['lunch'::text, 'dinner'::text])))
+    CONSTRAINT meal_entries_slot_check CHECK ((slot = ANY (ARRAY['breakfast'::text, 'lunch'::text, 'dinner'::text])))
 );
 
 
@@ -211,6 +211,7 @@ CREATE TABLE public.menus (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     mess_id uuid NOT NULL,
     date date NOT NULL,
+    breakfast text,
     lunch text,
     dinner text
 );
@@ -590,7 +591,7 @@ c19bcb08-9444-4863-87df-58599b544792	eaa3884b-dba4-4de5-9ade-43eba9860fa9	a4d863
 -- Data for Name: menus; Type: TABLE DATA; Schema: public; Owner: mmsuser
 --
 
-COPY public.menus (id, mess_id, date, lunch, dinner) FROM stdin;
+COPY public.menus (id, mess_id, date, breakfast, lunch, dinner) FROM stdin;
 6629809a-a7a7-4771-b703-8fec980e1d1d	148f9ea9-a527-44a3-9835-9a6ac0f3d6fa	2026-07-31	Fish curry	Chicken curry with Red spinach
 a6b2726b-f1ad-4fbb-b0a4-c77858437b10	148f9ea9-a527-44a3-9835-9a6ac0f3d6fa	2026-07-29	Mutton	Hilsha Fish Curry
 ff4aa923-7926-4e2f-8428-68cb1b744df9	148f9ea9-a527-44a3-9835-9a6ac0f3d6fa	2026-07-28	Fish Curry	Alu Vaji with Potato Smash

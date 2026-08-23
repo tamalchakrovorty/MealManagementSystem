@@ -183,7 +183,27 @@ export default async function HomepagePage() {
       </div>
 
       {/* Menu Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        {/* Today's Breakfast */}
+        <div className="bg-card rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+          <div className="min-w-0">
+            <h3 className="text-[15px] font-bold mb-1">Breakfast</h3>
+            <p className="text-[13px] text-muted-foreground leading-snug mb-1 max-w-[180px] line-clamp-2">
+              {(todayMenu as any)?.breakfast || "Not set"}
+            </p>
+            <small className="text-muted-foreground text-[11px]">{format(new Date(), "EEEE")}</small>
+          </div>
+            <div className="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-[14px] bg-muted shrink-0 overflow-hidden">
+              <Image
+                src={getFoodImage((todayMenu as any)?.breakfast || "", 0)}
+                alt="breakfast"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
+            </div>
+        </div>
+
         {/* Today's Lunch */}
         <div className="bg-card rounded-[16px] p-3.5 md:p-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-border transition-all duration-300 md:hover:-translate-y-[2px] md:hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
           <div className="min-w-0">

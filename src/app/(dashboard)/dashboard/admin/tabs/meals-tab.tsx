@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { DatePickerField } from "@/components/ui/date-picker-field";
 import { popup } from "@/lib/popup";
 
-type SlotQty = { lunch: string; dinner: string };
+type SlotQty = { breakfast: string; lunch: string; dinner: string };
 
 const MEAL_OFF_OPTIONS: Record<string, { label: string; color: string; bg: string; lockedQty: number | null }> = {
   off: { label: "OFF", color: "#e5484d", bg: "#fadada", lockedQty: 0 },
@@ -19,17 +19,18 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
   const router = useRouter();
   const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [mealType, setMealType] = useState<"regular" | "guest">("regular");
-  const [slot, setSlot] = useState<"lunch" | "dinner">("lunch");
+  const [slot, setSlot] = useState<"breakfast" | "lunch" | "dinner">("breakfast");
+  const [breakfastMenu, setBreakfastMenu] = useState("");
   const [lunchMenu, setLunchMenu] = useState("");
   const [dinnerMenu, setDinnerMenu] = useState("");
   const [mealData, setMealData] = useState<Record<string, SlotQty>>(() => {
     const init: Record<string, SlotQty> = {};
     for (const m of members) {
-      init[m.user_id] = { lunch: "0", dinner: "0" };
+      init[m.user_id] = { breakfast: "0", lunch: "0", dinner: "0" };
     }
     return init;
   });
-  const [mealOffMap, setMealOffMap] = useState<Record<string, { lunch: string; dinner: string }>>({});
+  const [mealOffMap, setMealOffMap] = useState<Record<string, { breakfast: string; lunch: string; dinner: string }>>({});
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
 
@@ -53,9 +54,11 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           for (const m of members) {
             const off = offData[m.user_id];
             if (off) {
+              const breakfastOpt = MEAL_OFF_OPTIONS[off.breakfast];
               const lunchOpt = MEAL_OFF_OPTIONS[off.lunch];
               const dinnerOpt = MEAL_OFF_OPTIONS[off.dinner];
               updated[m.user_id] = {
+                breakfast: String(breakfastOpt?.lockedQty ?? 0),
                 lunch: String(lunchOpt?.lockedQty ?? 0),
                 dinner: String(dinnerOpt?.lockedQty ?? 0),
               };
@@ -63,19 +66,21 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
               const s = saved[m.user_id];
               if (s) {
                 updated[m.user_id] = {
+                  breakfast: s.breakfast > 0 ? String(s.breakfast) : "0",
                   lunch: s.lunch > 0 ? String(s.lunch) : "0",
                   dinner: s.dinner > 0 ? String(s.dinner) : "0",
                 };
               } else {
-                updated[m.user_id] = { lunch: "0", dinner: "0" };
+                updated[m.user_id] = { breakfast: "0", lunch: "0", dinner: "0" };
               }
             }
           }
           setMealData(updated);
           setMealOffMap(offData);
           const menu = menuData.menu || {};
-          setLunchMenu(menu.lunch_menu || "");
-          setDinnerMenu(menu.dinner_menu || "");
+          setBreakfastMenu(menu.breakfast_menu || menu.breakfast || "");
+          setLunchMenu(menu.lunch_menu || menu.lunch || "");
+          setDinnerMenu(menu.dinner_menu || menu.dinner || "");
           setFetching(false);
         }
       } catch {
@@ -90,14 +95,14 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
     };
   }, [date, messId, mealType]);
 
-  const isSlotLocked = (userId: string, checkSlot: "lunch" | "dinner") => {
+  const isSlotLocked = (userId: string, checkSlot: "breakfast" | "lunch" | "dinner") => {
     const off = mealOffMap[userId];
     if (!off) return false;
     const option = off[checkSlot];
     return option === "off" || option === "rice_only" || option === "curry_only";
   };
 
-  const getSlotBadge = (userId: string, checkSlot: "lunch" | "dinner") => {
+  const getSlotBadge = (userId: string, checkSlot: "breakfast" | "lunch" | "dinner") => {
     const off = mealOffMap[userId];
     if (!off) return null;
     const option = off[checkSlot];
@@ -148,12 +153,16 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
     const isGuest = mealType === "guest";
     const entries: any[] = [];
     for (const [userId, data] of Object.entries(mealData)) {
+      const breakfastVal = Number(data.breakfast);
       const lunchVal = Number(data.lunch);
       const dinnerVal = Number(data.dinner);
-      if (!isNaN(lunchVal)) {
+      if (!isNaN(breakfastVal) && breakfastVal > 0) {
+        entries.push({ mess_id: messId, user_id: userId, date, slot: "breakfast", quantity: breakfastVal, is_guest: isGuest });
+      }
+      if (!isNaN(lunchVal) && lunchVal > 0) {
         entries.push({ mess_id: messId, user_id: userId, date, slot: "lunch", quantity: lunchVal, is_guest: isGuest });
       }
-      if (!isNaN(dinnerVal)) {
+      if (!isNaN(dinnerVal) && dinnerVal > 0) {
         entries.push({ mess_id: messId, user_id: userId, date, slot: "dinner", quantity: dinnerVal, is_guest: isGuest });
       }
     }
@@ -167,7 +176,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
       fetch("/api/admin/menu", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mess_id: messId, date, lunch_menu: lunchMenu, dinner_menu: dinnerMenu }),
+        body: JSON.stringify({ mess_id: messId, date, breakfast_menu: breakfastMenu, lunch_menu: lunchMenu, dinner_menu: dinnerMenu }),
       }),
     ]);
     if (!res.ok) { const d = await res.json(); popup.error(d.error); }
@@ -176,8 +185,8 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
   };
 
   const isGuest = mealType === "guest";
-  const activeColor = isGuest ? "#7c6cf6" : slot === "lunch" ? "#1bbf7e" : "#d98a1c";
-  const activeBg = isGuest ? "#ece9fe" : slot === "lunch" ? "#e3faf0" : "#fff2df";
+  const activeColor = isGuest ? "#7c6cf6" : slot === "breakfast" ? "#6a4fd8" : slot === "lunch" ? "#1bbf7e" : "#d98a1c";
+  const activeBg = isGuest ? "#ece9fe" : slot === "breakfast" ? "#f3f0fe" : slot === "lunch" ? "#e3faf0" : "#fff2df";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-[1fr_1.5fr] md:gap-5">
@@ -190,8 +199,17 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
             <DatePickerField value={date} onChange={setDate} className="w-full" />
           </div>
 
-          {/* Lunch / Dinner Toggle */}
+          {/* Breakfast / Lunch / Dinner Toggle */}
           <div className="bg-muted rounded-[14px] p-1.5 flex">
+            <button
+              type="button"
+              onClick={() => setSlot("breakfast")}
+              className={`flex-1 py-2.5 md:py-3 rounded-[10px] text-[13px] md:text-[14px] font-bold transition-all ${
+                slot === "breakfast" ? "bg-breakfast text-white shadow-sm" : "text-muted-foreground"
+              }`}
+            >
+              Breakfast
+            </button>
             <button
               type="button"
               onClick={() => setSlot("lunch")}
@@ -213,7 +231,13 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
           </div>
 
           {/* Menu Input — shows only active slot */}
-          {slot === "lunch" ? (
+          {slot === "breakfast" ? (
+            <div>
+              <label className="block text-xs font-semibold text-breakfast mb-1.5">Breakfast Menu</label>
+              <textarea placeholder="e.g. Poha, Egg, Bread" value={breakfastMenu} onChange={(e) => setBreakfastMenu(e.target.value)} rows={3}
+                className="w-full border border-breakfast-border rounded-xl px-3 py-2.5 md:py-3 text-sm outline-none focus:border-breakfast transition-colors bg-breakfast-bg resize-none" />
+            </div>
+          ) : slot === "lunch" ? (
             <div>
               <label className="block text-xs font-semibold text-lunch mb-1.5">Lunch Menu</label>
               <textarea placeholder="e.g. Egg, Rice, Dal" value={lunchMenu} onChange={(e) => setLunchMenu(e.target.value)} rows={3}
@@ -271,7 +295,7 @@ export function MealsTab({ messId, members }: { messId: string; members: any[] }
                 <span className="text-sm text-muted-foreground ml-2">Loading meals...</span>
               </div>
             ) : members.map((member: any) => {
-              const data = mealData[member.user_id] || { lunch: "0", dinner: "0" };
+              const data = mealData[member.user_id] || { breakfast: "0", lunch: "0", dinner: "0" };
               const val = data[slot];
               const locked = isSlotLocked(member.user_id, slot);
               const badge = getSlotBadge(member.user_id, slot);

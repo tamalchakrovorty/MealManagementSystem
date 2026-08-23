@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS public.meal_entries (
   mess_id UUID REFERENCES public.messes(id) ON DELETE CASCADE NOT NULL,
   user_id UUID REFERENCES public.profiles(id) NOT NULL,
   date DATE NOT NULL,
-  slot TEXT NOT NULL CHECK (slot IN ('lunch', 'dinner')),
+  slot TEXT NOT NULL CHECK (slot IN ('breakfast', 'lunch', 'dinner')),
   quantity DECIMAL(6,2) NOT NULL CHECK (quantity >= 0),
   is_guest BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS public.menus (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   mess_id UUID REFERENCES public.messes(id) ON DELETE CASCADE NOT NULL,
   date DATE NOT NULL,
+  breakfast TEXT,
   lunch TEXT,
   dinner TEXT,
   UNIQUE(mess_id, date)

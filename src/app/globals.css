@@ -40,6 +40,9 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-page-bg: var(--page-bg);
+  --color-breakfast: var(--breakfast);
+  --color-breakfast-bg: var(--breakfast-bg);
+  --color-breakfast-border: var(--breakfast-border);
   --color-lunch: var(--lunch);
   --color-lunch-bg: var(--lunch-bg);
   --color-lunch-border: var(--lunch-border);
@@ -99,6 +102,9 @@
   --sidebar-ring: oklch(0.534 0.200 286.6);
   --page-bg: oklch(0.957 0.015 277.9);
   /* Semantic meal colors */
+  --breakfast: #6a4fd8;
+  --breakfast-bg: #f3f0fe;
+  --breakfast-border: #e0dbf8;
   --lunch: #1bbf7e;
   --lunch-bg: #f0faf5;
   --lunch-border: #d5f5e5;
@@ -150,6 +156,9 @@
   --sidebar-ring: oklch(0.695 0.144 289.0);
   --page-bg: oklch(0.229 0.025 298.5);
   /* Semantic meal colors - dark mode */
+  --breakfast: #8b7cf6;
+  --breakfast-bg: oklch(0.269 0.04 280);
+  --breakfast-border: oklch(0.35 0.06 280);
   --lunch: #34d88e;
   --lunch-bg: oklch(0.269 0.04 160);
   --lunch-border: oklch(0.35 0.06 160);

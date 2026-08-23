@@ -12,6 +12,8 @@ type DurationType = "one_day" | "multi_day";
 
 interface GuestEntry {
   name: string;
+  breakfast: number;
+  breakfastType: MealType;
   lunch: number;
   lunchType: MealType;
   dinner: number;
@@ -40,7 +42,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
   const [maxDateStr] = useState(() => format(addDays(new Date(), 7), "yyyy-MM-dd"));
 
   const [guests, setGuests] = useState<GuestEntry[]>([
-    { name: "", lunch: 0, lunchType: "full", dinner: 0, dinnerType: "full", sharedWith: [] },
+    { name: "", breakfast: 0, breakfastType: "full", lunch: 0, lunchType: "full", dinner: 0, dinnerType: "full", sharedWith: [] },
   ]);
   const [expandedShare, setExpandedShare] = useState<Record<number, boolean>>({});
   const [searchQuery, setSearchQuery] = useState<Record<number, string>>({});
@@ -53,22 +55,23 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
     setGuests((prev) => prev.map((g, i) => (i === index ? { ...g, [field]: value } : g)));
   };
 
-  const setMealSlot = (index: number, slot: "lunch" | "dinner", mealType: MealType) => {
+  const setMealSlot = (index: number, slot: "breakfast" | "lunch" | "dinner", mealType: MealType) => {
     setGuests((prev) =>
       prev.map((g, i) => {
         if (i !== index) return g;
-        const currentType = slot === "lunch" ? g.lunchType : g.dinnerType;
-        const currentQty = slot === "lunch" ? g.lunch : g.dinner;
+        const field = slot === "breakfast" ? "breakfastType" : slot === "lunch" ? "lunchType" : "dinnerType";
+        const qtyField = slot === "breakfast" ? "breakfast" : slot === "lunch" ? "lunch" : "dinner";
+        const currentType = g[field];
+        const currentQty = g[qtyField];
         const opt = mealOptions.find((o) => o.value === mealType)!;
         const isSame = currentQty === opt.qty && currentType === mealType;
-        if (slot === "lunch") return { ...g, lunch: isSame ? 0 : opt.qty, lunchType: isSame ? "full" : mealType };
-        return { ...g, dinner: isSame ? 0 : opt.qty, dinnerType: isSame ? "full" : mealType };
+        return { ...g, [qtyField]: isSame ? 0 : opt.qty, [field]: isSame ? "full" : mealType };
       })
     );
   };
 
   const addGuest = () => {
-    setGuests((prev) => [...prev, { name: "", lunch: 0, lunchType: "full", dinner: 0, dinnerType: "full", sharedWith: [] }]);
+    setGuests((prev) => [...prev, { name: "", breakfast: 0, breakfastType: "full", lunch: 0, lunchType: "full", dinner: 0, dinnerType: "full", sharedWith: [] }]);
   };
 
   const removeGuest = (index: number) => {
@@ -80,7 +83,7 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
     });
   };
 
-  const canSubmit = guests.every((g) => g.name.trim() && (g.lunch > 0 || g.dinner > 0));
+  const canSubmit = guests.every((g) => g.name.trim() && (g.breakfast > 0 || g.lunch > 0 || g.dinner > 0));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +100,8 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
         dates: allDates,
         guests: guests.map((g) => ({
           name: g.name.trim(),
+          breakfast: g.breakfast,
+          breakfast_type: g.breakfastType,
           lunch: g.lunch,
           lunch_type: g.lunchType,
           dinner: g.dinner,
@@ -125,18 +130,20 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
     setLoading(false);
   };
 
-  const renderMealSelector = (guestIdx: number, slot: "lunch" | "dinner") => {
+  const renderMealSelector = (guestIdx: number, slot: "breakfast" | "lunch" | "dinner") => {
     const guest = guests[guestIdx];
-    const currentQty = slot === "lunch" ? guest.lunch : guest.dinner;
-    const currentType = slot === "lunch" ? guest.lunchType : guest.dinnerType;
+    const field = slot === "breakfast" ? "breakfast" : slot === "lunch" ? "lunch" : "dinner";
+    const typeField = slot === "breakfast" ? "breakfastType" : slot === "lunch" ? "lunchType" : "dinnerType";
+    const currentQty = guest[field];
+    const currentType = guest[typeField];
 
     return (
       <div className={`flex-1 rounded-[16px] p-3.5 md:p-4 space-y-2.5 border ${
-        slot === "lunch" ? "bg-lunch-bg border-lunch-border" : "bg-dinner-bg border-dinner-border"
+        slot === "breakfast" ? "bg-breakfast-bg border-breakfast-border" : slot === "lunch" ? "bg-lunch-bg border-lunch-border" : "bg-dinner-bg border-dinner-border"
       }`} style={{ borderWidth: "1.5px" }}>
         <div className="flex items-center gap-2">
-          <div className={`w-2.5 h-2.5 rounded-full ${slot === "lunch" ? "bg-lunch" : "bg-dinner"}`} />
-          <p className={`text-[13px] md:text-[14px] font-bold capitalize ${slot === "lunch" ? "text-lunch" : "text-dinner"}`}>{slot}</p>
+          <div className={`w-2.5 h-2.5 rounded-full ${slot === "breakfast" ? "bg-breakfast" : slot === "lunch" ? "bg-lunch" : "bg-dinner"}`} />
+          <p className={`text-[13px] md:text-[14px] font-bold capitalize ${slot === "breakfast" ? "text-breakfast" : slot === "lunch" ? "text-lunch" : "text-dinner"}`}>{slot}</p>
         </div>
         <div className="space-y-1.5">
           {mealOptions.map((opt) => {
@@ -305,12 +312,13 @@ export function GuestMealForm({ messId, members }: { messId: string; members: Me
 
                   {/* Meal Selectors - Side by Side on Desktop */}
                   <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+                    {renderMealSelector(idx, "breakfast")}
                     {renderMealSelector(idx, "lunch")}
                     {renderMealSelector(idx, "dinner")}
                   </div>
 
                   {/* Share Cost */}
-                  {(guest.lunch > 0 || guest.dinner > 0) && (
+                  {(guest.breakfast > 0 || guest.lunch > 0 || guest.dinner > 0) && (
                     <div>
                       <button
                         type="button"
