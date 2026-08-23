@@ -4,14 +4,15 @@ import { verifyPassword, createSession, setSessionCookie } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const { email, password } = await request.json();
+  const identifier = email;
 
-  if (!email || !password) {
-    return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+  if (!identifier || !password) {
+    return NextResponse.json({ error: "Email/phone and password are required" }, { status: 400 });
   }
 
   const user = await queryOne<{ id: string; email: string; name: string; password_hash: string }>(
-    "SELECT id, email, name, password_hash FROM users WHERE email = $1",
-    [email]
+    "SELECT id, email, name, password_hash FROM users WHERE email = $1 OR phone = $1",
+    [identifier]
   );
 
   if (!user) {
