@@ -146,7 +146,7 @@ export default function RegisterPage() {
               <label className="text-xs font-semibold text-[#666] block mb-1.5">Full Name</label>
               <input
                 type="text"
-                placeholder="e.g. Tanvir Ahmed"
+                placeholder="Tomar Nam"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full bg-white border-[1.4px] border-[#e3e0f5] rounded-xl px-3.5 py-3 text-sm text-[#222] font-semibold placeholder:text-[#aaa] placeholder:font-normal outline-none focus:border-[#5b3fd6] transition-colors"
@@ -159,7 +159,7 @@ export default function RegisterPage() {
               <label className="text-xs font-semibold text-[#666] block mb-1.5">Email Address</label>
               <input
                 type="email"
-                placeholder="e.g. tanvir@email.com"
+                placeholder="tomaremail@amargmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-white border-[1.4px] border-[#e3e0f5] rounded-xl px-3.5 py-3 text-sm text-[#222] font-semibold placeholder:text-[#aaa] placeholder:font-normal outline-none focus:border-[#5b3fd6] transition-colors"
@@ -172,7 +172,7 @@ export default function RegisterPage() {
               <label className="text-xs font-semibold text-[#666] block mb-1.5">Phone Number</label>
               <input
                 type="tel"
-                placeholder="e.g. 01712-345678"
+                placeholder="+88012345678910"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full bg-white border-[1.4px] border-[#e3e0f5] rounded-xl px-3.5 py-3 text-sm text-[#222] font-semibold placeholder:text-[#aaa] placeholder:font-normal outline-none focus:border-[#5b3fd6] transition-colors"
